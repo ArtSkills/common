@@ -288,7 +288,7 @@ class GitTest extends AppTestCase
 					'Удаление ' . $labelState . ' ' . $labelType . ' ветки вернуло не то, что нужно'
 				);
 				self::assertEquals(
-					$this->_expectedCommandListDelete($branch, $canDelete, $this->_branchBeforeTest, $type),
+					$this->_expectedCommandListDelete($branch, $canDelete, $this->_branchBeforeTest, $type, false),
 					$this->_executeHistory,
 					'Удаление ' . $labelState . ' ' . $labelType . ' ветки вызывало неправильные команды'
 				);
@@ -326,7 +326,7 @@ class GitTest extends AppTestCase
 			'Удаление текущей нелокальной ветки (' . $label . ') вернуло не то, что нужно'
 		);
 		self::assertEquals(
-			$this->_expectedCommandListDelete($this->_branchBeforeTest, $hasMergedRemote, $this->_branchBeforeTest, Git::BRANCH_TYPE_REMOTE),
+			$this->_expectedCommandListDelete($this->_branchBeforeTest, $hasMergedRemote, $this->_branchBeforeTest, Git::BRANCH_TYPE_REMOTE, false),
 			$this->_executeHistory,
 			'Удаление текущей нелокальной ветки (' . $label . ') вызывало неправильные команды'
 		);

@@ -601,7 +601,7 @@ class MethodMockerEntity
 		}
 
 		// всю инфу вытаскиваем до того, как переименуем
-		$docBlock = $reflectionMethod->getDocComment();
+		$docBlock = (string)$reflectionMethod->getDocComment();
 		$parameters = $this->_getMethodParameters($reflectionMethod);
 		$returnType = $this->_getReturnType($reflectionMethod);
 
