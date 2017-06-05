@@ -62,7 +62,7 @@ class HttpClientMockerEntityTest extends AppTestCase
 	/**
 	 * Защита от вызова несколько раз
 	 *
-	 * @expectedException \PHPUnit_Framework_ExpectationFailedException
+	 * @expectedException \PHPUnit\Framework\ExpectationFailedException
 	 */
 	public function testSingleCallCheck() {
 		$testUrl = 'http://www.artskills.ru';
@@ -83,7 +83,7 @@ class HttpClientMockerEntityTest extends AppTestCase
 	/**
 	 * Ни разу не вызвали
 	 *
-	 * @expectedException \PHPUnit_Framework_ExpectationFailedException
+	 * @expectedException \PHPUnit\Framework\ExpectationFailedException
 	 */
 	public function testNoCallCheck() {
 		$testUrl = 'http://www.artskills.ru';

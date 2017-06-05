@@ -3,7 +3,8 @@
 namespace ArtSkills\TestSuite\HttpClientMock;
 
 use Cake\Http\Client\Request;
-use \PHPUnit_Framework_ExpectationFailedException;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 
 class HttpClientMockerEntity
@@ -233,11 +234,11 @@ class HttpClientMockerEntity
 	 * @param Request $request
 	 * @return string
 	 * @throws \Exception
-	 * @throws \PHPUnit_Framework_ExpectationFailedException
+	 * @throws ExpectationFailedException
 	 */
 	public function doAction($request) {
 		if (($this->_expectedCallCount > self::EXPECT_CALL_ONCE) && ($this->_callCounter >= $this->_expectedCallCount)) {
-			throw new PHPUnit_Framework_ExpectationFailedException($this->_getErrorMessage('expected ' . $this->_expectedCallCount . ' calls, but more appeared'));
+			throw new ExpectationFailedException($this->_getErrorMessage('expected ' . $this->_expectedCallCount . ' calls, but more appeared'));
 		}
 
 		if (!empty($this->_body)) {
@@ -248,7 +249,7 @@ class HttpClientMockerEntity
 				parse_str($request->body(), $result);
 				$expectedBody = $result;
 			}
-			\PHPUnit_Framework_Assert::assertEquals($this->_body, $expectedBody, 'Expected POST body data is not equals real data');
+			Assert::assertEquals($this->_body, $expectedBody, 'Expected POST body data is not equals real data');
 		}
 
 		$this->_callCounter++;
@@ -288,7 +289,7 @@ class HttpClientMockerEntity
 		$this->_mockChecked = true;
 
 		if (!$goodCallCount) {
-			throw new PHPUnit_Framework_ExpectationFailedException($this->_getErrorMessage(
+			throw new ExpectationFailedException($this->_getErrorMessage(
 				$this->_isCalled ? 'is called ' . $this->getCallCount() . ' times, expected ' . $this->_expectedCallCount : 'is not called!'
 			));
 		}
