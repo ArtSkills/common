@@ -25,6 +25,15 @@ class MockTestFixture
 	private static $_privateProperty = 'testPrivateStatic';
 
 	/**
+	 * Константа
+	 *
+	 * @return int
+	 */
+	public static function getConst() {
+		return self::TEST_CONSTANT;
+	}
+
+	/**
 	 * Тестовый метод
 	 *
 	 * @return string

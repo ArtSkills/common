@@ -19,11 +19,22 @@ class ConstantMockerTest extends \PHPUnit_Framework_TestCase
     	$originalValue = MockTestFixture::TEST_CONSTANT;
         $mockValue = 'qqq';
         ConstantMocker::mock(MockTestFixture::class, self::CLASS_CONST_NAME, $mockValue);
-        $this->assertEquals($mockValue, MockTestFixture::TEST_CONSTANT);
+        self::assertEquals($mockValue, MockTestFixture::TEST_CONSTANT);
 
         ConstantMocker::restore();
-        $this->assertEquals($originalValue, MockTestFixture::TEST_CONSTANT);
+		self::assertEquals($originalValue, MockTestFixture::TEST_CONSTANT);
     }
+
+	/**
+	 * Мок константы в классе.
+	 * И вызов в том же файле.
+	 * Мок не срабатывает :(
+	 */
+    public function testClassMockSameFile() {
+		$mockValue = 'qqq';
+		ConstantMocker::mock(MockTestFixture::class, self::CLASS_CONST_NAME, $mockValue);
+		self::assertNotEquals($mockValue, MockTestFixture::getConst());
+	}
 
     /**
      * Мок константы вне класса
