@@ -190,11 +190,12 @@ class MethodMockerEntity
 
 	/**
 	 * Флаги, с которыми будет переопределять ранкит
+	 *
+	 * @param ReflectionMethod $reflectionMethod
 	 * @return int
 	 */
-	private function _getRunkitFlags() {
+	private function _getRunkitFlags(ReflectionMethod $reflectionMethod): int {
 		$flags = 0;
-		$reflectionMethod = new ReflectionMethod($this->_class, $this->_method);
 		if ($reflectionMethod->isPublic()) {
 			$flags |= RUNKIT_ACC_PUBLIC;
 		}
@@ -212,11 +213,12 @@ class MethodMockerEntity
 
 	/**
 	 * Список параметров, чтоб переопределение работало правильно
+	 *
+	 * @param ReflectionMethod $reflectionMethod
 	 * @return string
 	 * @throws \PHPUnit_Framework_AssertionFailedError|\Exception
 	 */
-	private function _getMethodParameters() {
-		$reflectionMethod = new ReflectionMethod($this->_class, $this->_method);
+	private function _getMethodParameters(ReflectionMethod $reflectionMethod): string {
 		$arguments = [];
 		$parameters = (array)$reflectionMethod->getParameters();
 		/** @var \ReflectionParameter $parameter */
@@ -231,15 +233,32 @@ class MethodMockerEntity
 				$defaultValue = $parameter->getDefaultValue();
 				$paramDeclaration .= ' = ' . var_export($defaultValue, true);
 			}
-			$paramClass = $parameter->getClass();
-			if (!empty($paramClass)) {
-				$paramDeclaration = $paramClass->getName() . ' ' . $paramDeclaration;
-			} elseif ($parameter->isArray()) {
-				$paramDeclaration = 'array' . ' ' . $paramDeclaration;
+			$type = $parameter->getType();
+			if (!empty($type)) {
+				$paramDeclaration = (string)$type . ' ' . $paramDeclaration;
+				if ($type->allowsNull()) {
+					$paramDeclaration = '?' . $paramDeclaration;
+				}
 			}
+
 			$arguments[$parameter->getPosition()] = $paramDeclaration;
 		}
 		return implode(', ', $arguments);
+	}
+
+	/**
+	 * Тип возвращаемого значения
+	 *
+	 * @param ReflectionMethod $reflectionMethod
+	 * @return string
+	 */
+	private function _getReturnType(ReflectionMethod $reflectionMethod): string {
+		$returnTypeDeclaration = '';
+		$returnType = $reflectionMethod->getReturnType();
+		if (!empty($returnType)) {
+			$returnTypeDeclaration = ($returnType->allowsNull() ? '?' : '') . (string)$returnType;
+		}
+		return $returnTypeDeclaration;
 	}
 
 	/**
@@ -564,7 +583,9 @@ class MethodMockerEntity
 	 * @throws \PHPUnit_Framework_AssertionFailedError|\Exception
 	 */
 	private function _mockOriginalMethod() {
-		$flags = $this->_getRunkitFlags();
+		$reflectionMethod = new ReflectionMethod($this->_class, $this->_method);
+
+		$flags = $this->_getRunkitFlags($reflectionMethod);
 		$mockerClass = MethodMocker::class;
 		// можно было делать не через строки, а через функции
 		// но в таком случае ранкит глючит при наследовании
@@ -579,7 +600,11 @@ class MethodMockerEntity
 			}
 		}
 
-		$parameters = $this->_getMethodParameters();
+		// всю инфу вытаскиваем до того, как переименуем
+		$docBlock = $reflectionMethod->getDocComment();
+		$parameters = $this->_getMethodParameters($reflectionMethod);
+		$returnType = $this->_getReturnType($reflectionMethod);
+
 		runkit_method_rename(
 			$this->_class,
 			$this->_method,
@@ -587,7 +612,15 @@ class MethodMockerEntity
 		);
 
 		if (is_string($mockAction)) {
-			$success = runkit_method_add($this->_class, $this->_method, $parameters, $mockAction, $flags);
+			$success = runkit_method_add(
+				$this->_class,
+				$this->_method,
+				$parameters,
+				$mockAction,
+				$flags,
+				$docBlock,
+				$returnType
+			);
 		} else {
 			$success = runkit_method_add($this->_class, $this->_method, $mockAction, $flags);
 		}
