@@ -14,14 +14,14 @@ class ConstantMockerTest extends TestCase
 	const CLASS_CONST_NAME = MockTestFixture::CLASS_CONST_NAME;
 	const GLOBAL_CONST_NAME = MockTestFixture::GLOBAL_CONST_NAME;
 
-	/**
-	 * Мок константы в классе
-	 */
-	public function testClassMock() {
-		$originalValue = MockTestFixture::TEST_CONSTANT;
-		$mockValue = 'qqq';
-		ConstantMocker::mock(MockTestFixture::class, self::CLASS_CONST_NAME, $mockValue);
-		self::assertEquals($mockValue, MockTestFixture::TEST_CONSTANT);
+    /**
+     * Мок константы в классе
+     */
+    public function testClassMock() {
+    	$originalValue = MockTestFixture::TEST_CONSTANT;
+        $mockValue = 'qqq';
+        ConstantMocker::mock(MockTestFixture::class, self::CLASS_CONST_NAME, $mockValue);
+        self::assertEquals($mockValue, MockTestFixture::TEST_CONSTANT);
 
 		ConstantMocker::restore();
 		self::assertEquals($originalValue, MockTestFixture::TEST_CONSTANT);

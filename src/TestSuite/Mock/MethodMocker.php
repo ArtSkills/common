@@ -172,7 +172,7 @@ class MethodMocker
 	 * @param string $message
 	 */
 	public static function fail($message) {
-		if (class_exists('\PHPUnit\Framework\Assert') && method_exists('\PHPUnit\Framework\Assert', 'fail')) {
+		if (class_exists(\PHPUnit\Framework\Assert::class) && method_exists(\PHPUnit\Framework\Assert::class, 'fail')) {
 			\PHPUnit\Framework\Assert::fail($message);
 		} else {
 			throw new \Exception($message); // @codeCoverageIgnore
@@ -190,7 +190,7 @@ class MethodMocker
 	 * @param string $message
 	 */
 	public static function assertEquals($expected, $actual, $message = '') {
-		if (class_exists('\PHPUnit\Framework\Assert') && method_exists('\PHPUnit\Framework\Assert', 'assertEquals')) {
+		if (class_exists(\PHPUnit\Framework\Assert::class) && method_exists(\PHPUnit\Framework\Assert::class, 'assertEquals')) {
 			\PHPUnit\Framework\Assert::assertEquals($expected, $actual, $message);
 		} elseif ($expected != $actual) {
 			throw new \Exception($message, ' expected: ' . print_r($expected, true) . ', actual: ' . print_r($actual, true)); // @codeCoverageIgnore

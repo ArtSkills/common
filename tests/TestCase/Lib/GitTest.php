@@ -39,14 +39,27 @@ class GitTest extends AppTestCase
 	private $_executeHistory = [];
 
 	/**
-	 * @inheritdoc
+	 * Текущая папка
+	 *
+	 * @var string
 	 */
+	private $_currentDir = '';
+
+	/** @inheritdoc */
 	public function setUp() {
 		parent::setUp();
 		$this->_git = new Git();
 		$this->_gitCommand = PropertyAccess::get($this->_git, '_gitCommand');
 		$this->_branchBeforeTest = $this->_git->getCurrentBranchName();
+		$this->_currentDir = getcwd();
 	}
+
+	/** @inheritdoc */
+	public function tearDown() {
+		chdir($this->_currentDir);
+		parent::tearDown();
+	}
+
 
 	/**
 	 * Тест функции названия текущей ветки
@@ -279,8 +292,8 @@ class GitTest extends AppTestCase
 					continue;
 				}
 				$this->_executeHistory = [];
-				$canDelete = ($state == 'merged');
-				$labelState = (($state == 'unmerged') ? 'не' : '') . 'померженной';
+				$canDelete = ($state === 'merged');
+				$labelState = (($state === 'unmerged') ? 'не' : '') . 'померженной';
 				$branch = array_pop($list);
 				self::assertEquals(
 					$canDelete,
@@ -288,7 +301,7 @@ class GitTest extends AppTestCase
 					'Удаление ' . $labelState . ' ' . $labelType . ' ветки вернуло не то, что нужно'
 				);
 				self::assertEquals(
-					$this->_expectedCommandListDelete($branch, $canDelete, $this->_branchBeforeTest, $type, false),
+					$this->_expectedCommandListDelete($branch, $canDelete, $this->_branchBeforeTest, $type, $pull),
 					$this->_executeHistory,
 					'Удаление ' . $labelState . ' ' . $labelType . ' ветки вызывало неправильные команды'
 				);
@@ -358,6 +371,7 @@ class GitTest extends AppTestCase
 	 */
 	public function testOtherFolder() {
 		$gitFolder = ROOT;
+		chdir(APP);
 		$this->_mockExecute();
 
 		$git = new Git($gitFolder);

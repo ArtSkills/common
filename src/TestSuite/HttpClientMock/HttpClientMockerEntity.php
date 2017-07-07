@@ -276,6 +276,7 @@ class HttpClientMockerEntity
 
 	/**
 	 * Финальная проверка на вызовы
+	 * @throws \PHPUnit\Framework\ExpectationFailedException
 	 */
 	public function callCheck() {
 		if ($this->_mockChecked) {

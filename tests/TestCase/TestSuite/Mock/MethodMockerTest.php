@@ -158,7 +158,7 @@ class MethodMockerTest extends TestCase
 	 * @expectedExceptionMessage expected no args, but they appeared
 	 */
 	public function testUnexpectedArgs() {
-		MethodMocker::mock(MockTestFixture::class, 'staticMethodArgs')->expectArgs(false);
+		MethodMocker::mock(MockTestFixture::class, 'staticMethodArgs')->expectNoArgs();
 		MockTestFixture::staticMethodArgs('asd', 'qwe');
 	}
 
@@ -203,17 +203,32 @@ class MethodMockerTest extends TestCase
 	}
 
 	/**
+	 * неправильная часть аргументов
+	 * @expectedException \PHPUnit\Framework\AssertionFailedError
+	 * @expectedExceptionMessage unexpected args subset
+	 */
+	public function testBadArgsSubset() {
+		MethodMocker::mock(MockTestFixture::class, 'staticMethodArgs')->expectSomeArgs([1 => 'asd']);
+		MockTestFixture::staticMethodArgs('asd', 'qwe');
+	}
+
+	/**
 	 * вызов с хорошими аргументами
 	 */
 	public function testGoodArgs() {
 		$testObject = new MockTestFixture();
 		$returnValue = 'mocked no args';
-		MethodMocker::mock(MockTestFixture::class, 'methodNoArgs')->expectArgs(false)->willReturnValue($returnValue);
+		MethodMocker::mock(MockTestFixture::class, 'methodNoArgs')->expectNoArgs()->willReturnValue($returnValue);
 		self::assertEquals($returnValue, $testObject->methodNoArgs());
 
 		$args = ['good', 'args'];
-		MethodMocker::sniff(MockTestFixture::class, 'staticMethodArgs')->expectArgs(...$args);
+		$mock = MethodMocker::sniff(MockTestFixture::class, 'staticMethodArgs');
+		$mock->expectArgs(...$args);
 		self::assertEquals('static good args', MockTestFixture::staticMethodArgs(...$args));
+
+		$args = ['awesome', 'arguments'];
+		$mock->expectSomeArgs([1 => 'arguments']);
+		self::assertEquals('static awesome arguments', MockTestFixture::staticMethodArgs(...$args));
 
 		$arg = 'goooood arrrrgs';
 		MethodMocker::sniff(MockTestFixture::class, '_protectedArgs')->expectArgs($arg);
@@ -455,7 +470,7 @@ class MethodMockerTest extends TestCase
 		self::assertEquals($returnValue, MockTestFixture::staticFunc($expectArgs));
 
 		$returnList = ['list1', 'list2'];
-		$mock->expectArgs(false)->willReturnValueList($returnList);
+		$mock->expectNoArgs()->willReturnValueList($returnList);
 		$returned = [
 			MockTestFixture::staticFunc(),
 			MockTestFixture::staticFunc(),
@@ -475,7 +490,7 @@ class MethodMockerTest extends TestCase
 		self::assertEquals($returnList, $returned);
 
 		$message = 'msg1';
-		$mock->expectArgs(false)->willThrowException($message);
+		$mock->expectNoArgs()->willThrowException($message);
 		try {
 			MockTestFixture::staticFunc();
 			self::fail();
