@@ -158,6 +158,7 @@ class HttpClientMockerEntityTest extends AppTestCase
 	 * POST без указания Body, но с кэллбэком
 	 */
 	public function testNoBodyButCallback() {
+		// todo: тест без ассертов, что здесь должно проверяться?
 		$testUrl = 'http://www.artskills.ru';
 		$testData = ['foo' => 'barr', 'bar' => 'babar'];
 		$testMethod = Request::METHOD_POST;
