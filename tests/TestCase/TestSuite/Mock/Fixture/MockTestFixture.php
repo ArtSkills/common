@@ -41,6 +41,16 @@ class MockTestFixture
 	}
 
 	/**
+	 * Константа, к которой обращаются через static
+	 *
+	 * @return int
+	 */
+	public static function getConstStatic() {
+		return static::TEST_CONSTANT;
+	}
+
+
+	/**
 	 * Тестовый метод
 	 *
 	 * @return string
