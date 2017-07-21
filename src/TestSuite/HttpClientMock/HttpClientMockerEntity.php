@@ -5,6 +5,7 @@ namespace ArtSkills\TestSuite\HttpClientMock;
 use ArtSkills\Lib\Arrays;
 use Cake\Http\Client\Request;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 
 
@@ -120,7 +121,7 @@ class HttpClientMockerEntity
 			if (
 				!empty($callData['file'])
 				&& !empty($callData['line'])
-				&& !in_array($callData['file'], $dropTraceFiles)
+				&& !in_array($callData['file'], $dropTraceFiles, true)
 			) {
 				$mockedIn = $callData;
 				break;
@@ -281,7 +282,7 @@ class HttpClientMockerEntity
 	 *
 	 * @param Request $request
 	 * @return string
-	 * @throws \Exception
+	 * @throws AssertionFailedError
 	 * @throws ExpectationFailedException
 	 */
 	public function doAction($request) {
