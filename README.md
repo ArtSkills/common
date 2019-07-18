@@ -58,3 +58,6 @@ require ROOT . DS . 'vendor' . DS . 'artskills' . DS . 'common' . DS . 'src' . D
 
 ## Подумать
 * Можно ли как-нибудь вынести общий js код
+
+##
+Версия 1 для CakePHP 3.5
