@@ -14,17 +14,13 @@ use ArtSkills\Lib\Arrays;
  * @property string $col_enum = 'val1'
  * @property string $col_text
  * @property \Cake\I18n\Time $col_time = 'CURRENT_TIMESTAMP' comment2
- * @property TestTableTwo[] $TestTableTwo `table_one_fk` => `id`
- * @property array $newField
+ * @property ?TestTableTwo[] $TestTableTwo `table_one_fk` => `id`
+ * @property int[] $newField
  * @property int $oldField
  * @tableComment description blabla
  */
 class TestTableOne extends Entity
 {
-    /** @inheritdoc */
-    protected $_aliases = [
-    ];
-
     /**
      * @return string
      */
@@ -34,7 +30,7 @@ class TestTableOne extends Entity
     }
 
     /**
-     * @return array
+     * @return int[]
      */
     protected function _getNewField()
     {

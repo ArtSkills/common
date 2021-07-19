@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ArtSkills\ORM;
 
@@ -6,17 +7,19 @@ use ArtSkills\Lib\Env;
 use ArtSkills\Lib\Strings;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\ORM\ResultSet;
 use Cake\ORM\TableRegistry;
+use Exception;
 
 /**
  * @SuppressWarnings(PHPMD.MethodMix)
  */
 class Table extends \Cake\ORM\Table
 {
-
     /**
      * @inheritdoc
      * прописывание правильной сущности
+     * @phpstan-ignore-next-line
      */
     public function initialize(array $config)
     {
@@ -43,7 +46,7 @@ class Table extends \Cake\ORM\Table
      */
     public static function instance()
     {
-        return TableRegistry::getTableLocator()->get(static::_getAlias());
+        return TableRegistry::getTableLocator()->get(static::_getAlias()); // @phpstan-ignore-line
     }
 
     /**
@@ -53,8 +56,10 @@ class Table extends \Cake\ORM\Table
      * @param Entity|null|int $entity null для новой записи, сущность или её id для редактирования
      * @param array $options
      * @return bool|Entity
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
-    public function saveArr($saveData, $entity = null, $options = [])
+    public function saveArr(array $saveData, $entity = null, array $options = [])
     {
         if (empty($entity)) {
             $entity = $this->newEntity();
@@ -80,16 +85,19 @@ class Table extends \Cake\ORM\Table
     /**
      * Создаёт много сущностей из массива и сохраняет их
      *
-     * @param array $saveData
+     * @param array<int, array> $saveData
      * @param array $options
-     * @return array|bool|\Cake\ORM\ResultSet
+     * @return array|bool|ResultSet
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @throws Exception
+     * @phpstan-ignore-next-line
      */
-    public function saveManyArr($saveData, $options = [])
+    public function saveManyArr(array $saveData, array $options = [])
     {
         if (!is_array($saveData)) {
             return false;
         }
-        return $this->saveMany($this->newEntities($saveData, $options));
+        return $this->saveMany($this->newEntities($saveData, $options)); // @phpstan-ignore-line
     }
 
     /**
@@ -100,8 +108,10 @@ class Table extends \Cake\ORM\Table
      * @param Entity|int $entity
      * @param array $options
      * @return Entity|false
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
-    public function getEntity($entity, $options = [])
+    public function getEntity($entity, array $options = [])
     {
         if ($entity instanceof Entity) {
             return $entity;
@@ -110,7 +120,7 @@ class Table extends \Cake\ORM\Table
             return false;
         }
         try {
-            return $this->get($entity, $options);
+            return $this->get($entity, $options); // @phpstan-ignore-line
         } catch (RecordNotFoundException $e) {
             return false;
         }
@@ -122,8 +132,10 @@ class Table extends \Cake\ORM\Table
      * @param array $conditions
      * @param array $contain
      * @return bool
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
-    public function exists($conditions, $contain = [])
+    public function exists($conditions, array $contain = []): bool
     {
         return (bool)count(
             $this->find('all')
@@ -142,8 +154,11 @@ class Table extends \Cake\ORM\Table
      * @param Query|array $queryData
      * @param array $updateData
      * @return Entity|null
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
+     * @throws Exception
      */
-    public function updateWithLock($queryData, $updateData)
+    public function updateWithLock($queryData, array $updateData): ?Entity
     {
         if (is_array($queryData)) {
             $queryData = $this->find()->where($queryData);
@@ -164,6 +179,7 @@ class Table extends \Cake\ORM\Table
      * @inheritdoc
      * добавил опцию одноразового переопределения способа сохранения ассоциаций
      * изменённым дочерним сущностям проставляется dirty
+     * @phpstan-ignore-next-line
      */
     public function save(EntityInterface $entity, $options = [])
     {
@@ -188,36 +204,15 @@ class Table extends \Cake\ORM\Table
      *
      * @return bool
      */
-    public function truncate()
+    public function truncate(): bool
     {
         return ((int)$this->getConnection()->execute('TRUNCATE ' . $this->getTable())->errorCode() === 0);
     }
 
     /**
-     * Очистить таблицу, если нельзя применить truncate
-     * (есть внешние ключи или должна быть возможность откатиться)
-     *
-     * @return int
-     */
-    public function truncateSafe()
-    {
-        return $this->deleteAll(Query::CONDITION_ALL);
-    }
-
-    /**
-     * Обновить все строки таблицы
-     *
-     * @param array $fields
-     * @return int
-     */
-    public function updateAllRecords($fields)
-    {
-        return $this->updateAll($fields, Query::CONDITION_ALL);
-    }
-
-    /**
      * @inheritdoc
      * Добавил возможность более коротких опций
+     * @phpstan-ignore-next-line
      */
     public function findList(\Cake\ORM\Query $query, array $options)
     {
@@ -250,31 +245,46 @@ class Table extends \Cake\ORM\Table
         return parent::findList($query, $options);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @phpstan-ignore-next-line
+     */
     public function query()
     {
         return new Query($this->getConnection(), $this);
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @phpstan-ignore-next-line
+     */
     public function belongsTo($associated, array $options = [])
     {
         return parent::belongsTo($associated, $this->_assocOptions($associated, $options));
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @phpstan-ignore-next-line
+     */
     public function hasOne($associated, array $options = [])
     {
         return parent::hasOne($associated, $this->_assocOptions($associated, $options));
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @phpstan-ignore-next-line
+     */
     public function hasMany($associated, array $options = [])
     {
         return parent::hasMany($associated, $this->_assocOptions($associated, $options));
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @phpstan-ignore-next-line
+     */
     public function belongsToMany($associated, array $options = [])
     {
         return parent::belongsToMany($associated, $this->_assocOptions($associated, $options));
@@ -283,7 +293,7 @@ class Table extends \Cake\ORM\Table
     /**
      * Автозаполнение полей создания/правки
      */
-    private function _initTimeStampBehavior()
+    private function _initTimeStampBehavior(): void
     {
         $timeStampFields = [];
         $columnList = $this->getSchema()->columns();
@@ -312,7 +322,7 @@ class Table extends \Cake\ORM\Table
      *
      * @param EntityInterface $entity
      */
-    private function _setAssocDirty(EntityInterface $entity)
+    private function _setAssocDirty(EntityInterface $entity): void
     {
         $associations = $this->associations();
         foreach ($associations as $assoc) {
@@ -342,7 +352,7 @@ class Table extends \Cake\ORM\Table
      *
      * @return string
      */
-    private static function _getAlias()
+    private static function _getAlias(): string
     {
         $classNameParts = explode('\\', static::class);
         return Strings::replacePostfix(array_pop($classNameParts), 'Table');
@@ -354,8 +364,10 @@ class Table extends \Cake\ORM\Table
      * @param string $assocName
      * @param array $options
      * @return array
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
-    private function _assocOptions($assocName, $options)
+    private function _assocOptions(string $assocName, array $options): array
     {
         if (empty($options['propertyName'])) {
             $options['propertyName'] = $assocName;

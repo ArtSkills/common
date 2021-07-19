@@ -19,11 +19,6 @@ use ArtSkills\Lib\Arrays;
  */
 class TestTableOne extends Entity
 {
-    /** @inheritdoc */
-    protected $_aliases = [
-        'bad alias' => 'ololo',
-    ];
-
     /**
      * @return string
      */
@@ -33,7 +28,7 @@ class TestTableOne extends Entity
     }
 
     /**
-     * @return array
+     * @return int[]
      */
     protected function _getNewField()
     {

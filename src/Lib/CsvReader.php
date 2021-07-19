@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace ArtSkills\Lib;
 
@@ -6,8 +7,8 @@ use ArtSkills\Error\InternalException;
 
 class CsvReader
 {
-    const DEFAULT_ENCODING = 'UTF-8';
-    const DEFAULT_DELIMITER = ';';
+    public const DEFAULT_ENCODING = 'UTF-8';
+    public const DEFAULT_DELIMITER = ';';
 
     /**
      * Указатель на открытый файл
@@ -21,7 +22,7 @@ class CsvReader
      *
      * @var string
      */
-    private $_delimiter = self::DEFAULT_DELIMITER;
+    private string $_delimiter = self::DEFAULT_DELIMITER;
 
     /**
      * CsvReader constructor.
@@ -31,7 +32,7 @@ class CsvReader
      * @param string $fileEncoding
      * @throws InternalException
      */
-    public function __construct($csvFl, $delimiter = self::DEFAULT_DELIMITER, $fileEncoding = self::DEFAULT_ENCODING)
+    public function __construct(string $csvFl, string $delimiter = self::DEFAULT_DELIMITER, string $fileEncoding = self::DEFAULT_ENCODING)
     {
         if (!is_file($csvFl)) {
             throw new InternalException('File "' . $csvFl . '" does not exist');
@@ -53,7 +54,7 @@ class CsvReader
      */
     public function getRow()
     {
-        $row = fgetcsv($this->_handle, null, $this->_delimiter);
+        $row = fgetcsv($this->_handle, 0, $this->_delimiter);
         if (empty($row) || (count($row) == 1) && trim($row[0]) === '') {
             return false;
         } else {
@@ -64,10 +65,10 @@ class CsvReader
     /**
      * Читает csv файл и возвращает массив
      *
-     * @return string[]
+     * @return array<int, string[]>
      * @throws InternalException
      */
-    public function getAll()
+    public function getAll(): array
     {
         if (empty($this->_handle)) {
             throw new InternalException('File is not open');
@@ -75,10 +76,10 @@ class CsvReader
 
         $result = [];
         fseek($this->_handle, 0);
-        $data = fgetcsv($this->_handle, null, $this->_delimiter);
+        $data = fgetcsv($this->_handle, 0, $this->_delimiter);
         while ($data !== false) {
             $result[] = $data;
-            $data = fgetcsv($this->_handle, null, $this->_delimiter);
+            $data = fgetcsv($this->_handle, 0, $this->_delimiter);
         }
 
         return $result;
@@ -87,7 +88,7 @@ class CsvReader
     /**
      * Формируем ассоциативный массив из CSV файла, первая строка - имена элементов массива
      *
-     * @return array|bool
+     * @return array<int, array<string, string>>|bool
      * @throws \Exception
      */
     public function getAllAssoc()
@@ -120,9 +121,9 @@ class CsvReader
      * @param string $fileEncoding
      * @return resource
      */
-    private function _openFile($csvFl, $fileEncoding = self::DEFAULT_ENCODING)
+    private function _openFile(string $csvFl, string $fileEncoding = self::DEFAULT_ENCODING)
     {
-        ini_set('auto_detect_line_endings', true);
+        ini_set('auto_detect_line_endings', '1');
         $handle = fopen($csvFl, 'r');
         stream_filter_append($handle, 'convert.iconv.' . $fileEncoding . '/UTF-8');
         return $handle;
@@ -130,12 +131,14 @@ class CsvReader
 
     /**
      * Закрываем открытый файл
+     *
+     * @return void
      */
     private function _closeFile()
     {
         if (!empty($this->_handle)) {
             fclose($this->_handle);
-            ini_set('auto_detect_line_endings', false);
+            ini_set('auto_detect_line_endings', '0');
             $this->_handle = null;
         }
     }

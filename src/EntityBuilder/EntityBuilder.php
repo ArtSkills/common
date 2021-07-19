@@ -8,7 +8,6 @@ use ArtSkills\Lib\Arrays;
 use ArtSkills\Lib\DB;
 use ArtSkills\Lib\Misc;
 use ArtSkills\Lib\Strings;
-use ArtSkills\TestSuite\Mock\PropertyAccess;
 use ArtSkills\Traits\Library;
 use ArtSkills\Filesystem\File;
 use ArtSkills\Filesystem\Folder;
@@ -88,6 +87,7 @@ class EntityBuilder
      * Задать конфиг
      *
      * @param EntityBuilderConfig|null $config
+     * @return void
      * @throws InternalException
      */
     public static function setConfig(?EntityBuilderConfig $config)
@@ -206,31 +206,6 @@ class EntityBuilder
     }
 
     /**
-     * Возвращает список алиасов полей
-     *
-     * @param string $entityName
-     * @param array<string, string> $fields field => comment
-     * @return array<string, string> alias => field
-     */
-    protected static function _getAliases(string $entityName, array $fields): array
-    {
-        $aliases = [];
-        $className = static::$_config->modelNamespace . '\Entity\\' . $entityName;
-        if (class_exists($className)) {
-            // field => field
-            $fields = Arrays::keysFromValues(array_keys($fields));
-            $aliases = PropertyAccess::get(new $className, '_aliases');
-
-            foreach ($aliases as $alias => $field) {
-                if (empty($fields[$field])) {
-                    unset($aliases[$alias]);
-                }
-            }
-        }
-        return $aliases;
-    }
-
-    /**
      * Формируем список виртуальных полей сущности
      *
      * @param string $entityName
@@ -339,10 +314,10 @@ class EntityBuilder
         return $entityName . $postfix;
     }
 
-
     /**
      * Проверка, что задан конфиг
      *
+     * @return void
      * @throws InternalException
      */
     private static function _checkConfig()
@@ -466,7 +441,7 @@ class EntityBuilder
     /**
      * Добавляем переопределение методов
      *
-     * @param string|bool $classComment
+     * @param string $classComment
      * @param string $entityName
      * @param string[] $ownMethods
      * @return string
@@ -519,6 +494,7 @@ class EntityBuilder
      *
      * @param ReflectionClass $refClass
      * @return string[]
+     * @phpstan-ignore-next-line
      */
     private static function _getClassPublicMethods(ReflectionClass $refClass): array
     {
@@ -536,6 +512,7 @@ class EntityBuilder
      *
      * @param ReflectionClass $refClass
      * @param string $newComment
+     * @phpstan-ignore-next-line
      */
     private static function _writeNewClassComment(ReflectionClass $refClass, string $newComment)
     {
@@ -593,15 +570,6 @@ class EntityBuilder
         // реальные поля
         $curTblFields = self::_getTableFieldsComments($entityName);
 
-        // алиасы полей
-        $aliases = static::_getAliases($entityName, $curTblFields);
-        $aliasProperty = "\n";
-        foreach ($aliases as $alias => $field) {
-            $aliasProperty .= "        '$alias' => '$field',\n";
-            $curTblFields[$alias] = str_replace('$' . $field, '$' . $alias, $curTblFields[$field]) . " (алиас поля $field)";
-        }
-        $aliasProperty .= "    ";
-
         // виртуальные поля (повешены кейковские геттеры)
         $virtualFields = self::_getVirtualFields($entityName, $curTblFields);
         foreach ($virtualFields as $fieldName => $fieldType) {
@@ -617,16 +585,6 @@ class EntityBuilder
         if ($file->exists()) {
             $className = static::$_config->modelNamespace . '\Entity\\' . $entityName;
             $refClass = new ReflectionClass($className);
-
-            $file = new File($refClass->getFileName());
-            $contents = $file->read();
-            $contents = preg_replace(
-                '/protected \$_aliases = \[[^]]*\];/',
-                'protected $_aliases = [' . $aliasProperty . '];',
-                $contents
-            );
-            $file->write($contents);
-            $file->close();
 
             $classComments = $refClass->getDocComment();
             if ($classComments === false) {
@@ -661,8 +619,8 @@ class EntityBuilder
         } else {
             $file->create();
             $template = self::_processFileTemplate($entityName, static::FILE_TYPE_ENTITY);
-            $search = ['{PROPERTIES}', '{ALIASES}'];
-            $replace = [implode("\n", $curTblFields), $aliasProperty];
+            $search = ['{PROPERTIES}'];
+            $replace = [implode("\n", $curTblFields)];
             $file->write(str_replace($search, $replace, $template));
             $file->close();
             return true;
@@ -686,7 +644,7 @@ class EntityBuilder
         $result = [];
         foreach ($columnList as $column) {
             $columnInfo = $tableSchema->getColumn($column);
-            $result[$column] = ' * @property ' . static::SCHEMA_TYPE_MAP[$columnInfo['type']] . ' $' . $column .
+            $result[$column] = ' * @property ' . ($columnInfo['null'] === true ? '?' : '') . static::SCHEMA_TYPE_MAP[$columnInfo['type']] . ' $' . $column .
                 (array_key_exists($column, $defaultValues) ? ' = ' . var_export($defaultValues[$column], true) : '') .
                 (!empty($columnInfo['comment']) ? ' ' . $columnInfo['comment'] : '');
         }
@@ -699,7 +657,7 @@ class EntityBuilder
             $foreignKeys = $assoc->getForeignKey();
             $bindingKeys = $assoc->getBindingKey();
 
-            $result[$propertyName] = ' * @property ' . $className
+            $result[$propertyName] = ' * @property ?' . $className
                 . (in_array(
                     $assoc->type(),
                     [
