@@ -172,6 +172,7 @@ class AssetHelper extends Helper
             throw new InternalException('Невалидная версия ассетов');
         } else {
             $this->_assetPostfix = '?v=' . $version;
+            $this->setConsts(['APP_VERSION' => $version]);
         }
     }
 
