@@ -49,11 +49,11 @@ class AssetHelper extends Helper
     protected const DEFAULT_PATH_PARTS = [
         self::KEY_STYLE => [
             'folder' => 'css',
-            'extension' => 'css',
+            'extension' => ['css', 'scss'],
         ],
         self::KEY_SCRIPT => [
             'folder' => 'js',
-            'extension' => 'js',
+            'extension' => ['js'],
         ],
     ];
 
@@ -758,17 +758,18 @@ class AssetHelper extends Helper
         $pathParts = self::DEFAULT_PATH_PARTS[$type];
         [$controller, $action] = explode('.', $assetName);
 
-        $fileName = $pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . $action . '.' . $pathParts['extension'];
-        if (is_file(WWW_ROOT . $fileName)) {
-            return ['/' . $this->_getMinifiedFile($fileName) . $this->_assetPostfix];
-        } else {
-            $oldFileName = $pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . Inflector::delimit($action) . '.' . $pathParts['extension'];
-            if (is_file(WWW_ROOT . $oldFileName)) {
-                return ['/' . $this->_getMinifiedFile($oldFileName) . $this->_assetPostfix];
+        foreach ($pathParts['extension'] as $extension) {
+            $fileName = $pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . $action . '.' . $extension;
+            if (is_file(WWW_ROOT . $fileName)) {
+                return ['/' . $this->_getMinifiedFile($fileName) . $this->_assetPostfix];
             } else {
-                return null;
+                $oldFileName = $pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . Inflector::delimit($action) . '.' . $extension;
+                if (is_file(WWW_ROOT . $oldFileName)) {
+                    return ['/' . $this->_getMinifiedFile($oldFileName) . $this->_assetPostfix];
+                }
             }
         }
+        return null;
     }
 
     /**
