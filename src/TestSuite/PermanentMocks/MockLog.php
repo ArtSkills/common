@@ -1,29 +1,30 @@
 <?php
+declare(strict_types=1);
 
 namespace ArtSkills\TestSuite\PermanentMocks;
 
 use ArtSkills\TestSuite\ClassMockEntity;
 use ArtSkills\TestSuite\Mock\MethodMocker;
 use Cake\Error\Debugger;
-use Cake\Log\Engine\FileLog;
+use Cake\Log\Log;
 
-class MockFileLog extends ClassMockEntity
+class MockLog extends ClassMockEntity
 {
     /**
      * @inheritdoc
      */
     public static function init()
     {
-        MethodMocker::mock(FileLog::class, 'log', 'return ' . self::class . '::log(...func_get_args());');
+        MethodMocker::mock(Log::class, 'write', 'return ' . self::class . '::write(...func_get_args());');
     }
 
     /**
      * Вывод ошибка вместо файла в консоль
      *
-     * @param string $level
+     * @param string|int $level
      * @param string $message
      */
-    public static function log($level, $message): bool
+    public static function write($level, $message): bool
     {
         $trace = Debugger::trace();
         $trace = explode("\n", $trace);
