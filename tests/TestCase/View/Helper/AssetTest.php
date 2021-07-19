@@ -89,7 +89,7 @@ class AssetTest extends AppTestCase
     {
         parent::setUpBeforeClass();
         foreach (self::$_files as $dirName => $dirFiles) {
-            foreach (['js', 'css'] as $type) {
+            foreach (['js', 'css', 'scss'] as $type) {
                 $fullDirName = WWW_ROOT . $type . DS . $dirName;
                 if (!file_exists($fullDirName)) {
                     mkdir($fullDirName);
@@ -98,14 +98,6 @@ class AssetTest extends AppTestCase
                     $fullFileName = $fullDirName . DS . $fileName . '.' . $type;
                     touch($fullFileName);
                 }
-            }
-            // Templates лежат в js
-            foreach ($dirFiles as $fileName) {
-                $fullFileName = WWW_ROOT . 'js' . DS . $dirName . DS . $fileName . '.hbs';
-                file_put_contents(
-                    $fullFileName,
-                    '<script id="' . $fileName . '" type="text/x-handlebars-template"></script>'
-                );
             }
         }
     }
@@ -462,7 +454,10 @@ class AssetTest extends AppTestCase
         self::assertEquals($expectedResult, MethodMocker::callPrivate($this->_assetHelper, '_getResult', [AssetHelper::BLOCK_SCRIPT]));
     }
 
-    /** пути прописаны вручную */
+    /**
+     * 1. Пути прописаны вручную
+     * 2. Подменяем scss на css
+     */
     public function testAssetManualExists(): void
     {
         MethodMocker::callPrivate($this->_assetHelper, '_setActionConfig', [
@@ -470,7 +465,7 @@ class AssetTest extends AppTestCase
             'manualExists',
             [
                 AssetHelper::KEY_SCRIPT => 'js/TestManual/file_manual.js',
-                AssetHelper::KEY_STYLE => 'css/TestManual/file_manual.css',
+                AssetHelper::KEY_STYLE => 'scss/TestManual/file_manual.scss',
             ],
         ]);
 
@@ -480,7 +475,7 @@ class AssetTest extends AppTestCase
                 "\n\t<script src=\"/js/TestManual/file_manual.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
-                "\n\t<link rel=\"stylesheet\" href=\"/css/TestManual/file_manual.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
+                "\n\t<link rel=\"stylesheet\" href=\"/scss/TestManual/file_manual.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
             ],
             AssetHelper::BLOCK_SCRIPT_BOTTOM => [],
         ];
@@ -593,11 +588,10 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load('testManual', 'fileAuto');
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
-                '<script id="file_auto" type="text/x-handlebars-template"></script>',
-                '<script src="/js/TestManual/file_auto.js?v=' . self::SCRIPT_VERSION . '"></script>',
+                "\n\t<script src=\"/js/TestManual/file_auto.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
-                '<link rel="stylesheet" href="/css/TestManual/file_auto.css?v=' . self::SCRIPT_VERSION . '"/>',
+                "\n\t<link rel=\"stylesheet\" href=\"/css/TestManual/file_auto.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
             ],
             AssetHelper::BLOCK_SCRIPT_BOTTOM => [],
         ];
@@ -616,11 +610,10 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load('testManual', 'fileAuto');
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
-                '<script id="file_auto" type="text/x-handlebars-template"></script>',
-                '<script src="' . $urlPrefix . '/js/TestManual/file_auto.js?v=' . self::SCRIPT_VERSION . '"></script>',
+                "\n\t<script src=\"" . $urlPrefix . '/js/TestManual/file_auto.js?v=' . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
-                '<link rel="stylesheet" href="' . $urlPrefix . '/css/TestManual/file_auto.css?v=' . self::SCRIPT_VERSION . '"/>',
+                "\n\t<link rel=\"stylesheet\" href=\"" . $urlPrefix . '/css/TestManual/file_auto.css?v=' . self::SCRIPT_VERSION . "\"/>\n",
             ],
             AssetHelper::BLOCK_SCRIPT_BOTTOM => [],
         ];
@@ -680,20 +673,16 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load();
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
-                '<script id="dependency4" type="text/x-handlebars-template"></script>',
-                '<script src="/js/Test/dependency4.min.js?v=' . self::SCRIPT_VERSION . '" type="module"></script>',
-                '<script id="dependency2" type="text/x-handlebars-template"></script>',
-                '<script src="/js/Test/dependency2.min.js?v=' . self::SCRIPT_VERSION . '"></script>',
-                '<script id="dependency1" type="text/x-handlebars-template"></script>',
-                '<script src="/js/Test/dependency1.js?v=' . self::SCRIPT_VERSION . '"></script>',
-                '<script id="is_dependent" type="text/x-handlebars-template"></script>',
-                '<script src="/js/Test/is_dependent.js?v=' . self::SCRIPT_VERSION . '"></script>',
+                "\n\t<script src=\"/js/Test/dependency4.min.js?v=" . self::SCRIPT_VERSION . "\" type=\"module\"></script>\n",
+                "\n\t<script src=\"/js/Test/dependency2.min.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
+                "\n\t<script src=\"/js/Test/dependency1.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
+                "\n\t<script src=\"/js/Test/is_dependent.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
-                '<link rel="stylesheet" href="/css/Test/dependency4.css?v=' . self::SCRIPT_VERSION . '"/>',
-                '<link rel="stylesheet" href="/css/Test/dependency2.css?v=' . self::SCRIPT_VERSION . '"/>',
-                '<link rel="stylesheet" href="/css/Test/dependency1.css?v=' . self::SCRIPT_VERSION . '"/>',
-                '<link rel="stylesheet" href="/css/Test/is_dependent.css?v=' . self::SCRIPT_VERSION . '"/>',
+                "\n\t<link rel=\"stylesheet\" href=\"/css/Test/dependency4.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
+                "\n\t<link rel=\"stylesheet\" href=\"/css/Test/dependency2.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
+                "\n\t<link rel=\"stylesheet\" href=\"/css/Test/dependency1.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
+                "\n\t<link rel=\"stylesheet\" href=\"/css/Test/is_dependent.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
             ],
             AssetHelper::BLOCK_SCRIPT_BOTTOM => [],
         ];
@@ -707,16 +696,14 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load('test', 'isDependent2');
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
-                '<script id="dependency3" type="text/x-handlebars-template"></script>',
-                '<script src="/js/Test/dependency3.js?v=' . self::SCRIPT_VERSION . '"></script>',
+                "\n\t<script src=\"/js/Test/dependency3.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
-                '<link rel="stylesheet" href="/css/Test/dependency3.css?v=' . self::SCRIPT_VERSION . '"/>',
-                '<link rel="stylesheet" href="/css/Test/is_dependent2.css?v=' . self::SCRIPT_VERSION . '"/>',
+                "\n\t<link rel=\"stylesheet\" href=\"/css/Test/dependency3.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
+                "\n\t<link rel=\"stylesheet\" href=\"/css/Test/is_dependent2.css?v=" . self::SCRIPT_VERSION . "\"/>\n",
             ],
             AssetHelper::BLOCK_SCRIPT_BOTTOM => [
-                '<script id="is_dependent2" type="text/x-handlebars-template"></script>',
-                '<script src="/js/Test/is_dependent2.js?v=' . self::SCRIPT_VERSION . '"></script>',
+                "\n\t<script src=\"/js/Test/is_dependent2.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
             ],
         ];
         self::assertEquals(
@@ -823,11 +810,10 @@ class AssetTest extends AppTestCase
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
                 "<script>\n upperVar = \"upperValue\";\n</script>",
-                '<script id="file_auto" type="text/x-handlebars-template"></script>',
-                '<script src="/js/TestManual/file_auto.js?v=123"></script>',
+                "\n\t<script src=\"/js/TestManual/file_auto.js?v=123\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
-                '<link rel="stylesheet" href="/css/TestManual/file_auto.css?v=123"/>',
+                "\n\t<link rel=\"stylesheet\" href=\"/css/TestManual/file_auto.css?v=123\"/>\n",
                 "\n\t<link rel=\"stylesheet\" href=\"http://asdf\"/>\n",
             ],
             AssetHelper::BLOCK_SCRIPT_BOTTOM => [
@@ -886,13 +872,12 @@ class AssetTest extends AppTestCase
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
                 "<script>\n upperVar = \"upperValue\";\n</script>",
-                '<script id="file_auto" type="text/x-handlebars-template"></script>',
-                '<script src="/js/TestManual/file_auto.js?v=123"></script>',
+                "\n\t<script src=\"/js/TestManual/file_auto.js?v=123\"></script>\n",
                 "<script>\n upperVar2 = \"upperValue2\";\n</script>",
                 "\n\t<script src=\"http://asdf\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
-                '<link rel="stylesheet" href="/css/TestManual/file_auto.css?v=123"/>',
+                "\n\t<link rel=\"stylesheet\" href=\"/css/TestManual/file_auto.css?v=123\"/>\n",
             ],
             AssetHelper::BLOCK_SCRIPT_BOTTOM => [
                 "\n\t<script src=\"http://asdfg\"></script>\n",

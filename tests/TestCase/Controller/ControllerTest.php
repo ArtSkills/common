@@ -8,7 +8,7 @@ use ArtSkills\Lib\Env;
 use ArtSkills\Log\Engine\SentryLog;
 use ArtSkills\TestSuite\AppControllerTestCase;
 use ArtSkills\TestSuite\Mock\MethodMocker;
-use Cake\Log\Log;
+use ArtSkills\TestSuite\PermanentMocks\MockLog;
 use PHPUnit\Framework\AssertionFailedError;
 use ReflectionClass;
 use TestApp\Controller\TestController;
@@ -223,7 +223,9 @@ class ControllerTest extends AppControllerTestCase
     /** смотрим, как выбираются экшны и шаблоны */
     public function testActionAndTemplateResolve(): void
     {
-        MethodMocker::mock(Log::class, 'write')->expectCall(4);
+        MethodMocker::mock(MockLog::class, 'write')
+            ->expectCall(4)
+            ->willReturnValue(true);
 
         $this->get('/cake/testName');
         $this->assertResponseOk();
