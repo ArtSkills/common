@@ -198,12 +198,13 @@ class Controller extends \Cake\Controller\Controller
      * Бросить обычную внутреннюю ошибку
      *
      * @param string $message
-     * @param mixed $addInfo доп информация об ошибке для sentry (SentryLog::KEY_ADD_INFO)
+     * @param ?array $addInfo доп информация об ошибке для sentry (SentryLog::KEY_ADD_INFO)
      * @param string|string[]|null $scope scope для логирования ошибки
      * @return void
      * @throws InternalException
+     * @phpstan-ignore-next-line
      */
-    protected function _throwInternalError(string $message, $addInfo = null, $scope = null)
+    protected function _throwInternalError(string $message, ?array $addInfo = null, $scope = null)
     {
         throw InternalException::instance($message)->setLogAddInfo($addInfo)->setLogScope($scope);
     }

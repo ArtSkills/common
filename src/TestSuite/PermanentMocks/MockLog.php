@@ -6,16 +6,16 @@ namespace ArtSkills\TestSuite\PermanentMocks;
 use ArtSkills\TestSuite\ClassMockEntity;
 use ArtSkills\TestSuite\Mock\MethodMocker;
 use Cake\Error\Debugger;
-use Cake\Log\Engine\FileLog;
+use Cake\Log\Log;
 
-class MockFileLog extends ClassMockEntity
+class MockLog extends ClassMockEntity
 {
     /**
      * @inheritdoc
      */
     public static function init()
     {
-        MethodMocker::mock(FileLog::class, 'log', 'return ' . self::class . '::log(...func_get_args());');
+        MethodMocker::mock(Log::class, 'write', 'return ' . self::class . '::write(...func_get_args());');
     }
 
     /**
@@ -23,9 +23,8 @@ class MockFileLog extends ClassMockEntity
      *
      * @param string|int $level
      * @param string $message
-     * @return bool
      */
-    public static function log($level, $message): bool
+    public static function write($level, $message): bool
     {
         $trace = Debugger::trace();
         $trace = explode("\n", $trace);
@@ -37,7 +36,7 @@ class MockFileLog extends ClassMockEntity
             }
         }
         $file = $trace[4];
-        file_put_contents('php://stderr', "test: $test \n Write to '$level' file log from $file: $message\n\n");
+        file_put_contents('php://stderr', "test: $test \n Write to '$level' log from $file: $message\n\n");
         return true;
     }
 }

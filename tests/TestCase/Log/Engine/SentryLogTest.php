@@ -9,6 +9,7 @@ use ArtSkills\TestSuite\Mock\MethodMocker;
 use ArtSkills\TestSuite\Mock\MethodMockerEntity;
 use ArtSkills\TestSuite\Mock\PropertyAccess;
 use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
+use ArtSkills\TestSuite\PermanentMocks\MockLog;
 use Cake\Console\ConsoleErrorHandler;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
@@ -51,6 +52,7 @@ class SentryLogTest extends AppTestCase
     public function setUp()
     {
         $this->_disablePermanentMock(MockFileLog::class);
+        $this->_disablePermanentMock(MockLog::class);
         parent::setUp();
         $breadcrumbs = SentryLog::getSentry()->breadcrumbs;
         PropertyAccess::set($breadcrumbs, 'count', 0);

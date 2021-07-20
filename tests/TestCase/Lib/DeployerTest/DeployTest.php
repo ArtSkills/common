@@ -141,7 +141,7 @@ class DeployTest extends AppTestCase
         $singleRoot = LocalDeployer::DIR_CURRENT;
         $rootSub = $singleRoot . DS . LocalDeployer::CAKE_SUB_PATH;
 
-        $this->_mockExec(4);
+        $this->_mockExec(5);
         $this->_mockOther();
 
         $deployer = new LocalDeployer([
@@ -150,6 +150,7 @@ class DeployTest extends AppTestCase
             'rotateDeployFolders' => [],
             'versionFile' => $singleRoot . DS . LocalDeployer::VERSION_FILE,
             'cakeSubPath' => $rootSub,
+            'executeAfterDeploy' => ['ls -la'],
         ]);
         $res = $deployer->deploy($this->_repo, $this->_branch);
         self::assertTrue($res);
@@ -161,6 +162,7 @@ class DeployTest extends AppTestCase
             'putenv HOME=/var/www',
             "php composer.phar install --optimize-autoloader --no-dev --no-interaction 2>&1",
             'vendor/bin/phinx migrate 2>&1',
+            'ls -la 2>&1',
             "cd {$this->_currentDir}",
         ];
         self::assertEquals($expectedCommandList, $this->_executeHistory);

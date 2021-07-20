@@ -14,53 +14,53 @@ use Cake\View\View;
 
 class AssetHelper extends Helper
 {
-    const KEY_SCRIPT = 'script';
-    const KEY_STYLE = 'style';
-    const KEY_DEPEND = 'depend';
-    /** Шаблоны для Handlebars */
-    const KEY_TEMPLATE = 'template';
+    public const KEY_SCRIPT = 'script';
+    public const KEY_STYLE = 'style';
+    public const KEY_DEPEND = 'depend';
     /** обязательные переменные */
-    const KEY_VARS = 'vars';
+    public const KEY_VARS = 'vars';
     /** Скрипт в <head> или внизу <body> */
-    const KEY_IS_BOTTOM = 'isBottom';
+    public const KEY_IS_BOTTOM = 'isBottom';
     /** @var string Скрипт является модулем или нет (type="module") */
-    const KEY_IS_MODULE = 'isModule';
+    public const KEY_IS_MODULE = 'isModule';
 
-    const TYPE_NUM = 'num';
-    const TYPE_STRING = 'string';
-    const TYPE_BOOL = 'bool';
-    const TYPE_JSON = 'json';
+    public const TYPE_NUM = 'num';
+    public const TYPE_STRING = 'string';
+    public const TYPE_BOOL = 'bool';
+    public const TYPE_JSON = 'json';
 
-    const LAYOUT_POSTFIX = '#layout';
+    protected const LAYOUT_POSTFIX = '#layout';
 
-    const BLOCK_SCRIPT_BOTTOM = 'scriptBottom';
-    const BLOCK_SCRIPT = 'script';
-    const BLOCK_STYLE = 'css';
-    const BLOCKS = [
+    public const BLOCK_SCRIPT_BOTTOM = 'scriptBottom';
+    public const BLOCK_SCRIPT = 'script';
+    public const BLOCK_STYLE = 'css';
+
+    protected const BLOCKS = [
         self::BLOCK_SCRIPT,
         self::BLOCK_SCRIPT_BOTTOM,
         self::BLOCK_STYLE,
     ];
 
-    const DEFAULT_PARAMS = [
+    protected const DEFAULT_PARAMS = [
         'controller' => 'pages',
         'action' => 'index',
     ];
 
-    const DEFAULT_PATH_PARTS = [
+    protected const DEFAULT_PATH_PARTS = [
         self::KEY_STYLE => [
             'folder' => 'css',
-            'extension' => 'css',
+            'extension' => ['css', 'scss'],
         ],
         self::KEY_SCRIPT => [
             'folder' => 'js',
-            'extension' => 'js',
-        ],
-        self::KEY_TEMPLATE => [
-            'folder' => 'js',
-            'extension' => 'hbs',
+            'extension' => ['js'],
         ],
     ];
+
+    protected const EXTENSION_SCSS = '.scss';
+    protected const EXTENSION_CSS_MIN = '.css';
+    protected const EXTENSION_JS = '.js';
+    protected const EXTENSION_JS_MIN = '.min.js';
 
     /**
      * @inheritdoc
@@ -172,6 +172,7 @@ class AssetHelper extends Helper
             throw new InternalException('Невалидная версия ассетов');
         } else {
             $this->_assetPostfix = '?v=' . $version;
+            $this->setConsts(['APP_VERSION' => $version]);
         }
     }
 
@@ -392,6 +393,7 @@ class AssetHelper extends Helper
      * @param array<string, string|string[]> $configs
      * @param bool $merge
      * @return void
+     * @throws InternalException
      */
     protected function _setConfigs(array $configs, bool $merge = true)
     {
@@ -678,14 +680,6 @@ class AssetHelper extends Helper
             $isBottom = $this->_getAssetParam($assetName, self::KEY_IS_BOTTOM);
             $scriptBlock = (empty($isBottom) ? self::BLOCK_SCRIPT : self::BLOCK_SCRIPT_BOTTOM);
 
-            $templatePath = $this->_getPath($assetName, self::KEY_TEMPLATE, true);
-            if (!empty($templatePath)) {
-                $this->_checkCanRenderBlock($scriptBlock, $assetName);
-                $file = new File($templatePath);
-                $this->_result[$scriptBlock][] = $file->read();
-                $file->close();
-            }
-
             $scriptPath = $this->_getPath($assetName, self::KEY_SCRIPT);
             if (!empty($scriptPath)) {
                 $this->_checkCanRenderBlock($scriptBlock, $assetName);
@@ -729,11 +723,10 @@ class AssetHelper extends Helper
      *
      * @param string $assetName
      * @param string $type скрипт или стиль
-     * @param bool $realPath возвращать uri или путь к файлу
-     * @return string[]|string|null
+     * @return ?string[]
      * @throws InternalException если файл явно указан, а его нет
      */
-    private function _getPath(string $assetName, string $type, bool $realPath = false)
+    private function _getPath(string $assetName, string $type): ?array
     {
         $paths = $this->_getAssetParam($assetName, $type);
         if (!empty($paths)) {
@@ -742,34 +735,42 @@ class AssetHelper extends Helper
                 if (Url::isHttpUrl($path)) {
                     $finalPaths[] = $path;
                 } else {
-                    // поддержка минифицированного js
-                    $path = $this->_getMinifiedFile($path);
-
                     if (!is_file(WWW_ROOT . $path)) {
                         throw new InternalException("Прописанного файла $path не существует");
                     }
-
-                    $finalPaths[] = '/' . $path . $this->_assetPostfix;
+                    $finalPaths[] = '/' . $this->_getMinifiedFile($path) . $this->_assetPostfix;
                 }
             }
             return $finalPaths;
+        } else {
+            return $this->_detectActionFiles($assetName, $type);
         }
+    }
 
+    /**
+     * Определяем файлы для экшена без заполненного конфига
+     *
+     * @param string $assetName
+     * @param string $type
+     * @return ?string[]
+     */
+    private function _detectActionFiles(string $assetName, string $type): ?array
+    {
         $pathParts = self::DEFAULT_PATH_PARTS[$type];
         [$controller, $action] = explode('.', $assetName);
 
-
-        $fileName = $this->_getMinifiedFile($pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . $action . '.' . $pathParts['extension']);
-        if (is_file(WWW_ROOT . $fileName)) {
-            return $realPath ? realpath(WWW_ROOT . $fileName) : ('/' . $fileName . $this->_assetPostfix);
-        } else {
-            $oldFileName = $this->_getMinifiedFile($pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . Inflector::delimit($action) . '.' . $pathParts['extension']);
-            if (is_file(WWW_ROOT . $oldFileName)) {
-                return $realPath ? realpath(WWW_ROOT . $oldFileName) : ('/' . $oldFileName . $this->_assetPostfix);
+        foreach ($pathParts['extension'] as $extension) {
+            $fileName = $pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . $action . '.' . $extension;
+            if (is_file(WWW_ROOT . $fileName)) {
+                return ['/' . $this->_getMinifiedFile($fileName) . $this->_assetPostfix];
             } else {
-                return null;
+                $oldFileName = $pathParts['folder'] . '/' . Inflector::camelize($controller) . '/' . Inflector::delimit($action) . '.' . $extension;
+                if (is_file(WWW_ROOT . $oldFileName)) {
+                    return ['/' . $this->_getMinifiedFile($oldFileName) . $this->_assetPostfix];
+                }
             }
         }
+        return null;
     }
 
     /**
@@ -780,12 +781,16 @@ class AssetHelper extends Helper
      */
     private function _getMinifiedFile(string $path): string
     {
-        if (Strings::endsWith($path, '.js') && !Strings::endsWith($path, '.min.js')) {
-            $minifiedPath = Strings::replacePostfix($path, '.js', '.min.js');
+        if (Strings::endsWith($path, self::EXTENSION_JS) && !Strings::endsWith($path, self::EXTENSION_JS_MIN)) {
+            $minifiedPath = Strings::replacePostfix($path, self::EXTENSION_JS, self::EXTENSION_JS_MIN);
             if (is_file(WWW_ROOT . $minifiedPath)) {
                 return $minifiedPath;
             }
         }
+        if (Strings::endsWith($path, self::EXTENSION_SCSS)) {
+            return Strings::replacePostfix($path, self::EXTENSION_SCSS, self::EXTENSION_CSS_MIN);
+        }
+
         return $path;
     }
 

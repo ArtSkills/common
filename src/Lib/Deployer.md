@@ -44,7 +44,8 @@
 * `string repoName` - название текущего репозитория, для дополнительных проверок ([ниже](#run) есть более подробное объяснение).
 
 Режим деплоя в текущую папку:
-* `string singleRoot` - полный путь до корня проекта. Тогда нужно не задавать опции `projectSymlink` и `rotateDeployFolders`. 
+* `string singleRoot` - полный путь до корня проекта. Тогда нужно не задавать опции `projectSymlink`
+  и `rotateDeployFolders`.
 
 Дополнительные настройки
 * `string versionFile` - файл с номером версии, номер инкрементируется при деплое. Путь относительно корня. Если объявлена константа CORE_VERSION, то можно не указывать, но надо обязательно её переопределить, если деплоится не текущий проект.
@@ -53,7 +54,11 @@
 * `bool composerRequireDev` - значение false означает опцию `--no-dev`.
 * `string[] composerOptions` - список опций при запуске композера. По умолчанию - `--optimize-autoloader`, всегда добавляется `--no-interaction`, в зависимости от предыдущей опции - `--no-dev`.
 * `string composerHome` - композер не запускается, если в окружении нет домашней папки, а при запуске команд через `exec` её обычно нет. Поэтому предварительно будет сделан putenv(HOME=`composerHome`). По умолчанию - `/var/www`.
-* `string logScope` - scope для вызова записи в лог, куда будут записываться все сообщения об успехе или ошибках. По умолчанию - `'deployment'`. При использовании более одного деплойщика в проекте лучше им всем поставить разные scope, чтобы они не пытались одновременно писать в один файл.
+* `string logScope` - scope для вызова записи в лог, куда будут записываться все сообщения об успехе или ошибках. По
+  умолчанию - `'deployment'`. При использовании более одного деплойщика в проекте лучше им всем поставить разные scope,
+  чтобы они не пытались одновременно писать в один файл.
+* `string[] executeAfterDeploy` - список shell команд, которые необходимо исполнить после деплоя (запускаются в корневой
+  папке новой ветки)
 
 Замечание:
 
@@ -107,7 +112,7 @@ $configProduction = [
 	'/var/www/my_project_1',
 	'/var/www/my_project_2',
   ],
-  'cakeSubPath' => $cakeSubPath, 
+  'cakeSubPath' => $cakeSubPath,
   'copyFileList' => [
 	CONFIG . 'app_local.php',
   ],
@@ -126,10 +131,10 @@ $configTest = [
 ];
 
 /*
-В $configProduction можно было бы написать 
+В $configProduction можно было бы написать
 [
-  'cakeSubPath' => ROOT, 
-  'versionFile' => VERSION_FILE, 
+  'cakeSubPath' => ROOT,
+  'versionFile' => VERSION_FILE,
 ]
 но вот в $configTest уже нельзя
 ROOT = '/var/www/my_project_1/cake', и от него нужно отрезать часть '/var/www/my_project_1'

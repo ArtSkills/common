@@ -143,6 +143,14 @@ class Deployer
      */
     protected string $_logScope = 'deployment';
 
+
+    /**
+     * Список команд, которые необходимы выполнить после деплоя
+     *
+     * @var string[]|null
+     */
+    protected ?array $_executeAfterDeploy = null;
+
     /**
      * вывод команд
      *
@@ -465,12 +473,15 @@ class Deployer
         $this->_migrateDb();
 
         AppCache::flushExcept();
+        $this->_executeAfterDeploy();
+
         $this->_setProjectSymlink($nextRoot);
 
         $timeEnd = microtime(true);
         $this->_log($timeStart, $timeEnd);
 
         $this->_notifySuccess();
+        opcache_reset();
         return true;
     }
 
@@ -672,6 +683,19 @@ class Deployer
             // И их нужно откатывать руками
         } else {
             $this->_addToOutput(['migration was not run']);
+        }
+    }
+
+    /**
+     * Выполняем команды после деплоя
+     */
+    protected function _executeAfterDeploy(): void
+    {
+        if (!empty($this->_executeAfterDeploy)) {
+            $this->_addToOutput(["\n\nExecute after deploy commands\n"]);
+            foreach ($this->_executeAfterDeploy as $cmd) {
+                $this->_exec($cmd, "Не запустилась команда \"$cmd\"");
+            }
         }
     }
 
