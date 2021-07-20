@@ -23,7 +23,7 @@ class MockFileLog extends ClassMockEntity
      *
      * @param string|int $level
      * @param string $message
-     * @return void
+     * @return bool
      */
     public static function log($level, $message): bool
     {
