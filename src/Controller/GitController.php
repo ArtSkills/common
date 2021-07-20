@@ -18,7 +18,6 @@ class GitController extends Controller
         $this->viewBuilder()->setLayout(false);
         $payload = Git::parseGithubRequest($this->request->getData());
         DeploymentShell::deployInBg(DeploymentShell::TYPE_PRODUCTION, $payload['repo'], $payload['branch']);
-        opcache_reset();
         return $this->_sendTextResponse('');
     }
 }

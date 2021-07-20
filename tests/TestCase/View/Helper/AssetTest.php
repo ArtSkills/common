@@ -195,7 +195,7 @@ class AssetTest extends AppTestCase
         );
         $this->_assetHelper->load('test', 'empty');
         $expectedResult = [
-            "<script>\n camelCase0 = \"value\";\n</script>",
+            "<script>\n APP_VERSION = 123;\n camelCase0 = \"value\";\n</script>",
         ];
         self::assertEquals(
             $expectedResult,
@@ -242,7 +242,7 @@ class AssetTest extends AppTestCase
         );
         $this->_assetHelper->load('test', 'empty');
         $expectedResult = [
-            "<script>\n test1 = \"\";\n test2 = null;\n test3 = false;\n test4 = 0;\n test5 = [];\n test6 = 123.456;\n test7 = \"1 234,00\";\n test8 = 234.567;\n</script>",
+            "<script>\n APP_VERSION = 123;\n test1 = \"\";\n test2 = null;\n test3 = false;\n test4 = 0;\n test5 = [];\n test6 = 123.456;\n test7 = \"1 234,00\";\n test8 = 234.567;\n</script>",
         ];
         self::assertEquals(
             $expectedResult,
@@ -271,7 +271,7 @@ class AssetTest extends AppTestCase
         );
         $this->_assetHelper->load('test', 'empty');
         $expectedResult = [
-            "<script>\n quot = \"asd\\\"qwe\";\n newLine = \"asd\\r\\nqwe\";\n</script>",
+            "<script>\n APP_VERSION = 123;\n quot = \"asd\\\"qwe\";\n newLine = \"asd\\r\\nqwe\";\n</script>",
         ];
         self::assertEquals(
             $expectedResult,
@@ -318,7 +318,7 @@ class AssetTest extends AppTestCase
 
         $this->_assetHelper->load('test', 'empty');
         $expectedResult = [
-            "<script>\n test1 = \"qqq\";\n test2 = \"qqq\";\n</script>",
+            "<script>\n APP_VERSION = 123;\n test1 = \"qqq\";\n test2 = \"qqq\";\n</script>",
         ];
         self::assertEquals($expectedResult, MethodMocker::callPrivate($this->_assetHelper, '_getResult', [AssetHelper::BLOCK_SCRIPT]));
     }
@@ -341,7 +341,7 @@ class AssetTest extends AppTestCase
 
         $this->_assetHelper->load('test', 'empty');
         $expectedResult = [
-            "<script>\n test3 = \"ololo\";\n test4 = 2;\n</script>",
+            "<script>\n APP_VERSION = 123;\n test3 = \"ololo\";\n test4 = 2;\n</script>",
         ];
         self::assertEquals($expectedResult, MethodMocker::callPrivate($this->_assetHelper, '_getResult', [AssetHelper::BLOCK_SCRIPT]));
     }
@@ -405,7 +405,7 @@ class AssetTest extends AppTestCase
 
         $this->_assetHelper->load('test', 'empty');
         $expectedResult = [
-            "<script>\n test5 = \"aaa\";\n</script>",
+            "<script>\n APP_VERSION = 123;\n test5 = \"aaa\";\n</script>",
         ];
         self::assertEquals($expectedResult, MethodMocker::callPrivate($this->_assetHelper, '_getResult', [AssetHelper::BLOCK_SCRIPT]));
     }
@@ -472,6 +472,7 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load('test', 'manualExists');
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
+                "<script>\n APP_VERSION = 123;\n</script>",
                 "\n\t<script src=\"/js/TestManual/file_manual.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
@@ -525,6 +526,7 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load('test', 'goodUrl');
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
+                "<script>\n APP_VERSION = 123;\n</script>",
                 "\n\t<script src=\"http://asdf.ru\"></script>\n\t<script src=\"https://asdf.ru\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
@@ -579,7 +581,7 @@ class AssetTest extends AppTestCase
     public function testAutoNotExists(): void
     {
         $this->_assetHelper->load('test', 'autoNotExists');
-        self::assertEquals($this->_emptyResult, MethodMocker::callPrivate($this->_assetHelper, '_getResult', []), 'Должен быть пустой результат');
+        self::assertEquals([AssetHelper::BLOCK_SCRIPT => ["<script>\n APP_VERSION = 123;\n</script>",]] + $this->_emptyResult, MethodMocker::callPrivate($this->_assetHelper, '_getResult', []), 'Должен быть пустой результат');
     }
 
     /** файл выбирается автоматически он существует */
@@ -588,6 +590,7 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load('testManual', 'fileAuto');
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
+                "<script>\n APP_VERSION = 123;\n</script>",
                 "\n\t<script src=\"/js/TestManual/file_auto.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
@@ -610,6 +613,7 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load('testManual', 'fileAuto');
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
+                "<script>\n APP_VERSION = 123;\n</script>",
                 "\n\t<script src=\"" . $urlPrefix . '/js/TestManual/file_auto.js?v=' . self::SCRIPT_VERSION . "\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
@@ -673,6 +677,7 @@ class AssetTest extends AppTestCase
         $this->_assetHelper->load();
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
+                "<script>\n APP_VERSION = 123;\n</script>",
                 "\n\t<script src=\"/js/Test/dependency4.min.js?v=" . self::SCRIPT_VERSION . "\" type=\"module\"></script>\n",
                 "\n\t<script src=\"/js/Test/dependency2.min.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
                 "\n\t<script src=\"/js/Test/dependency1.js?v=" . self::SCRIPT_VERSION . "\"></script>\n",
@@ -809,7 +814,7 @@ class AssetTest extends AppTestCase
         // setVars -> fetch -> load - добавил переменную вниз, т.к. load после fetch
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
-                "<script>\n upperVar = \"upperValue\";\n</script>",
+                "<script>\n APP_VERSION = 123;\n upperVar = \"upperValue\";\n</script>",
                 "\n\t<script src=\"/js/TestManual/file_auto.js?v=123\"></script>\n",
             ],
             AssetHelper::BLOCK_STYLE => [
@@ -871,7 +876,7 @@ class AssetTest extends AppTestCase
         // новые скрипты и переменные нормально добавились куда надо
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
-                "<script>\n upperVar = \"upperValue\";\n</script>",
+                "<script>\n APP_VERSION = 123;\n upperVar = \"upperValue\";\n</script>",
                 "\n\t<script src=\"/js/TestManual/file_auto.js?v=123\"></script>\n",
                 "<script>\n upperVar2 = \"upperValue2\";\n</script>",
                 "\n\t<script src=\"http://asdf\"></script>\n",
@@ -934,7 +939,7 @@ class AssetTest extends AppTestCase
         // новые скрипты и переменные нормально добавились куда надо
         $expectedResult = [
             AssetHelper::BLOCK_SCRIPT => [
-                "<script>\n upperVar = \"upperValue\";\n</script>",
+                "<script>\n APP_VERSION = 123;\n upperVar = \"upperValue\";\n</script>",
                 "<script>\n upperVar2 = \"upperValue2\";\n</script>",
                 "\n\t<script src=\"http://asdfr\"></script>\n",
             ],
@@ -1135,7 +1140,7 @@ class AssetTest extends AppTestCase
         );
 
         $expectedResult = [
-            "<script>\n var1 = \"asd\";\n var2 = true;\n var3 = 3;\n</script>",
+            "<script>\n APP_VERSION = 123;\n var1 = \"asd\";\n var2 = true;\n var3 = 3;\n</script>",
         ];
         self::assertEquals(
             $expectedResult,
