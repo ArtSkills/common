@@ -42,8 +42,13 @@ class Arrays
         if (empty($jsonString)) {
             return null;
         }
-
-        return json_decode($jsonString, $assoc, $depth, $options);
+        
+        return json_decode(
+            preg_replace('/[\x00-\x1F\x7F]/u', '', $jsonString),
+            $assoc,
+            $depth,
+            $options
+        );
     }
 
 
