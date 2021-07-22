@@ -160,7 +160,6 @@ class ValueObjectDocumentationShell extends Shell
         } elseif (!empty($schema->allOf)) { // наследование классов
             foreach ($schema->allOf as $subSchema) {
                 if ($subSchema->ref === UNDEFINED) { // по логике либы это является конечным элементом наследования
-
                     if ($subSchema->properties !== UNDEFINED) {
                         foreach ($subSchema->properties as $property) {
                             $insProperty = $this->_getProperty($property);
