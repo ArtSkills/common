@@ -112,12 +112,8 @@ class ValueObjectDocumentationShell extends Shell
         foreach ($objectDefinitions as $objectName => $objectDefinition) {
             foreach ($objectDefinition['mergeProperties'] as $classIndex => $mergeClassName) {
                 if (array_key_exists($mergeClassName, $objectDefinitions)) {
-                    if (empty($objectDefinitions[$mergeClassName]['mergeProperties'])) {
-                        $objectDefinitions[$objectName]['properties'] += $objectDefinitions[$mergeClassName]['properties'];
-                        unset($objectDefinitions[$objectName]['mergeProperties'][$classIndex]);
-                    } else {
-                        Log::error("$mergeClassName has mergeProperties too");
-                    }
+                    $objectDefinitions[$objectName]['properties'] += $objectDefinitions[$mergeClassName]['properties'];
+                    unset($objectDefinitions[$objectName]['mergeProperties'][$classIndex]);
                 } else {
                     unset($objectDefinitions[$objectName]['mergeProperties'][$classIndex]);
                     Log::error("Merge class $mergeClassName is not defined!");
@@ -138,7 +134,7 @@ class ValueObjectDocumentationShell extends Shell
     {
         $result = [
             'name' => $this->_getSchemaClassName($schema),
-            'type' => null,
+            'type' => 'object',
             'description' => null,
             'properties' => [],
             'mergeProperties' => [],
@@ -164,17 +160,16 @@ class ValueObjectDocumentationShell extends Shell
         } elseif (!empty($schema->allOf)) { // наследование классов
             foreach ($schema->allOf as $subSchema) {
                 if ($subSchema->ref === UNDEFINED) { // по логике либы это является конечным элементом наследования
-                    foreach ($subSchema->properties as $property) {
-                        $insProperty = $this->_getProperty($property);
-                        $result['properties'][$insProperty['name']] = $insProperty;
+
+                    if ($subSchema->properties !== UNDEFINED) {
+                        foreach ($subSchema->properties as $property) {
+                            $insProperty = $this->_getProperty($property);
+                            $result['properties'][$insProperty['name']] = $insProperty;
+                        }
                     }
 
                     if ($subSchema->type !== UNDEFINED) {
                         $result['type'] = $subSchema->type;
-                    } else {
-                        if (!empty($result['properties'])) {
-                            $result['type'] = 'object';
-                        }
                     }
                     if ($subSchema->description !== UNDEFINED) {
                         $result['description'] = $subSchema->description;
