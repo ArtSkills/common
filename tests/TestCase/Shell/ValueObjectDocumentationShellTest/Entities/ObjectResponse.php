@@ -12,11 +12,17 @@ class ObjectResponse extends ObjectParentResponse
      * @OA\Property
      * @var float[]
      */
-    public $arrNumberProp;
+    public array $arrNumberProp;
 
     /**
      * @OA\Property
      * @var Object1[]
      */
-    public $arrObjectProp;
+    public array $arrObjectProp;
+
+    /**
+     * @OA\Property(type="Object1", nullable=true)
+     * @var Object1|null
+     */
+    public ?Object1 $objectPropOrNull = null;
 }
