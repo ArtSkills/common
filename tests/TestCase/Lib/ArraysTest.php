@@ -5,9 +5,40 @@ namespace ArtSkills\Test\TestCase\Lib;
 
 use ArtSkills\Lib\Arrays;
 use ArtSkills\TestSuite\AppTestCase;
+use stdClass;
 
 class ArraysTest extends AppTestCase
 {
+
+    /** decode JSON */
+    public function testDecode(): void
+    {
+        // тестовые данные
+        $wrongJson = '{"state":0,"data":{"products":[{"id":13012188,"root":8691178},{"id":13012189,"root":8691179';
+        $jsonVsWrongSymbols = '{"state":"active' . chr(2) . '","data":{"products":[{"id":13012188,"root":8691178},{"id":13012189,"root":8691179}]}}';
+        $correctJson = '{"state":"active","data":{"products":[{"id":13012188,"root":8691178},{"id":13012189,"root":8691179}]}}';
+
+        // данные для сравнения
+        $product1 = new stdClass();
+        $product1->id = 13012188;
+        $product1->root = 8691178;
+
+        $product2 = new stdClass();
+        $product2->id = 13012189;
+        $product2->root = 8691179;
+
+        $object = new stdClass();
+        $object->state = 'active';
+        $object->data = new stdClass();
+        $object->data->products = [
+            $product1,
+            $product2,
+        ];
+
+        self::assertEquals($object, Arrays::decode($correctJson, false));
+        self::assertEquals($object, Arrays::decode($jsonVsWrongSymbols, false));
+        self::assertNull(Arrays::decode($wrongJson, false));
+    }
 
     /** фильтр части ключей */
     public function testFilterKeys(): void
@@ -80,7 +111,11 @@ class ArraysTest extends AppTestCase
         self::assertEquals(null, Arrays::get(null, $hasNotKey));
     }
 
-    /** инициализация значения */
+    /**
+     * инициализация значения
+     *
+     * @throws \ArtSkills\Error\InternalException
+     */
     public function testInitPath(): void
     {
         $array = [];
@@ -119,6 +154,8 @@ class ArraysTest extends AppTestCase
 
     /**
      * на пути есть немассив
+     *
+     * @throws \ArtSkills\Error\InternalException
      */
     public function testInitPathFail(): void
     {
