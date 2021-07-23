@@ -203,7 +203,7 @@ class ValueObjectDocumentationShell extends Shell
             } else {
                 $result['type'] = $property->items->type . '[]';
             }
-        } elseif ($property->type === UNDEFINED && $property->ref !== UNDEFINED) {
+        } elseif ($property->ref !== UNDEFINED) {
             $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->ref);
         } elseif ($property->type === UNDEFINED) {
             Log::error("Incorrect property type for " . $property->_context->namespace . '\\' . $property->_context->class . '::' . $property->property);
