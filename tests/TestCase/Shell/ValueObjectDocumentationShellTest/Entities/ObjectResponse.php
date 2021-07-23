@@ -22,6 +22,7 @@ class ObjectResponse extends ObjectParentResponse
 
     /**
      * @OA\Property(type="object", ref="#/components/schemas/Object1", nullable=true)
+     * @var Object1|null
      */
     public ?Object1 $objectPropOrNull = null;
 }
