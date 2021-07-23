@@ -31,13 +31,12 @@ class ArraysTest extends AppTestCase
         $object->data = new \stdClass();
         $object->data->products = [
             $product1,
-            $product2
+            $product2,
         ];
 
         self::assertEquals($object, Arrays::decode($correctJson, false));
         self::assertEquals($object, Arrays::decode($jsonVsWrongSymbols, false));
         self::assertNull(Arrays::decode($wrongJson, false));
-
     }
 
     /** фильтр части ключей */
