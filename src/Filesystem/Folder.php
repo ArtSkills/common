@@ -131,7 +131,7 @@ class Folder extends \Cake\Filesystem\Folder
     public static function createIfNotExists(string $path, int $mode = 0755): string
     {
         if (!is_dir($path)) {
-            mkdir($path, $mode);
+            mkdir($path, $mode, true);
         }
         return $path;
     }
