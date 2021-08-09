@@ -61,7 +61,6 @@ abstract class ValueObject implements \JsonSerializable, \ArrayAccess
      *
      * @param array<string, mixed>|Entity $fillValues Список заполняемых свойств
      * @throws InternalException
-     * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function __construct($fillValues = [])
