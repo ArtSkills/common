@@ -22,6 +22,7 @@
     "ext-simplexml": "*",
     "ext-curl": "*",
     "ext-pdo": "*",
+    "ext-mbstring": "*",
     "cakephp/cakephp": "3.*",
     "robmorgan/phinx": "^0.8.1",
     "sentry/sentry": "^1.1",
