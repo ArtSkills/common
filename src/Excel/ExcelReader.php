@@ -66,8 +66,8 @@ class ExcelReader
         }
         $reader = AbstractReaderFormat::getInstance($filePath);
         if (!empty($checkDocumentField)) {
-            $checkData = self::getCell($reader, $checkDocumentField->address, $page);
-            if ((string)$checkData !== $checkDocumentField->data) {
+            $checkData = mb_strtolower((string)self::getCell($reader, $checkDocumentField->address, $page));
+            if ($checkData !== mb_strtolower($checkDocumentField->data)) {
                 throw new IncorrectCheckException();
             }
         }
