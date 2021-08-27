@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ArtSkills\ORM;
 
+use ArtSkills\Lib\Serializer\ArraySerializerInterface;
 use ArtSkills\Lib\Serializer\SerializerFactory;
 
 abstract class AbstractJsonField implements ArraySerializerInterface
