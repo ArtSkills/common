@@ -8,10 +8,13 @@ use Cake\Validation\Validator;
 
 class RequestTest extends AbstractRequest
 {
+    /** @var int Числовое поле */
     public int $fieldInt;
 
+    /** @var string|null Строковое поле */
     public ?string $fieldString = null;
 
+    /** @var RequestTest|null Объект */
     public ?RequestTest $fieldObject = null;
 
     /** @inheritDoc */

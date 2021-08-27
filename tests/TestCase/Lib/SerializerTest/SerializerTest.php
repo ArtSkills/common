@@ -12,12 +12,11 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 class SerializerTest extends AppTestCase
 {
     /**
-     * Создание объекта из json-а
+     * Создание объекта из json-а - ошибки
      *
-     * @throws ExceptionInterface
      * @throws InternalException
      */
-    public function testCreateFromJson(): void
+    public function testCreateFromJsonException(): void
     {
         $this->expectExceptionMessage('Не указан fieldInt');
         $data = [
@@ -25,12 +24,50 @@ class SerializerTest extends AppTestCase
             'fieldObject' => [
                 'fieldInt' => 9,
                 'fieldString' => 'hkljlkln',
+                'fieldObject' => null,
             ],
         ];
         RequestTest::createFromJson(Arrays::encode($data));
+    }
 
-        $data['fieldInt'] = 5;
+    /**
+     * Создание объекта из json-а
+     *
+     * @throws ExceptionInterface
+     * @throws InternalException
+     */
+    public function testCreateFromJson(): void
+    {
+        $data = [
+            'fieldInt' => 5,
+            'fieldString' => 'hjk,mn',
+            'fieldObject' => [
+                'fieldInt' => 9,
+                'fieldString' => 'hkljlkln',
+                'fieldObject' => null,
+            ],
+        ];
         self::assertEquals($data, RequestTest::createFromJson(Arrays::encode($data))->toArray());
+    }
+
+    /**
+     * Создание объекта из массива - ошибки
+     *
+     * @throws InternalException
+     * @throws UserException
+     */
+    public function testCreateFromArrayException(): void
+    {
+        $this->expectExceptionMessage('Не указан fieldInt');
+        $data = [
+            'fieldString' => 'hjk,mn',
+            'fieldObject' => [
+                'fieldInt' => 9,
+                'fieldString' => 'hkljlkln',
+                'fieldObject' => null,
+            ],
+        ];
+        RequestTest::createFromArray($data);
     }
 
     /**
@@ -42,17 +79,15 @@ class SerializerTest extends AppTestCase
      */
     public function testCreateFromArray(): void
     {
-        $this->expectExceptionMessage('Не указан fieldInt');
         $data = [
+            'fieldInt' => 5,
             'fieldString' => 'hjk,mn',
             'fieldObject' => [
                 'fieldInt' => 9,
                 'fieldString' => 'hkljlkln',
+                'fieldObject' => null,
             ],
         ];
-        RequestTest::createFromArray($data);
-
-        $data['fieldInt'] = 5;
         self::assertEquals($data, RequestTest::createFromArray($data)->toArray());
     }
 }
