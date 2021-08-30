@@ -33,7 +33,10 @@
     "ext-zend-opcache": "*",
     "ext-pcntl": "*",
     "zircote/swagger-php": "^3.0",
-    "ext-zip": "*"
+    "ext-zip": "*",
+    "symfony/property-access": "^4.4",
+    "symfony/property-info": "^4.4",
+    "symfony/serializer": "^4.4"
   },
   "require-dev": {
     "ext-runkit7": "*",
