@@ -6,6 +6,9 @@ namespace ArtSkills\ORM;
 use ArtSkills\Lib\Serializer\ArraySerializerInterface;
 use ArtSkills\Lib\Serializer\SerializerFactory;
 
+/**
+ * Для описания JSON в БД в виде объекта
+ */
 abstract class AbstractJsonField implements ArraySerializerInterface
 {
     /**
