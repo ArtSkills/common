@@ -6,7 +6,6 @@ namespace ArtSkills\Lib\Serializer;
 use Cake\I18n\Date;
 use Cake\I18n\Time;
 
-/** Нужно вынести в common */
 use App\Lib\Time as AppTime;
 use App\Lib\Date as AppDate;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
@@ -14,14 +13,17 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class DateNormalizer extends DateTimeNormalizer
 {
+    private const APP_DATE = 'App\Lib\Date';
+    private const APP_TIME = 'App\Lib\Time';
+
     /**
      * @var array<string,bool> Поддерживаемые типы объектов
      */
     private const SUPPORTED_TYPES = [
         Date::class => true,
         Time::class => true,
-        AppTime::class => true,
-        AppDate::class => true,
+        self::APP_TIME => true,
+        self::APP_DATE => true,
     ];
 
     /**
@@ -61,10 +63,12 @@ class DateNormalizer extends DateTimeNormalizer
                 return Time::parse($data);
             case Date::class:
                 return Date::parse($data);
-            case AppTime::class:
-                return AppTime::parse($data);
-            case AppDate::class:
-                return AppDate::parse($data);
+            case self::APP_TIME:
+                $class = self::APP_TIME;
+                return $class::parse($data);
+            case self::APP_DATE:
+                $class = self::APP_DATE;
+                return $class::parse($data);
         }
     }
 
