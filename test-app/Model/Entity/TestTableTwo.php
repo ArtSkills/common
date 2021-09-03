@@ -12,6 +12,7 @@ use ArtSkills\ORM\Entity;
  * @property TestTableOne $TestTableOne `table_one_fk` => `id`
  * @tableComment description qweqwe
  * @property string $virtualField
+ * @property string|null $virtualFieldOrNull
  */
 class TestTableTwo extends Entity
 {
@@ -21,5 +22,13 @@ class TestTableTwo extends Entity
     protected function _getVirtualField()
     {
         return 'whoa, virtual fields!';
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function _getVirtualFieldOrNull(): ?string
+    {
+        return null;
     }
 }

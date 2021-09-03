@@ -26,7 +26,7 @@ class TableDocumentation
     private const DEPENDENCY_ONE_TO_MANY = '/([A-Z][^\W_]+)\[\]\s\$([A-Z][^\W_]+)\s`([\w-]+)`\s=>\s`([\w-]+)`/';
 
     // регекспу нужно 2 слеша для экранирования в регекспе, и ещё 2 слеша для экранирования строки
-    private const FIELD_INFO = '/([\\\\a-zA-Z0-9]+)\s\$([a-z]\w+)\s?(.*)/';
+    private const FIELD_INFO = '/([\\\\a-zA-Z0-9|]+)\s\$([a-z]\w+)\s?(.*)/';
 
     private const JS_TYPES = [
         '\\' . Time::class => 'string',
