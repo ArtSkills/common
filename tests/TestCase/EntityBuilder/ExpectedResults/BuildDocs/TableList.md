@@ -14,6 +14,7 @@ description qweqwe
 * int `table_one_fk` blabla
 * string `col_text` = NULL
 * string `virtualField`
+* string|null `virtualFieldOrNull`
 ### Связи:
 * TestTableOne `$TestTableOne` TestTableOne.table_one_fk => TestTableTwo.id
 

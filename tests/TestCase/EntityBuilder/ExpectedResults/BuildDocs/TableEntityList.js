@@ -14,5 +14,6 @@
  * @property {string} col_text = NULL
  * @property {TestTableOneEntity} TestTableOne table_one_fk => id
  * @property {string} virtualField
+ * @property {string|null} virtualFieldOrNull
  */
 
