@@ -29,7 +29,6 @@ class ScssControllerTest extends AppControllerTestCase
     /** Тест генератора css */
     public function test(): void
     {
-        MockConsoleIo::destroy();
         MethodMocker::mock(MockLog::class, 'write')
             ->singleCall()
             ->willReturnValue(true);

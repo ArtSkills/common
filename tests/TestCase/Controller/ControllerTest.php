@@ -237,7 +237,6 @@ class ControllerTest extends AppControllerTestCase
     /** Смотрим, как выбираются экшны и шаблоны */
     public function testActionAndTemplateResolve(): void
     {
-        MockConsoleIo::destroy();
         MethodMocker::mock(MockLog::class, 'write')
             ->expectCall(4)
             ->willReturnValue(true);
