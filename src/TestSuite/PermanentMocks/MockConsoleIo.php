@@ -21,8 +21,10 @@ class MockConsoleIo extends ClassMockEntity
     /**
      * Вывод ошибка вместо вывода данных
      *
-     * @param int $level
      * @param string $message
+     * @param int $newlines
+     * @param int $level
+     * @return bool
      */
     public static function out(string $message = '', int $newlines = 1, int $level = ConsoleIo::NORMAL): bool
     {
