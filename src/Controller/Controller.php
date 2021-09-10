@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ArtSkills\Controller;
 
+use ArtSkills\Controller\Response\ApiResponse;
 use ArtSkills\Error\InternalException;
 use ArtSkills\Error\UserException;
 use ArtSkills\Lib\Env;
@@ -198,8 +199,8 @@ class Controller extends \Cake\Controller\Controller
      * Бросить обычную внутреннюю ошибку
      *
      * @param string $message
-     * @param ?array $addInfo доп информация об ошибке для sentry (SentryLog::KEY_ADD_INFO)
-     * @param string|string[]|null $scope scope для логирования ошибки
+     * @param ?array $addInfo Доп информация об ошибке для sentry (SentryLog::KEY_ADD_INFO)
+     * @param string|string[]|null $scope Scope для логирования ошибки
      * @return void
      * @throws InternalException
      * @phpstan-ignore-next-line
@@ -243,6 +244,9 @@ class Controller extends \Cake\Controller\Controller
     protected function _sendJsonOk($jsonData = []): ?Response
     {
         if ($jsonData instanceof ValueObject) {
+            if (!$jsonData instanceof ApiResponse) {
+                Log::error(get_class($jsonData) . ' не наследует ApiResponse');
+            }
             $jsonData = $jsonData->toArray();
         }
 
@@ -253,7 +257,7 @@ class Controller extends \Cake\Controller\Controller
      * Возвращает ответ с ошибкой, сообщением, и прерывает выполнение
      *
      * @param string $message
-     * @param array $jsonData дополнительные параметры если нужны
+     * @param array $jsonData Дополнительные параметры если нужны
      * @return ?Response
      * @internal
      * @phpstan-ignore-next-line

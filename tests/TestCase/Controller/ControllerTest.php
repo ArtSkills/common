@@ -9,6 +9,7 @@ use ArtSkills\Log\Engine\SentryLog;
 use ArtSkills\TestSuite\AppControllerTestCase;
 use ArtSkills\TestSuite\Mock\MethodMocker;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
+use Cake\Log\Log;
 use PHPUnit\Framework\AssertionFailedError;
 use ReflectionClass;
 use TestApp\Controller\TestController;
@@ -47,13 +48,25 @@ class ControllerTest extends AppControllerTestCase
     /** ValueObject в качестве результата */
     public function testGetValueObject(): void
     {
+        MethodMocker::mock(Log::class, 'error')
+            ->expectArgs('TestApp\Controller\TestValueObject не наследует ApiResponse');
         $this->get('/test/getValueObjectJson');
         $this->assertJsonOKEquals([
             'testProperty' => 'testData',
         ]);
     }
 
-    /** ответ с ошибкой из исключения */
+    /** ApiResponse в качестве результата */
+    public function testGetApiResponse(): void
+    {
+        $this->get('/test/getApiResponseJson');
+        $this->assertJsonOKEquals([
+            'testProperty' => 'testData',
+            'message' => null,
+        ]);
+    }
+
+    /** Ответ с ошибкой из исключения */
     public function testErrorFromException(): void
     {
         $this->get('/test/getJsonException');
@@ -159,14 +172,14 @@ class ControllerTest extends AppControllerTestCase
                 // в котором вызван InternalError::instance
                 // при этом file и line - из TestController
                 'file' => (new ReflectionClass(TestController::class))->getFileName(),
-                'line' => 149,
+                'line' => 157,
             ],
             500
         );
         $this->assertJsonInternalErrorEquals('test json message');
     }
 
-    /** проверить, что у внутренних ошибок правильный трейс */
+    /** Проверить, что у внутренних ошибок правильный трейс */
     public function testInternalErrorTrace(): void
     {
         MethodMocker::mock(SentryLog::class, 'logException')->singleCall();
@@ -179,7 +192,7 @@ class ControllerTest extends AppControllerTestCase
                 'code' => 500,
                 // а здесь был сделан непосредственно throw new InternalError
                 'file' => (new ReflectionClass(TestController::class))->getFileName(),
-                'line' => 160,
+                'line' => 168,
             ],
             500
         );
@@ -220,7 +233,7 @@ class ControllerTest extends AppControllerTestCase
         );
     }
 
-    /** смотрим, как выбираются экшны и шаблоны */
+    /** Смотрим, как выбираются экшны и шаблоны */
     public function testActionAndTemplateResolve(): void
     {
         MethodMocker::mock(MockLog::class, 'write')
