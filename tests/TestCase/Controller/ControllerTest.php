@@ -8,7 +8,6 @@ use ArtSkills\Lib\Env;
 use ArtSkills\Log\Engine\SentryLog;
 use ArtSkills\TestSuite\AppControllerTestCase;
 use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\PermanentMocks\MockConsoleIo;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
 use Cake\Log\Log;
 use PHPUnit\Framework\AssertionFailedError;

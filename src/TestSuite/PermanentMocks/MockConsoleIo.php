@@ -42,7 +42,7 @@ class MockConsoleIo extends ClassMockEntity
                 $test = $line;
             }
         }
-        $file = $trace[4];
+        $file = $trace[2];
         file_put_contents('php://stderr', "test: $test \n Write to '$level' out from $file: $message\n\n");
         return true;
     }

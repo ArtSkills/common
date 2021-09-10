@@ -52,7 +52,6 @@ class SentryLogTest extends AppTestCase
     /** @inheritdoc */
     public function setUp()
     {
-        $this->_disablePermanentMock(MockConsoleIo::class);
         $this->_disablePermanentMock(MockFileLog::class);
         $this->_disablePermanentMock(MockLog::class);
         parent::setUp();
