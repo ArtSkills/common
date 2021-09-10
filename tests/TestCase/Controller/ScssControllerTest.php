@@ -5,9 +5,8 @@ namespace ArtSkills\Test\TestCase\Controller;
 
 use ArtSkills\TestSuite\AppControllerTestCase;
 use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
+use ArtSkills\TestSuite\PermanentMocks\MockConsoleIo;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
-use Cake\Log\Log;
 
 class ScssControllerTest extends AppControllerTestCase
 {
@@ -30,6 +29,7 @@ class ScssControllerTest extends AppControllerTestCase
     /** Тест генератора css */
     public function test(): void
     {
+        MockConsoleIo::destroy();
         MethodMocker::mock(MockLog::class, 'write')
             ->singleCall()
             ->willReturnValue(true);

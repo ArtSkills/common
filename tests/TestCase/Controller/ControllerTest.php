@@ -8,6 +8,7 @@ use ArtSkills\Lib\Env;
 use ArtSkills\Log\Engine\SentryLog;
 use ArtSkills\TestSuite\AppControllerTestCase;
 use ArtSkills\TestSuite\Mock\MethodMocker;
+use ArtSkills\TestSuite\PermanentMocks\MockConsoleIo;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
 use Cake\Log\Log;
 use PHPUnit\Framework\AssertionFailedError;
@@ -236,6 +237,7 @@ class ControllerTest extends AppControllerTestCase
     /** Смотрим, как выбираются экшны и шаблоны */
     public function testActionAndTemplateResolve(): void
     {
+        MockConsoleIo::destroy();
         MethodMocker::mock(MockLog::class, 'write')
             ->expectCall(4)
             ->willReturnValue(true);
