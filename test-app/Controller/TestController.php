@@ -54,6 +54,14 @@ class TestController extends Controller
     }
 
     /**
+     * JSON ответ из ApiResponse
+     */
+    public function getApiResponseJson()
+    {
+        return $this->_sendJsonOk((new TestApiResponse()));
+    }
+
+    /**
      * Null в ответ
      *
      * @return null
