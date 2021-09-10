@@ -8,6 +8,7 @@ use ArtSkills\TestSuite\AppTestCase;
 use ArtSkills\TestSuite\Mock\MethodMocker;
 use ArtSkills\TestSuite\Mock\MethodMockerEntity;
 use ArtSkills\TestSuite\Mock\PropertyAccess;
+use ArtSkills\TestSuite\PermanentMocks\MockConsoleIo;
 use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
 use Cake\Console\ConsoleErrorHandler;
