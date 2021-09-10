@@ -5,17 +5,23 @@ namespace ArtSkills\TestSuite\PermanentMocks;
 
 use ArtSkills\TestSuite\ClassMockEntity;
 use ArtSkills\TestSuite\Mock\MethodMocker;
+use ArtSkills\TestSuite\Mock\MethodMockerEntity;
 use Cake\Console\ConsoleIo;
 use Cake\Error\Debugger;
 
 class MockConsoleIo extends ClassMockEntity
 {
     /**
+     * @var MethodMockerEntity $_mockOut Мок метод Out
+     */
+    private static MethodMockerEntity $_mockOut;
+
+    /**
      * @inheritdoc
      */
     public static function init()
     {
-        MethodMocker::mock(ConsoleIo::class, 'out', 'return ' . self::class . '::out(...func_get_args());');
+        static::$_mockOut = MethodMocker::mock(ConsoleIo::class, 'out', 'return ' . self::class . '::out(...func_get_args());');
     }
 
     /**
@@ -39,5 +45,14 @@ class MockConsoleIo extends ClassMockEntity
         $file = $trace[4];
         file_put_contents('php://stderr', "test: $test \n Write to '$level' out from $file: $message\n\n");
         return true;
+    }
+
+    /** @inheritDoc */
+    public static function destroy()
+    {
+        /** @phpstan-ignore-next-line */
+        if (self::$_mockOut && !self::$_mockOut->isRestored()) {
+            self::$_mockOut->restore();
+        }
     }
 }
