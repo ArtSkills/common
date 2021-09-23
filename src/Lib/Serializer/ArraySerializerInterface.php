@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace ArtSkills\Lib\Serializer;
 
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-
 interface ArraySerializerInterface
 {
     /**
