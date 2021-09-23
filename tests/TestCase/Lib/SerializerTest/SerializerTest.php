@@ -55,7 +55,6 @@ class SerializerTest extends AppTestCase
         $result = RequestTest::createFromJson(Arrays::encode($data));
         $data['fieldObject']['fieldInt'] = 9;
         self::assertEquals($data, $result->toArray());
-
     }
 
     /**
