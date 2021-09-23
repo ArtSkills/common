@@ -225,17 +225,31 @@ class TableDocumentation
 
         $entityAnnotations['property'] = (array)$entityAnnotations['property'];
 
+        $fields = [];
+        $oneToOne = [];
+        $oneToMany = [];
+
         foreach ($entityAnnotations['property'] as $fieldDescription) {
             if (preg_match(self::FIELD_INFO, $fieldDescription, $matches)) {
                 $fieldType = array_key_exists($matches[1], self::JS_TYPES) ? self::JS_TYPES[$matches[1]] : $matches[1];
 
-                $article .= " * @property {" . $fieldType . "} " . $matches[2] . (!empty($matches[3])
-                        ? ' ' . $matches[3] : '') . "\n";
+                $fields[$matches[2]] = " * @property {" . $fieldType . "} " . $matches[2] . (!empty($matches[3])
+                        ? ' ' . $matches[3] : '');
             } elseif (preg_match(self::DEPENDENCY_ONE_TO_ONE, $fieldDescription, $matches)) {
-                $article .= " * @property {" . $matches[1] . "Entity} " . $matches[2] . ' ' . $matches[3] . ' => ' . $matches[4] . "\n";
+                $oneToOne[$matches[2]] = " * @property {" . $matches[1] . "Entity} " . $matches[2] . ' ' . $matches[3] . ' => ' . $matches[4];
             } elseif (preg_match(self::DEPENDENCY_ONE_TO_MANY, $fieldDescription, $matches)) {
-                $article .= " * @property {" . $matches[1] . "Entity[]} " . $matches[2] . ' ' . $matches[3] . ' => ' . $matches[4] . "\n";
+                $oneToMany[$matches[2]] = " * @property {" . $matches[1] . "Entity[]} " . $matches[2] . ' ' . $matches[3] . ' => ' . $matches[4];
             }
+        }
+
+        ksort($fields);
+        ksort($oneToOne);
+        ksort($oneToMany);
+
+        $result = $fields + $oneToOne + $oneToMany;
+
+        if (!empty($result)) {
+            $article .= implode("\n", $result) . "\n";
         }
 
         $article .= " */\n\n";
@@ -293,15 +307,16 @@ class TableDocumentation
         $dependencies = [];
         foreach ($annotations['property'] as $prop) {
             if (preg_match(self::DEPENDENCY_ONE_TO_ONE, $prop, $matches)) {
-                $dependencies[] = $matches[1] . ' `$' . $matches[2] . '` ' . $matches[1] . "." . $matches[3] . ' => ' . $className . '.' . $matches[4];
+                $dependencies[$matches[2]] = $matches[1] . ' `$' . $matches[2] . '` ' . $matches[1] . "." . $matches[3] . ' => ' . $className . '.' . $matches[4];
             }
         }
 
         foreach ($annotations['property'] as $prop) {
             if (preg_match(self::DEPENDENCY_ONE_TO_MANY, $prop, $matches)) {
-                $dependencies[] = $matches[1] . '[] `$' . $matches[2] . '` ' . $matches[1] . "." . $matches[3] . ' => ' . $className . '.' . $matches[4];
+                $dependencies[$matches[2]] = $matches[1] . '[] `$' . $matches[2] . '` ' . $matches[1] . "." . $matches[3] . ' => ' . $className . '.' . $matches[4];
             }
         }
+        ksort($dependencies);
         return $dependencies;
     }
 
@@ -323,9 +338,10 @@ class TableDocumentation
         $fields = [];
         foreach ($annotations['property'] as $prop) {
             if (preg_match(self::FIELD_INFO, $prop, $matches)) {
-                $fields[] = $matches[1] . ' `' . $matches[2] . '`' . (!empty($matches[3]) ? ' ' . $matches[3] : '');
+                $fields[$matches[2]] = $matches[1] . ' `' . $matches[2] . '`' . (!empty($matches[3]) ? ' ' . $matches[3] : '');
             }
         }
+        ksort($fields);
         return $fields;
     }
 }
