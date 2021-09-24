@@ -19,12 +19,24 @@ use TypeError;
  */
 abstract class AbstractRequest implements ValidationInterface, JsonSerializerInterface, ArraySerializerInterface
 {
-    /** @inheritDoc */
-    public static function createFromJson(string $json): AbstractRequest
+    /**
+     * @inheritDoc
+     *
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
+     * @throws UserException
+     * @throws InternalException
+     */
+    public static function createFromJson(string $json, array $context = []): AbstractRequest
     {
         try {
             /** @var static $dto */
-            $dto = SerializerFactory::create()->deserialize($json, static::class, 'json');
+            $dto = SerializerFactory::create()->deserialize(
+                $json,
+                static::class,
+                'json',
+                $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
+            );
             $dto->_validate();
         } catch (NotNormalizableValueException | ExceptionInterface $e) {
             throw new InternalException($e->getMessage());
@@ -63,14 +75,15 @@ abstract class AbstractRequest implements ValidationInterface, JsonSerializerInt
      * Конвертация объекта в массив
      *
      * @param bool $isConvertCamelCaseKeyToSnakeCase Конвертировать CamelCase ключи в snake_case
+     * @param array $context
      * @return array
+     * @throws ExceptionInterface
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
-     * @throws ExceptionInterface
      */
-    public function toArray(bool $isConvertCamelCaseKeyToSnakeCase = false): array
+    public function toArray(bool $isConvertCamelCaseKeyToSnakeCase = false, array $context = []): array
     {
-        return SerializerFactory::create($isConvertCamelCaseKeyToSnakeCase)->normalize($this, 'array');
+        return SerializerFactory::create($isConvertCamelCaseKeyToSnakeCase)->normalize($this, 'array', $context);
     }
 
     /**
