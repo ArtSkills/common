@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace ArtSkills\Lib\Serializer;
 
-use ArtSkills\Error\InternalException;
-
 interface JsonSerializerInterface
 {
     /**
      * Преобразование строки json в объект
      *
      * @param string $json
-     * @throws InternalException
+     * @param array $context
      * @return static
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
-    public static function createFromJson(string $json): JsonSerializerInterface;
+    public static function createFromJson(string $json, array $context = []): JsonSerializerInterface;
 }
