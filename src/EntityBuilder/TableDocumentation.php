@@ -317,7 +317,7 @@ class TableDocumentation
             }
         }
         ksort($dependencies);
-        return $dependencies;
+        return array_values($dependencies);
     }
 
     /**
@@ -342,6 +342,6 @@ class TableDocumentation
             }
         }
         ksort($fields);
-        return $fields;
+        return array_values($fields);
     }
 }

@@ -10,7 +10,7 @@ use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOutput;
 use Cake\Error\Debugger;
 
-class MockConsoleIo extends ClassMockEntity
+class MockConsoleOutput extends ClassMockEntity
 {
     /**
      * @var MethodMockerEntity $_mockOut Мок метод Out
