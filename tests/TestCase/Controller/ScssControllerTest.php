@@ -5,7 +5,7 @@ namespace ArtSkills\Test\TestCase\Controller;
 
 use ArtSkills\TestSuite\AppControllerTestCase;
 use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\PermanentMocks\MockConsoleIo;
+use ArtSkills\TestSuite\PermanentMocks\MockConsoleOutput;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
 
 class ScssControllerTest extends AppControllerTestCase

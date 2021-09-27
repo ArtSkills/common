@@ -7,9 +7,10 @@ use ArtSkills\TestSuite\ClassMockEntity;
 use ArtSkills\TestSuite\Mock\MethodMocker;
 use ArtSkills\TestSuite\Mock\MethodMockerEntity;
 use Cake\Console\ConsoleIo;
+use Cake\Console\ConsoleOutput;
 use Cake\Error\Debugger;
 
-class MockConsoleIo extends ClassMockEntity
+class MockConsoleOutput extends ClassMockEntity
 {
     /**
      * @var MethodMockerEntity $_mockOut Мок метод Out
@@ -21,7 +22,8 @@ class MockConsoleIo extends ClassMockEntity
      */
     public static function init()
     {
-        static::$_mockOut = MethodMocker::mock(ConsoleIo::class, 'out', 'return ' . self::class . '::out(...func_get_args());');
+        static::$_mockOut = MethodMocker::mock(ConsoleOutput::class, 'write', 'return ' . self::class . '::out(...func_get_args());')
+            ->expectCall(0);
     }
 
     /**
