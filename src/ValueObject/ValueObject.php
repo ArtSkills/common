@@ -21,6 +21,9 @@ use ReflectionClass;
  */
 abstract class ValueObject implements \JsonSerializable, \ArrayAccess
 {
+    public const APP_DATE = 'App\Lib\Date';
+    public const APP_TIME = 'App\Lib\Time';
+
     /**
      * Методы, которые не экспортируются через json_encode
      *
@@ -69,13 +72,15 @@ abstract class ValueObject implements \JsonSerializable, \ArrayAccess
 
         foreach (static::TIME_FIELDS as $fieldName) {
             if (!empty($fillValues[$fieldName]) && (is_string($fillValues[$fieldName]) || is_int($fillValues[$fieldName]))) {
-                $fillValues[$fieldName] = Time::parse($fillValues[$fieldName]);
+                $class = class_exists(self::APP_TIME) ? self::APP_TIME : Time::class;
+                $fillValues[$fieldName] = $class::parse($fillValues[$fieldName]);
             }
         }
 
         foreach (static::DATE_FIELDS as $fieldName) {
             if (!empty($fillValues[$fieldName]) && (is_string($fillValues[$fieldName]) || is_int($fillValues[$fieldName]))) {
-                $fillValues[$fieldName] = Date::parse($fillValues[$fieldName]);
+                $class = class_exists(self::APP_DATE) ? self::APP_DATE : Date::class;
+                $fillValues[$fieldName] = $class::parse($fillValues[$fieldName]);
             }
         }
 
