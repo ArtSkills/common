@@ -73,6 +73,10 @@ class ValueObjectTest extends AppTestCase
         self::assertEquals(Date::parse($dateString), $obj->dateField);
     }
 
+    /**
+     * @testdox Проверим подключение кастомных классов
+     * @throws \Exception
+     */
     public function testAppDateTime(): void
     {
         ConstantMocker::mock(ValueObject::class, 'APP_DATE', DateTest::class);
