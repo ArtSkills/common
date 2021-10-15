@@ -8,8 +8,8 @@ use TestApp\Model\Entity\TestTableFour;
 
 /**
  * Fake Query class TestTableFourQuery
- * @method ?TestTableFour[] toArray()
- * @method ?TestTableFour first()
+ * @method null|TestTableFour[] toArray()
+ * @method null|TestTableFour first()
  */
 class TestTableFourQuery extends Query
 {
