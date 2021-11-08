@@ -94,6 +94,7 @@ trait ConverterTrait
     /**
      * Преобразование строки в массив объектов
      *
+     * @SuppressWarnings(PHPMD.MethodArgs)
      * @param string $json
      * @param array $context
      * @param bool $useCameToSnakeConverter
