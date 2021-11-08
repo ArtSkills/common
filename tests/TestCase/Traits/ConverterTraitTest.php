@@ -9,7 +9,7 @@ use ArtSkills\Lib\Arrays;
 use ArtSkills\TestSuite\AppTestCase;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
-class ConverterTest extends AppTestCase
+class ConverterTraitTest extends AppTestCase
 {
     /**
      * Создание объекта из json, массива, конвертация в массив

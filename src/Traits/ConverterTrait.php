@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use TypeError;
 
-trait Converter
+trait ConverterTrait
 {
     /**
      * Создание объекта из json
@@ -95,12 +95,18 @@ trait Converter
      * Преобразование строки в массив объектов
      *
      * @param string $json
+     * @param array $context
      * @param bool $useCameToSnakeConverter
      * @return static[]
      */
-    public static function createArrayFromJson(string $json, bool $useCameToSnakeConverter = false): array
+    public static function createArrayFromJson(string $json, array $context = [], bool $useCameToSnakeConverter = false): array
     {
-        return SerializerFactory::create($useCameToSnakeConverter)->deserialize($json, static::class . '[]', 'json');
+        return SerializerFactory::create($useCameToSnakeConverter)->deserialize(
+            $json,
+            static::class . '[]',
+            'json',
+            $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
+        );
     }
 
     /**

@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace ArtSkills\Test\TestCase\Traits;
 
-use ArtSkills\Traits\Converter;
+use ArtSkills\Traits\ConverterTrait;
 
 class ConverterFixture
 {
-    use Converter;
+    use ConverterTrait;
 
-    /** @var int hghjgj */
+    /** @var int Числовое поле */
     public int $intField;
 
-    /** @var string hghjgj */
+    /** @var string Строковое поле */
     public string $stringField;
 
-    /** @var bool hghjgj */
+    /** @var bool Булевое поле */
     public bool $boolField;
 }

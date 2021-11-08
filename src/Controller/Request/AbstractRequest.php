@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace ArtSkills\Controller\Request;
 
-use ArtSkills\Traits\Converter;
+use ArtSkills\Traits\ConverterTrait;
 
 /**
  * @SuppressWarnings(PHPMD.MethodMix)
  */
 abstract class AbstractRequest implements ValidationInterface
 {
-    use Converter;
+    use ConverterTrait;
 }
