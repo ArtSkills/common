@@ -4,14 +4,18 @@ declare(strict_types=1);
 namespace ArtSkills\Test\TestCase\Traits;
 
 use ArtSkills\Error\InternalException;
+use ArtSkills\Error\UserException;
 use ArtSkills\Lib\Arrays;
 use ArtSkills\TestSuite\AppTestCase;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 class ConverterTest extends AppTestCase
 {
     /**
      * Создание объекта из json, массива, конвертация в массив
      * @throws InternalException
+     * @throws UserException
+     * @throws ExceptionInterface
      */
     public function test()
     {
