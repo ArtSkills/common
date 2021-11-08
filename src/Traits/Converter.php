@@ -23,6 +23,7 @@ trait Converter
      * @param bool $isConvertCamelCaseKeyToSnakeCase
      * @return self
      * @throws InternalException|UserException
+     * @phpstan-ignore-next-line
      */
     public static function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): self
     {
@@ -53,6 +54,7 @@ trait Converter
      * @param bool $isConvertCamelCaseKeyToSnakeCase
      * @return self
      * @throws InternalException|UserException
+     * @phpstan-ignore-next-line
      */
     public static function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): self
     {
@@ -82,6 +84,7 @@ trait Converter
      * @return array
      * @throws ExceptionInterface
      * @SuppressWarnings(PHPMD.MethodArgs)
+     * @phpstan-ignore-next-line
      */
     public function toArray(bool $isConvertCamelCaseKeyToSnakeCase = false, array $context = []): array
     {
@@ -107,7 +110,7 @@ trait Converter
      * @throws UserException
      * @throws ExceptionInterface
      */
-    protected function _validate()
+    protected function _validate(): void
     {
         $errors = $this->addValidation(new Validator())->validate($this->toArray());
 
@@ -122,12 +125,13 @@ trait Converter
      * Преобразование древовидного списка ошибок в плоский список
      *
      * @param string[] $messages
+     * @phpstan-ignore-next-line
      * @param array $errors
      * @return void
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
-    private function _getErrorsMessage(array &$messages, array $errors)
+    private function _getErrorsMessage(array &$messages, array $errors): void
     {
         foreach ($errors as $error) {
             if (is_array($error)) {
