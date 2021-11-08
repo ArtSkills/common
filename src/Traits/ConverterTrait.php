@@ -79,11 +79,11 @@ trait ConverterTrait
     /**
      * Конвертация объекта в массив
      *
+     * @SuppressWarnings(PHPMD.MethodArgs)
      * @param bool $isConvertCamelCaseKeyToSnakeCase Конвертировать CamelCase ключи в snake_case
      * @param array $context
      * @return array
      * @throws ExceptionInterface
-     * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
     public function toArray(bool $isConvertCamelCaseKeyToSnakeCase = false, array $context = []): array
