@@ -112,6 +112,7 @@ trait Converter
      */
     protected function _validate(): void
     {
+        //@phpstan-ignore-next-line
         $errors = $this->addValidation(new Validator())->validate($this->toArray());
 
         if ($errors) {
