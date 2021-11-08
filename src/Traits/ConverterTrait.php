@@ -98,6 +98,7 @@ trait ConverterTrait
      * @param array $context
      * @param bool $useCameToSnakeConverter
      * @return static[]
+     * @phpstan-ignore-next-line
      */
     public static function createArrayFromJson(string $json, array $context = [], bool $useCameToSnakeConverter = false): array
     {
