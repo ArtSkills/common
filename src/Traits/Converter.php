@@ -19,10 +19,10 @@ trait Converter
      * @param string $json
      * @param array $context
      * @param bool $isConvertCamelCaseKeyToSnakeCase
-     * @return Object
+     * @return self
      * @throws InternalException
      */
-    public static function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): object
+    public static function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): self
     {
         try {
             /** @var static $dto */
@@ -46,10 +46,10 @@ trait Converter
      * @param array $data
      * @param array $context
      * @param bool $isConvertCamelCaseKeyToSnakeCase
-     * @return Object
+     * @return self
      * @throws InternalException
      */
-    public static function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): object
+    public static function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): self
     {
         try {
             /** @var static $dto */
