@@ -13,11 +13,12 @@ class ConverterTest extends AppTestCase
 {
     /**
      * Создание объекта из json, массива, конвертация в массив
+     *
      * @throws InternalException
      * @throws UserException
      * @throws ExceptionInterface
      */
-    public function test()
+    public function test(): void
     {
         $fixture = new ConverterFixture();
         $data = [
