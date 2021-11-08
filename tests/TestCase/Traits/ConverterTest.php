@@ -21,10 +21,18 @@ class ConverterTest extends AppTestCase
             'stringField' => 'hkjhjkhkj',
             'boolField' => true,
         ];
-        $resJson = $fixture->createFromJson(Arrays::encode($data));
-        $resArray = $fixture->createFromArray($data);
+        $resJson = $fixture::createFromJson(Arrays::encode($data));
+        $resArray = $fixture::createFromArray($data);
+        $resArrayFromJson = $fixture::createArrayFromJson(Arrays::encode([
+            'test1' => $data,
+            'test2' => $data,
+        ]));
 
         self::assertEquals($resArray->toArray(), $resJson->toArray());
         self::assertEquals($data, $resJson->toArray());
+        self::assertEquals([
+            'test1' => $fixture::createFromArray($data),
+            'test2' => $fixture::createFromArray($data),
+        ], $resArrayFromJson);
     }
 }

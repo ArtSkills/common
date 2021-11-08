@@ -22,13 +22,13 @@ trait Converter
      * @return Object
      * @throws InternalException
      */
-    public function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): object
+    public static function createFromJson(string $json, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): object
     {
         try {
             /** @var static $dto */
             $dto = SerializerFactory::create($isConvertCamelCaseKeyToSnakeCase)->deserialize(
                 $json,
-                self::class,
+                static::class,
                 'json',
                 $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
             );
@@ -49,13 +49,13 @@ trait Converter
      * @return Object
      * @throws InternalException
      */
-    public function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): object
+    public static function createFromArray(array $data, array $context = [], bool $isConvertCamelCaseKeyToSnakeCase = false): object
     {
         try {
             /** @var static $dto */
             $dto = SerializerFactory::create($isConvertCamelCaseKeyToSnakeCase)->denormalize(
                 $data,
-                self::class,
+                static::class,
                 'array',
                 $context + [AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true]
             );
@@ -80,4 +80,15 @@ trait Converter
         return SerializerFactory::create($isConvertCamelCaseKeyToSnakeCase)->normalize($this, 'array', $context);
     }
 
+    /**
+     * Преобразование строки в массив объектов
+     *
+     * @param string $json
+     * @param bool $useCameToSnakeConverter
+     * @return static[]
+     */
+    public static function createArrayFromJson(string $json, bool $useCameToSnakeConverter = false): array
+    {
+        return SerializerFactory::create($useCameToSnakeConverter)->deserialize($json, static::class . '[]', 'json');
+    }
 }
