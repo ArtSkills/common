@@ -8,7 +8,6 @@ use ArtSkills\Error\InternalException;
 use ArtSkills\Error\UserException;
 use ArtSkills\Traits\Library;
 use Exception;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 
 /**
  * Чтение Excel документов в формат ассоциативного массива
@@ -23,12 +22,12 @@ class ExcelReader
      * @param string|AbstractReaderFormat $filePathOrReader
      * @param string $pCoordinate
      * @param int $page Нумерация с 1
-     * @return Cell|null
+     * @return \PhpOffice\PhpSpreadsheet\Cell\Cell|\Box\Spout\Common\Entity\Cell|null
      * @throws InternalException
      * @throws UserException
      * @throws Exception
      */
-    public static function getCell($filePathOrReader, string $pCoordinate, int $page = 1): ?Cell
+    public static function getCell($filePathOrReader, string $pCoordinate, int $page = 1)
     {
         if ($page <= 0) {
             throw new InternalException('Некорректный параметр $page: ' . $page);

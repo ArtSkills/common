@@ -36,7 +36,8 @@
     "ext-zip": "*",
     "symfony/property-access": "^4.4",
     "symfony/property-info": "^4.4",
-    "symfony/serializer": "^4.4"
+    "symfony/serializer": "^4.4",
+    "box/spout": "^3.3"
   },
   "require-dev": {
     "ext-runkit7": "*",
