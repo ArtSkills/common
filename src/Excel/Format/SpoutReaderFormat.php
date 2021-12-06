@@ -13,6 +13,7 @@ use Box\Spout\Reader\SheetInterface;
 
 class SpoutReaderFormat extends AbstractReaderFormat
 {
+    /** Кол-во пустых строк после которых прекращается парсинг файла */
     private const MAX_EMPTY_ROWS = 10;
 
     /**
