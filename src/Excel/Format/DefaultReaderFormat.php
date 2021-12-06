@@ -114,7 +114,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
      * @param int $page
      * @param int $dataRowIndex
      * @param bool $skipEmptyRows
-     * @return array|null
+     * @return array<int, array<int, string>>|null
      * @throws Exception
      */
     private function _getSpreadsheetRows(int $page, int $dataRowIndex, bool $skipEmptyRows): ?array
@@ -155,7 +155,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
      *
      * @param int $page
      * @param int $dataRowIndex
-     * @return array|null
+     * @return array<int, array<int, string>>|null
      */
     private function _getSpoutRows(int $page, int $dataRowIndex): ?array
     {
