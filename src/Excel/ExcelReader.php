@@ -6,6 +6,7 @@ namespace ArtSkills\Excel;
 use ArtSkills\Excel\Format\AbstractReaderFormat;
 use ArtSkills\Error\InternalException;
 use ArtSkills\Error\UserException;
+use ArtSkills\Excel\Format\ExcelReaderFactory;
 use ArtSkills\Traits\Library;
 use Exception;
 
@@ -35,7 +36,7 @@ class ExcelReader
         if ($filePathOrReader instanceof AbstractReaderFormat) {
             $reader = $filePathOrReader;
         } else {
-            $reader = AbstractReaderFormat::getInstance($filePathOrReader);
+            $reader = ExcelReaderFactory::createFromFile($filePathOrReader);
         }
         return $reader->getCell($pCoordinate, $page);
     }
@@ -63,7 +64,7 @@ class ExcelReader
         if ($page < 1) {
             throw new InternalException("Некорректный параметр page: " . $page);
         }
-        $reader = AbstractReaderFormat::getInstance($filePath);
+        $reader = ExcelReaderFactory::createFromFile($filePath);
         if (!empty($checkDocumentField)) {
             $checkData = mb_strtolower((string)self::getCell($reader, $checkDocumentField->address, $page));
             if ($checkData !== mb_strtolower($checkDocumentField->data)) {
@@ -128,7 +129,7 @@ class ExcelReader
         if ($startRow < 1 || $rowCount < 1 || $page < 1) {
             throw new InternalException("Передаваемые аргументы должны быть больше или равными единице");
         }
-        $reader = AbstractReaderFormat::getInstance($filePath);
+        $reader = ExcelReaderFactory::createFromFile($filePath);
         $data = $reader->getRows($page, $startRow, $skipEmptyRows);
         $result = [];
         $iteration = 0;
