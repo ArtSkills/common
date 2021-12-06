@@ -12,7 +12,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
     /**
      * @var Spreadsheet
      */
-    private $_spreadsheet;
+    private Spreadsheet $_spreadsheet;
 
     /**
      * DefaultReaderFormat constructor.
@@ -31,11 +31,14 @@ class DefaultReaderFormat extends AbstractReaderFormat
      */
     public function getCell(string $pCoordinate, int $page = 1)
     {
-        return $this->_spreadsheet->getSheet($page - 1)->getCell($pCoordinate, false);
+        return $this->_spreadsheet
+            ->getSheet($page - 1)
+            ->getCell($pCoordinate, false);
     }
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function getRows(int $page = 1, int $dataRowIndex = 1, bool $skipEmptyRows = true): ?array
     {
