@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ArtSkills\Excel\Format;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Reader\Exception\ReaderNotOpenedException;
 use Box\Spout\Reader\SheetInterface;
 use Box\Spout\Reader\XLSX\Reader;
 use Box\Spout\Reader\XLSX\Sheet;
@@ -48,12 +49,26 @@ class DefaultReaderFormat extends AbstractReaderFormat
         }
     }
 
+    /**
+     * Читаем содержимое ячейки через PhpSpreadsheet
+     *
+     * @param string $pCoordinate
+     * @param int $page
+     * @return \PhpOffice\PhpSpreadsheet\Cell\Cell|null
+     * @throws Exception
+     */
     private function _getSpreadsheetCell(string $pCoordinate, int $page): ?\PhpOffice\PhpSpreadsheet\Cell\Cell
     {
-        $sheet = $this->_spreadsheet->getSheet($page - 1);
-        return $sheet->getCell($pCoordinate, false);
+        return $this->_spreadsheet->getSheet($page - 1)->getCell($pCoordinate, false);
     }
 
+    /**
+     * Читаем содержимое ячейки через Spout\Reader
+     *
+     * @param string $pCoordinate
+     * @param int $page
+     * @return \Box\Spout\Common\Entity\Cell|null
+     */
     private function _getSpoutCell(string $pCoordinate, int $page): ?\Box\Spout\Common\Entity\Cell
     {
         $sheet = $this->_getSpoutSheet($page);
@@ -94,6 +109,8 @@ class DefaultReaderFormat extends AbstractReaderFormat
     }
 
     /**
+     * Читаем строки через PhpSpreadsheet
+     *
      * @param int $page
      * @param int $dataRowIndex
      * @param bool $skipEmptyRows
@@ -134,6 +151,8 @@ class DefaultReaderFormat extends AbstractReaderFormat
     }
 
     /**
+     * Читаем строки через Spout\Reader
+     *
      * @param int $page
      * @param int $dataRowIndex
      * @return array|null
@@ -170,6 +189,8 @@ class DefaultReaderFormat extends AbstractReaderFormat
             if ($value === '') {
                 $emptyStrCount++;
                 continue;
+            } else {
+                $emptyStrCount = 0;
             }
 
             $result[] = $rowCells;
@@ -177,6 +198,13 @@ class DefaultReaderFormat extends AbstractReaderFormat
         return $result;
     }
 
+    /**
+     * Получение определенной страницы
+     *
+     * @param int $page
+     * @return SheetInterface|null
+     * @throws ReaderNotOpenedException
+     */
     private function _getSpoutSheet(int $page): ?SheetInterface
     {
         $sheetIterator = $this->_spreadsheet->getSheetIterator();
