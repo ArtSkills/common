@@ -23,6 +23,7 @@ class ExcelReaderFactory
         }
 
         try {
+            /** Поддерживаемые типы @see \Box\Spout\Common\Type */
             return new SpoutReaderFormat($filename);
         } catch (Throwable $exception) {
             return new DefaultReaderFormat($filename);
