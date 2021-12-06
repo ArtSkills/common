@@ -16,8 +16,8 @@ class SpoutReaderFormatTest extends AppTestCase
         $testFile = __DIR__ . DS . 'test_xls.xlsx';
 
         // Выводим пустые строки
-        $defaultReaderFormat = new SpoutReaderFormat($testFile);
-        $result = $defaultReaderFormat->getRows(1, 34, false);
+        $reader = new SpoutReaderFormat($testFile);
+        $result = $reader->getRows(1, 34, false);
         self::assertEquals([
             0 => [
                 0 => null,
@@ -45,8 +45,8 @@ class SpoutReaderFormatTest extends AppTestCase
         ], $result);
 
         // Не выводим пустые строки
-        $defaultReaderFormat = new SpoutReaderFormat($testFile);
-        $result = $defaultReaderFormat->getRows(1, 34);
+        $reader = new SpoutReaderFormat($testFile);
+        $result = $reader->getRows(1, 34);
         self::assertEquals([], $result);
     }
 }
