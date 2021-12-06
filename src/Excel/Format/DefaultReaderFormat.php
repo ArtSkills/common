@@ -17,9 +17,8 @@ class DefaultReaderFormat extends AbstractReaderFormat
 {
     /**
      * @var Reader|Spreadsheet
-     * @phpstan-ignore-next-line
      */
-    private $_spreadsheet;
+    private $_spreadsheet; //@phpstan-ignore-next-line
 
     /**
      * DefaultReaderFormat constructor.
