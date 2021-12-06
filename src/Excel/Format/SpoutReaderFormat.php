@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace ArtSkills\Excel\Format;
 
+use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\Reader\Exception\ReaderNotOpenedException;
+use Box\Spout\Reader\ReaderAbstract;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
 
@@ -14,7 +16,7 @@ class SpoutReaderFormat extends AbstractReaderFormat
     private const MAX_EMPTY_ROWS = 10;
 
     /**
-     * @var ReaderInterface
+     * @var ReaderInterface|ReaderAbstract
      */
     private ReaderInterface $_spreadsheet;
 
@@ -23,6 +25,7 @@ class SpoutReaderFormat extends AbstractReaderFormat
      *
      * @param string $fileName
      * @throws UnsupportedTypeException
+     * @throws IOException
      */
     public function __construct(string $fileName)
     {
