@@ -18,7 +18,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
     /**
      * @var Reader|Spreadsheet
      */
-    private $_spreadsheet; //@phpstan-ignore-next-line
+    private $_spreadsheet;
 
     /**
      * DefaultReaderFormat constructor.
@@ -29,6 +29,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
     public function __construct(string $fileName)
     {
         try {
+            // @phpstan-ignore-next-line
             $this->_spreadsheet = ReaderEntityFactory::createReaderFromFile($fileName);
             $this->_spreadsheet->open($fileName);
         } catch (Throwable $exception) {
