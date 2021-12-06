@@ -17,6 +17,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
 {
     /**
      * @var Reader|Spreadsheet
+     * @phpstan-ignore-next-line
      */
     private $_spreadsheet;
 
@@ -114,10 +115,10 @@ class DefaultReaderFormat extends AbstractReaderFormat
      * @param int $page
      * @param int $dataRowIndex
      * @param bool $skipEmptyRows
-     * @return array<int, array<int, string>>|null
+     * @return array<int, array<int, string>>
      * @throws Exception
      */
-    private function _getSpreadsheetRows(int $page, int $dataRowIndex, bool $skipEmptyRows): ?array
+    private function _getSpreadsheetRows(int $page, int $dataRowIndex, bool $skipEmptyRows): array
     {
         $spreadsheet = $this->_spreadsheet;
 
