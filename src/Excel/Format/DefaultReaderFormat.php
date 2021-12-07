@@ -18,7 +18,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
      * DefaultReaderFormat constructor.
      *
      * @param string $fileName
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws Exception
      */
     public function __construct(string $fileName)
     {
@@ -31,8 +31,9 @@ class DefaultReaderFormat extends AbstractReaderFormat
      */
     public function getCell(string $pCoordinate, int $page = 1)
     {
-        $sheet = $this->_spreadsheet->getSheet($page - 1);
-        return $sheet->getCell($pCoordinate, false);
+        return $this->_spreadsheet
+            ->getSheet($page - 1)
+            ->getCell($pCoordinate, false);
     }
 
     /**
