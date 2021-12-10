@@ -30,7 +30,7 @@ Cache::setConfig(\App\Lib\AppCache::getConfig());
   на [ArtSkills\Error\Middleware\ErrorHandlerMiddleware](src/Error/Middleware/ErrorHandlerMiddleware.php)
 
 # Настройка тестового окружения
-
+Копируем файл `test-app-conf/app_local.php.dev` в `test-app-conf/app_local.php`.
 ```bash
 docker-compose up -d
 # подключаемся по ssh к проекту
