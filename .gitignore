@@ -13,5 +13,5 @@ phpmd-report.html
 /.composer/
 /test-app-junk/logs/
 /test-app-junk/tmp/
-/.phpcs-cache
 /.pdepend/
+/dev/php/.phpcs-cache
