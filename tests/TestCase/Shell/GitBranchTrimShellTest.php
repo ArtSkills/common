@@ -19,6 +19,8 @@ class GitBranchTrimShellTest extends AppTestCase
      */
     public function test(): void
     {
+        $this->markTestSkipped('Для теста нужна Git ветка');
+
         MethodMocker::mock(GitBranchTrimShell::class, '_canDeleteRemote')
             ->willReturnValue(true);
 

@@ -1,0 +1,28 @@
+# Версия docker-compose
+version: '3'
+# Список наших сервисов (контейнеров)
+services:
+    php:
+        # у нас свой образ для PHP, указываем путь к нему и говорим что его надо собрать
+        build: ./dev/php
+        # этот образ будет общаться с mysql
+        links:
+            - mysql
+        # монтируем директорию с проектами
+        volumes:
+            - .:/var/www/
+        # заходим в docker через: docker-compose exec -u www-data php bash
+    mysql:
+        image: mysql:8
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./dev/mysql:/var/lib/mysql
+        # задаем пароль для root пользователя
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+        entrypoint:
+            sh -c "
+            echo 'CREATE DATABASE IF NOT EXISTS common; CREATE DATABASE IF NOT EXISTS common_test;' > /docker-entrypoint-initdb.d/init.sql;
+            /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+            "

@@ -47,7 +47,7 @@ class ConstantMocker
         }
 
         self::$_constantList[$fullName] = $origValue;
-        if (!runkit_constant_redefine($fullName, $newValue)) {
+        if (!runkit7_constant_redefine($fullName, $newValue)) {
             MethodMocker::fail("Can't redefine constant $fullName!");    // @codeCoverageIgnore
         }
     }
@@ -58,7 +58,7 @@ class ConstantMocker
     public static function restore(): void
     {
         foreach (self::$_constantList as $name => $origValue) {
-            runkit_constant_redefine($name, $origValue);
+            runkit7_constant_redefine($name, $origValue);
         }
         self::$_constantList = [];
     }

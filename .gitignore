@@ -1,5 +1,16 @@
 /vendor/
+/logs/
 /.idea/
 /composer.phar
 /test-app-conf/app_local.php
 phpmd-report.html
+/.cache/
+/.config/
+/.local/
+/dev/mysql/
+/.bash_history
+/dev/php/xdebug.log
+/.composer/
+/test-app-junk/logs/
+/test-app-junk/tmp/
+/.phpcs-cache
