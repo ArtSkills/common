@@ -14,3 +14,4 @@ phpmd-report.html
 /test-app-junk/logs/
 /test-app-junk/tmp/
 /.phpcs-cache
+/.pdepend/

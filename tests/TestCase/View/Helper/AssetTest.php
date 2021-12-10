@@ -109,7 +109,7 @@ class AssetTest extends AppTestCase
     {
         parent::tearDownAfterClass();
         foreach (array_keys(self::$_files) as $dirName) {
-            foreach (['js', 'css'] as $type) {
+            foreach (['js', 'css', 'scss'] as $type) {
                 $fullDirName = WWW_ROOT . $type . DS . $dirName;
                 $dir = new Folder($fullDirName);
                 $dir->delete();
