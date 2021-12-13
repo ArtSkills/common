@@ -838,7 +838,7 @@ class AssetHelper extends Helper
             return null;
         } elseif (is_bool($value)) {
             return self::TYPE_BOOL;
-        } elseif (is_numeric($value)) {
+        } elseif (is_int($value) || is_float($value)) {
             return self::TYPE_NUM;
         } elseif (is_string($value)) {
             return self::TYPE_STRING;

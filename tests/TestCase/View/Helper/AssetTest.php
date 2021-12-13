@@ -238,11 +238,13 @@ class AssetTest extends AppTestCase
                 'test6' => '123.456',
                 'test7' => '1 234,00',
                 'test8' => 234.567,
+                'test9' => -2,
+                'test10' => 45,
             ]
         );
         $this->_assetHelper->load('test', 'empty');
         $expectedResult = [
-            "<script>\n APP_VERSION = 123;\n test1 = \"\";\n test2 = null;\n test3 = false;\n test4 = 0;\n test5 = [];\n test6 = 123.456;\n test7 = \"1 234,00\";\n test8 = 234.567;\n</script>",
+            "<script>\n APP_VERSION = 123;\n test1 = \"\";\n test2 = null;\n test3 = false;\n test4 = 0;\n test5 = [];\n test6 = \"123.456\";\n test7 = \"1 234,00\";\n test8 = 234.567;\n test9 = -2;\n test10 = 45;\n</script>",
         ];
         self::assertEquals(
             $expectedResult,
