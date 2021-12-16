@@ -24,7 +24,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) pcntl \
     && pecl install xdebug && docker-php-ext-enable xdebug \
     && pecl install runkit7-alpha && docker-php-ext-enable runkit7 \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    && rm -rf /tmp/pear \
+    && rm -frv /var/cache/apk/*
+
+# Куда же без composer'а.
+RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Для тестирования sass
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \

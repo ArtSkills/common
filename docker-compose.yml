@@ -5,6 +5,8 @@ services:
     php:
         # у нас свой образ для PHP, указываем путь к нему и говорим что его надо собрать
         build: ./dev/php
+        image: eggheads-common-php
+
         # этот образ будет общаться с mysql
         links:
             - mysql
