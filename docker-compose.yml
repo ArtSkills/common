@@ -8,6 +8,8 @@ services:
         # этот образ будет общаться с mysql
         links:
             - mysql
+        ports:
+            - "9000:9000"
         # монтируем директорию с проектами
         volumes:
             - .:/var/www/

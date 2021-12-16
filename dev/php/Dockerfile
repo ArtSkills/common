@@ -47,11 +47,10 @@ ENV LC_ALL ru_RU.UTF-8
 
 # Указываем рабочую директорию для PHP
 WORKDIR /var/www
-
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 # Запускаем контейнер
 # Из документации: The main purpose of a CMD is to provide defaults for an executing container. These defaults can include an executable,
 # or they can omit the executable, in which case you must specify an ENTRYPOINT instruction as well.
 CMD ["php-fpm"]
-
 # Пересборка контейнера
 # docker-compose build php
