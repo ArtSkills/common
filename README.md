@@ -16,18 +16,35 @@
 ```php
 require ROOT . DS . 'vendor' . DS . 'artskills' . DS . 'common' . DS . 'src' . DS . 'config' . DS . 'bootstrap.php';
 ```
+
 * В  `bootstrap.php` правим следующую строку:
+
 ```php
 Cache::setConfig(\App\Lib\AppCache::getConfig());
 ```
+
 * Наследуем `AppController` от [ArtSkills\Controller\Controller](src/Controller/Controller.php)
 * Наследуем `ErrorController` от [ArtSkills\Controller\ErrorController](src/Controller/ErrorController.php)
 * Наследуем `AppTable` от [ArtSkills\ORM\Table](src/ORM/Table.php)
-* В `Application.php` заменяем `Cake\Error\Middleware\ErrorHandlerMiddleware` на [ArtSkills\Error\Middleware\ErrorHandlerMiddleware](src/Error/Middleware/ErrorHandlerMiddleware.php)
+* В `Application.php` заменяем `Cake\Error\Middleware\ErrorHandlerMiddleware`
+  на [ArtSkills\Error\Middleware\ErrorHandlerMiddleware](src/Error/Middleware/ErrorHandlerMiddleware.php)
+
+# Настройка тестового окружения
+Копируем файл `test-app-conf/app_local.php.dev` в `test-app-conf/app_local.php`.
+```bash
+docker-compose up -d
+# подключаемся по ssh к проекту
+docker-compose exec -u www-data php bash
+# запускаем все тесты
+composer check
+```
+
+В подпапке [dev](dev) хранятся данные MySQL, а также конфигурация Docker виртаулок.
 
 # Что тут сделано
 
 ## Основные фичи
+
 * Куча [дополнительных инструментов тестирования](src/TestSuite).
 * Построитель классов Table и Entity на основе структуры базы (перенести сюда доки).
 * Логирование ошибок в [Sentry](src/Log/Engine).

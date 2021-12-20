@@ -38,5 +38,7 @@ class FolderTest extends AppTestCase
             unlink($pdfInFolderFile);
             rmdir(__DIR__ . '/nonDelete');
         }
+        unlink($csvFile);
+        unlink($pdfNewFile);
     }
 }
