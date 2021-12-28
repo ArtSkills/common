@@ -15,7 +15,7 @@ class SingletonCollection
      *
      * @param string $item
      */
-    public static function append(string $item)
+    public static function append(string $item): void
     {
         array_push(self::$_collection, $item);
         PropertyAccess::setStatic(self::class, '_collection', self::$_collection);
