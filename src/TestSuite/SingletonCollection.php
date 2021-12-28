@@ -10,8 +10,12 @@ class SingletonCollection
     /** @var string[] Массив одиночек */
     private static array $_collection = [];
 
-    /** Добавление одиночки */
-    public function append($item)
+    /**
+     * Добавление одиночки
+     *
+     * @param string $item
+     */
+    public static function append(string $item)
     {
         array_push(self::$_collection, $item);
         PropertyAccess::setStatic(self::class, '_collection', self::$_collection);

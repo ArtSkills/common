@@ -51,7 +51,7 @@ trait Singleton
         }
 
         if (Env::isUnitTest()) {
-            (new SingletonCollection())->append(static::class);
+            SingletonCollection::append(static::class);
         }
 
         return static::$_instance;
