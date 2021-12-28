@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace ArtSkills\TestSuite;
 
 use ArtSkills\TestSuite\Mock\PropertyAccess;
+use ArtSkills\Traits\Library;
 
 class SingletonCollection
 {
+    use Library;
+
     /** @var string[] Массив одиночек */
     private static array $_collection = [];
 
@@ -18,7 +21,6 @@ class SingletonCollection
     public static function append(string $item): void
     {
         array_push(self::$_collection, $item);
-        PropertyAccess::setStatic(self::class, '_collection', self::$_collection);
     }
 
     /**
@@ -40,6 +42,6 @@ class SingletonCollection
         foreach ($singletons as $className) {
             PropertyAccess::setStatic($className, '_instance', null);
         }
-        PropertyAccess::setStatic(self::class, '_collection', []);
+        self::$_collection = [];
     }
 }
