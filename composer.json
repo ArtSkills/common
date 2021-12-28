@@ -9,10 +9,6 @@
     },
     {
       "type": "vcs",
-      "url": "git://github.com/vovantune/PhpSpreadsheet"
-    },
-    {
-      "type": "vcs",
       "url": "git://github.com/vovantune/PHP_XLSXWriter"
     }
   ],
@@ -28,7 +24,7 @@
     "sentry/sentry": "^1.1",
     "jan-swiecki/simple-annotations": "*",
     "mk-j/php_xlsxwriter": "dev-master",
-    "phpoffice/phpspreadsheet": "dev-master",
+    "phpoffice/phpspreadsheet": "1.20.*",
     "ext-intl": "*",
     "ext-zend-opcache": "*",
     "ext-pcntl": "*",
