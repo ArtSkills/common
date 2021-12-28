@@ -33,7 +33,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
     {
         return $this->_spreadsheet
             ->getSheet($page - 1)
-            ->getCell($pCoordinate, false);
+            ->getCell($pCoordinate);
     }
 
     /**
