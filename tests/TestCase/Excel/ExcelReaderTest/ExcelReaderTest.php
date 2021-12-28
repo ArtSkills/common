@@ -9,7 +9,6 @@ use ArtSkills\Excel\FieldMapElement;
 use ArtSkills\Excel\IncorrectCheckException;
 use ArtSkills\Error\InternalException;
 use ArtSkills\TestSuite\AppTestCase;
-use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class ExcelReaderTest extends AppTestCase
