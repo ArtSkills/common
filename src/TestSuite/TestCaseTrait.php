@@ -52,10 +52,10 @@ trait TestCaseTrait
     private static array $_tableRegistry = [];
 
 
-    /** вызывать в реальном setUpBeforeClass */
+    /** Вызывать в реальном setUpBeforeClass */
     protected static function _setUpBeforeClass(): void
     {
-        static::_clearSingletones();
+//        noop
     }
 
     /**
@@ -72,7 +72,7 @@ trait TestCaseTrait
     }
 
     /**
-     * Чиста тестового окружения
+     * Чистка тестового окружения
      */
     protected function _tearDown(): void
     {
@@ -82,6 +82,7 @@ trait TestCaseTrait
         Time::setTestNow(null); // сбрасываем тестовое время
         TestEmailTransport::clearMessages();
         $this->_tearDownLocal(); // @phpstan-ignore-line
+        SingletonCollection::clearCollection();
 
         try {
             MethodMocker::restore($this->hasFailed());
@@ -94,7 +95,7 @@ trait TestCaseTrait
     }
 
     /**
-     * для локальных действий на setUp
+     * Для локальных действий на setUp
      *
      * @return void
      */
@@ -103,7 +104,7 @@ trait TestCaseTrait
         // noop
     }
 
-    /** для локальных действий на tearDown */
+    /** Для локальных действий на tearDown */
     protected function _tearDownLocal(): void
     {
         // noop
@@ -192,36 +193,6 @@ trait TestCaseTrait
         }
         $this->_permanentMocksList = [];
     }
-
-    /**
-     * очищаем одиночек
-     * то, что одиночки создаются 1 раз, иногда может очень мешать
-     */
-    protected static function _clearSingletones(): void
-    {
-        $singletones = static::_getSingletones();
-        foreach ($singletones as $className) {
-            PropertyAccess::setStatic($className, '_instance', null);
-        }
-    }
-
-    /**
-     * Список классов-одиночек, которые нужно чистить после каждого теста, переопределяется в классе-родителе:
-     * ```php
-     * protected static function _getSingletones() {
-     *     return [PCO::class];
-     * }
-     * ```
-     *
-     * @return string[]
-     */
-    protected static function _getSingletones(): array
-    {
-        // Приходится использовать метод, ибо переопределить свойство при использовании трейта нельзя
-        // А заполнить свойство не получится, ибо _clearSingletones статичен
-        return [];
-    }
-
 
     /**
      * Задать тестовое время

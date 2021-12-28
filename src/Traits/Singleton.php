@@ -2,6 +2,9 @@
 
 namespace ArtSkills\Traits;
 
+use ArtSkills\Lib\Env;
+use ArtSkills\TestSuite\SingletonCollection;
+
 /**
  * Трейт-одиночка.
  * strict_types специально не объявлено, ибо не работает с ним
@@ -45,6 +48,10 @@ trait Singleton
     {
         if (empty(static::$_instance)) {
             static::$_instance = new static(); // @phpstan-ignore-line
+        }
+
+        if (Env::isUnitTest()) {
+            (new SingletonCollection())->append(static::class);
         }
 
         return static::$_instance;

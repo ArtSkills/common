@@ -7,8 +7,7 @@ use ArtSkills\TestSuite\AppTestCase;
 
 class FunctionsTest extends AppTestCase
 {
-
-    /** функция для удобства использования вложенных ассоциаций */
+    /** Функция для удобства использования вложенных ассоциаций */
     public function testAssoc(): void
     {
         self::assertEquals('Table1', assoc('Table1'));
@@ -18,14 +17,14 @@ class FunctionsTest extends AppTestCase
         );
     }
 
-    /** функция для удобства использования полей с названием таблицы */
+    /** Функция для удобства использования полей с названием таблицы */
     public function testField(): void
     {
         self::assertEquals('Table.field', field('Table', 'field'));
         self::assertEquals('Table.field >=', field('Table', 'field', '>='));
     }
 
-    /** функция для удобства формирования списка условий для where */
+    /** Функция для удобства формирования списка условий для where */
     public function testFieldsWhere(): void
     {
         $conditions = [
@@ -52,7 +51,7 @@ class FunctionsTest extends AppTestCase
     }
 
     /**
-     * функция для удобства формирования списка условий для where
+     * Функция для удобства формирования списка условий для where
      * дублирование ключей массива
      */
     public function testFieldsWhereDuplicate(): void
@@ -69,7 +68,7 @@ class FunctionsTest extends AppTestCase
         ]);
     }
 
-    /** функция для удобства формирования списка полей для select */
+    /** Функция для удобства формирования списка полей для select */
     public function testFieldsSelect(): void
     {
         $fields = [
@@ -100,7 +99,7 @@ class FunctionsTest extends AppTestCase
     }
 
     /**
-     * функция для удобства формирования списка полей для select
+     * Функция для удобства формирования списка полей для select
      * дублирование ключей массива
      */
     public function testFieldsSelectDuplicate(): void
