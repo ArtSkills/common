@@ -9,7 +9,6 @@ use ArtSkills\Excel\FieldMapElement;
 use ArtSkills\Excel\IncorrectCheckException;
 use ArtSkills\Error\InternalException;
 use ArtSkills\TestSuite\AppTestCase;
-use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class ExcelReaderTest extends AppTestCase
@@ -19,7 +18,7 @@ class ExcelReaderTest extends AppTestCase
      */
     public function testNEFile(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(Exception::class);
         ExcelReader::get(__DIR__, [FieldMapElement::create('test', 1)]);
     }
 
