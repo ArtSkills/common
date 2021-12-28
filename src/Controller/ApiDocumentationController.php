@@ -120,7 +120,7 @@ class ApiDocumentationController extends Controller
         return Cache::remember('ApiDocumentationHtml#' . CORE_VERSION, function () {
             $client = new Client();
             $result = $client->post('https://generator3.swagger.io/api/generate', Arrays::encode([
-                'specURL' => Url::withDomainAndProtocol('apiDocumentation.json'),
+                'spec' => $this->_getJson(),
                 'lang' => 'html2',
                 'type' => 'CLIENT',
                 'codegenVersion' => 'V3',
