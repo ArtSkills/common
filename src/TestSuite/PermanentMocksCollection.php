@@ -62,18 +62,6 @@ class PermanentMocksCollection
             $permanentMocks[$projectMockFolder] = $projectMockNs;
         }
 
-        // $permanentMocks
-        // /var/www/dev-alex.common/src/TestSuite/PermanentMocks = "ArtSkills\TestSuite\PermanentMocks"
-        // /var/www/dev-alex.common/tests/Suite/Mock/ = "App\Test\Suite\Mock"
-
-        // $dir
-        // _virtualPath = "/var/www/dev-alex.common/src/TestSuite/PermanentMocks"
-        // path = "/var/www/dev-alex.common/src/TestSuite/PermanentMocks"
-
-        // $files (3 файла):
-        // MockConsoleOutput.php
-        // MockLog.php
-        // MockFileLog.php
         foreach ($permanentMocks as $folder => $mockNamespace) {
             $dir = new Folder($folder);
             $files = $dir->find('.*\.php');

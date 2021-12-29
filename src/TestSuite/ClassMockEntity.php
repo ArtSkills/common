@@ -27,7 +27,9 @@ abstract class ClassMockEntity
     }
 
     /**
-     * @param string $str
+     * Записать сообщение
+     *
+     * @param string $str Строка сообщения
      * @return void
      */
     protected static function _writeToConsole(string $str)
