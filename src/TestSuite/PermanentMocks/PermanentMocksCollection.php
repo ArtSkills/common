@@ -51,6 +51,9 @@ class PermanentMocksCollection
             $permanentMocks[$projectMockFolder] = $projectMockNs;
         }
 
+        // MockConsoleOutput.php
+        // MockLog.php
+        // MockFileLog.php
         foreach ($permanentMocks as $folder => $mockNamespace) {
             $dir = new Folder($folder);
             $files = $dir->find('.*\.php');
