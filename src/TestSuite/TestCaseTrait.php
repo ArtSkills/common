@@ -4,19 +4,15 @@ declare(strict_types=1);
 namespace ArtSkills\TestSuite;
 
 use ArtSkills\Error\InternalException;
-use ArtSkills\Filesystem\Folder;
 use ArtSkills\Lib\AppCache;
+use ArtSkills\Lib\Strings;
 use ArtSkills\Mailer\Transport\TestEmailTransport;
 use ArtSkills\ORM\Entity;
-use ArtSkills\Lib\Env;
-use ArtSkills\Lib\Misc;
-use ArtSkills\Lib\Strings;
-use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\Mock\ConstantMocker;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientAdapter;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientMocker;
+use ArtSkills\TestSuite\Mock\ConstantMocker;
+use ArtSkills\TestSuite\Mock\MethodMocker;
 use ArtSkills\TestSuite\Mock\PropertyAccess;
-use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -29,21 +25,6 @@ use Cake\Utility\Inflector;
  */
 trait TestCaseTrait
 {
-
-    /**
-     * Набор постоянных моков
-     *
-     * @var ClassMockEntity[]
-     */
-    private array $_permanentMocksList = [];
-
-    /**
-     * Отключённые постоянные моки
-     *
-     * @var array<string, bool> className => true
-     */
-    private array $_disabledMocks = [];
-
     /**
      * Список правильно проинициализированных таблиц
      *
@@ -51,20 +32,21 @@ trait TestCaseTrait
      */
     private static array $_tableRegistry = [];
 
-
     /** Вызывать в реальном setUpBeforeClass */
     protected static function _setUpBeforeClass(): void
     {
-//        noop
+        // noop
     }
 
     /**
      * Инициализация тестового окружения
+     *
+     * @throws InternalException
      */
     protected function _setUp(): void
     {
         $this->_clearCache();
-        $this->_initPermanentMocks();
+        PermanentMocksCollection::init();
         $this->_loadFixtureModels();
 
         HttpClientAdapter::enableDebug();
@@ -87,9 +69,7 @@ trait TestCaseTrait
         try {
             MethodMocker::restore($this->hasFailed());
         } finally {
-            $this->_destroyPermanentMocks(); // @phpstan-ignore-line
-            $this->_disabledMocks = []; // @phpstan-ignore-line
-
+            PermanentMocksCollection::destroy();
             HttpClientMocker::clean($this->hasFailed());
         }
     }
@@ -110,7 +90,6 @@ trait TestCaseTrait
         // noop
     }
 
-
     /**
      * Отключение постоянного мока; вызывать перед parent::setUp();
      *
@@ -118,7 +97,7 @@ trait TestCaseTrait
      */
     protected function _disablePermanentMock(string $mockClass): void
     {
-        $this->_disabledMocks[$mockClass] = true;
+        PermanentMocksCollection::disableMock($mockClass);
     }
 
     /**
@@ -147,51 +126,6 @@ trait TestCaseTrait
                 'testInit' => true,
             ]);
         }
-    }
-
-    /**
-     * Подменяем методы, необходимые только в тестовом окружении
-     *
-     * @throws InternalException
-     */
-    private function _initPermanentMocks(): void
-    {
-        $permanentMocks = [
-            // folder => namespace
-            __DIR__ . '/PermanentMocks' => Misc::namespaceSplit(MockFileLog::class)[0],
-        ];
-        $projectMockFolder = Env::getMockFolder();
-        if (!empty($projectMockFolder)) {
-            if (Env::hasMockNamespace()) {
-                $projectMockNs = Env::getMockNamespace();
-            } else {
-                throw new InternalException('Не задан неймспейс для классов-моков');
-            }
-            $permanentMocks[$projectMockFolder] = $projectMockNs;
-        }
-        foreach ($permanentMocks as $folder => $mockNamespace) {
-            $dir = new Folder($folder);
-            $files = $dir->find('.*\.php');
-            foreach ($files as $mockFile) {
-                $mockClass = $mockNamespace . '\\' . str_replace('.php', '', $mockFile);
-                if (empty($this->_disabledMocks[$mockClass])) {
-                    /** @var ClassMockEntity $mockClass */
-                    $mockClass::init();
-                    $this->_permanentMocksList[] = $mockClass;
-                }
-            }
-        }
-    }
-
-    /**
-     * Сбрасываем все перманентые моки
-     */
-    private function _destroyPermanentMocks(): void
-    {
-        foreach ($this->_permanentMocksList as $mockClass) {
-            $mockClass::destroy();
-        }
-        $this->_permanentMocksList = [];
     }
 
     /**
@@ -230,13 +164,13 @@ trait TestCaseTrait
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function assertArraySubsetEquals(
-        array $expected,
-        array $actual,
+        array  $expected,
+        array  $actual,
         string $message = '',
-        float $delta = 0.0,
-        int $maxDepth = 10,
-        bool $canonicalize = false,
-        bool $ignoreCase = false
+        float  $delta = 0.0,
+        int    $maxDepth = 10,
+        bool   $canonicalize = false,
+        bool   $ignoreCase = false
     ): void {
         $actual = array_intersect_key($actual, $expected);
         self::assertEquals($expected, $actual, $message, $delta, $maxDepth, $canonicalize, $ignoreCase);
@@ -254,11 +188,11 @@ trait TestCaseTrait
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function assertEntitySubset(
-        array $expectedSubset,
+        array  $expectedSubset,
         Entity $entity,
         string $message = '',
-        float $delta = 0.0,
-        int $maxDepth = 10
+        float  $delta = 0.0,
+        int    $maxDepth = 10
     ): void {
         $this->assertArraySubsetEquals($expectedSubset, $entity->toArray(), $message, $delta, $maxDepth);
     }
@@ -276,8 +210,8 @@ trait TestCaseTrait
         Entity $expectedEntity,
         Entity $actualEntity,
         string $message = '',
-        float $delta = 0.0,
-        int $maxDepth = 10
+        float  $delta = 0.0,
+        int    $maxDepth = 10
     ): void {
         self::assertEquals($expectedEntity->toArray(), $actualEntity->toArray(), $message, $delta, $maxDepth);
     }
@@ -294,11 +228,11 @@ trait TestCaseTrait
      * @phpstan-ignore-next-line
      */
     public function assertEntityEqualsArray(
-        array $expectedArray,
+        array  $expectedArray,
         Entity $actualEntity,
         string $message = '',
-        float $delta = 0.0,
-        int $maxDepth = 10
+        float  $delta = 0.0,
+        int    $maxDepth = 10
     ): void {
         self::assertEquals($expectedArray, $actualEntity->toArray(), $message, $delta, $maxDepth);
     }
@@ -316,8 +250,8 @@ trait TestCaseTrait
         string $expectedString,
         string $actualFile,
         string $message = '',
-        bool $canonicalize = false,
-        bool $ignoreCase = false
+        bool   $canonicalize = false,
+        bool   $ignoreCase = false
     ): void {
         self::assertFileExists($actualFile, $message);
         self::assertEquals(
