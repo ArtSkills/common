@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ArtSkills\TestSuite\HttpClientMock;
 
+use ArtSkills\TestSuite\PermanentMocksCollection;
 use Cake\Http\Client\Adapter\Stream;
 use Cake\Http\Client\Request;
 use Cake\Http\Client\Response;
@@ -56,6 +57,7 @@ class HttpClientAdapter extends Stream
             $result = parent::_send($request);
 
             if (self::$_debugRequests) {
+                PermanentMocksCollection::setHasWarning(true);
                 file_put_contents('php://stderr', "==============================================================\n");
                 file_put_contents('php://stderr', 'Do ' . $request->getMethod() . ' request to ' . $request->getUri() . ', Body: ' . $request->getBody() . "\n");
                 file_put_contents('php://stderr', "Response: \n" . $result[0]->getStringBody() . "\n");
