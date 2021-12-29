@@ -5,15 +5,14 @@ namespace ArtSkills\TestSuite;
 
 use ArtSkills\Error\InternalException;
 use ArtSkills\Lib\AppCache;
+use ArtSkills\Lib\Strings;
 use ArtSkills\Mailer\Transport\TestEmailTransport;
 use ArtSkills\ORM\Entity;
-use ArtSkills\Lib\Strings;
-use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\Mock\ConstantMocker;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientAdapter;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientMocker;
+use ArtSkills\TestSuite\Mock\ConstantMocker;
+use ArtSkills\TestSuite\Mock\MethodMocker;
 use ArtSkills\TestSuite\Mock\PropertyAccess;
-use ArtSkills\TestSuite\PermanentMocks\PermanentMocksCollection;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace ArtSkills\TestSuite\PermanentMocks;
+namespace ArtSkills\TestSuite;
 
 use ArtSkills\Error\InternalException;
 use ArtSkills\Filesystem\Folder;
 use ArtSkills\Lib\Env;
 use ArtSkills\Lib\Misc;
-use ArtSkills\TestSuite\ClassMockEntity;
+use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
 
 /**
  * Класс для подмены методов, необходимых только в тестовом окружении
