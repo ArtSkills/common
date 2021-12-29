@@ -30,7 +30,7 @@ class PermanentMocksCollection
     private static array $_disabledMocks = [];
 
     /**
-     * Индикатор ошибки в тесте
+     * Индикатор ошибки из-за незамоканного класса
      *
      * @var bool
      */
@@ -44,9 +44,6 @@ class PermanentMocksCollection
      */
     public static function init(): void
     {
-        // Возможно следует это убрать
-        self::setHasWarning(false);
-
         $permanentMocks = [
             // folder => namespace
             __DIR__ . '/PermanentMocks' => Misc::namespaceSplit(MockFileLog::class)[0],
