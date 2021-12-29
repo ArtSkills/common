@@ -88,7 +88,7 @@ class PermanentMocksCollection
         self::$_disabledMocks = [];
 
         if (self::hasWarning()) {
-            throw new Warning('Не замокан класс');
+            throw new Warning('Класс не был замокан');
         }
     }
 
