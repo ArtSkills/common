@@ -8,6 +8,7 @@ use ArtSkills\Filesystem\Folder;
 use ArtSkills\Lib\Env;
 use ArtSkills\Lib\Misc;
 use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
+use ArtSkills\Traits\Library;
 use PHPUnit\Framework\Warning;
 
 /**
@@ -15,6 +16,8 @@ use PHPUnit\Framework\Warning;
  */
 class PermanentMocksCollection
 {
+    use Library;
+
     /**
      * Набор постоянных моков
      *
