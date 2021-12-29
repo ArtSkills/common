@@ -8,6 +8,7 @@ use ArtSkills\Filesystem\Folder;
 use ArtSkills\Lib\Env;
 use ArtSkills\Lib\Misc;
 use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
+use PHPUnit\Framework\Warning;
 
 /**
  * Класс для подмены методов, необходимых только в тестовом окружении
@@ -29,6 +30,13 @@ class PermanentMocksCollection
     private static array $_disabledMocks = [];
 
     /**
+     * Индикатор ошибки в тесте
+     *
+     * @var bool
+     */
+    private static bool $_hasWarning = false;
+
+    /**
      * Инициалилзируем подмену методов
      *
      * @return void
@@ -36,6 +44,9 @@ class PermanentMocksCollection
      */
     public static function init(): void
     {
+        // Возможно следует это убрать
+        self::setHasWarning(false);
+
         $permanentMocks = [
             // folder => namespace
             __DIR__ . '/PermanentMocks' => Misc::namespaceSplit(MockFileLog::class)[0],
@@ -90,6 +101,10 @@ class PermanentMocksCollection
 
         self::$_permanentMocksList = [];
         self::$_disabledMocks = [];
+
+        if (self::hasWarning()) {
+            throw new Warning('Не замокан класс');
+        }
     }
 
     /**
@@ -101,5 +116,26 @@ class PermanentMocksCollection
     public static function disableMock(string $mockClass): void
     {
         self::$_disabledMocks[$mockClass] = true;
+    }
+
+    /**
+     * Записать статус ошибки
+     *
+     * @param bool $isWarning
+     * @return void
+     */
+    public static function setHasWarning(bool $isWarning): void
+    {
+        self::$_hasWarning = $isWarning;
+    }
+
+    /**
+     * Узнать статус ошибки
+     *
+     * @return bool
+     */
+    public static function hasWarning(): bool
+    {
+        return self::$_hasWarning;
     }
 }

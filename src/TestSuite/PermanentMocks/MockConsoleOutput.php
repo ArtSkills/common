@@ -45,7 +45,7 @@ class MockConsoleOutput extends ClassMockEntity
             }
         }
         $file = $trace[2];
-        file_put_contents('php://stderr', "test: $test \n Write to '$level' out from $file: $message\n\n");
+        self::_writeToConsole("test: $test \n Write to '$level' out from $file: $message\n\n");
         return true;
     }
 

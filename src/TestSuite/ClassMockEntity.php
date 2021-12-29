@@ -25,4 +25,14 @@ abstract class ClassMockEntity
     public static function destroy()
     {
     }
+
+    /**
+     * @param string $str
+     * @return void
+     */
+    protected static function _writeToConsole(string $str)
+    {
+        PermanentMocksCollection::setHasWarning(true);
+        file_put_contents('php://stderr', $str);
+    }
 }

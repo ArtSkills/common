@@ -37,7 +37,7 @@ class MockFileLog extends ClassMockEntity
             }
         }
         $file = $trace[4];
-        file_put_contents('php://stderr', "test: $test \n Write to '$level' file log from $file: $message\n\n");
+        self::_writeToConsole("test: $test \n Write to '$level' file log from $file: $message\n\n");
         return true;
     }
 }
