@@ -34,7 +34,7 @@ abstract class ClassMockEntity
      */
     protected static function _writeToConsole(string $str): void
     {
-        // PermanentMocksCollection::setHasWarning(true);
+        PermanentMocksCollection::setHasWarning(true);
         file_put_contents('php://stderr', $str);
     }
 }
