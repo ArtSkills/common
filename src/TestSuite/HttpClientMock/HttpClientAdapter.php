@@ -57,7 +57,7 @@ class HttpClientAdapter extends Stream
             $result = parent::_send($request);
 
             if (self::$_debugRequests) {
-                PermanentMocksCollection::setHasWarning(true);
+                // PermanentMocksCollection::setHasWarning(true);
                 file_put_contents('php://stderr', "==============================================================\n");
                 file_put_contents('php://stderr', 'Do ' . $request->getMethod() . ' request to ' . $request->getUri() . ', Body: ' . $request->getBody() . "\n");
                 file_put_contents('php://stderr', "Response: \n" . $result[0]->getStringBody() . "\n");
