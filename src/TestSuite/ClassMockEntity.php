@@ -35,7 +35,7 @@ abstract class ClassMockEntity
     protected static function _writeToConsole(string $str): void
     {
         PermanentMocksCollection::setHasWarning(true);
-        // var_dump($str);
+        PermanentMocksCollection::setWarningMessage('Класс не был замокан: ' . $str);
         file_put_contents('php://stderr', $str);
     }
 }

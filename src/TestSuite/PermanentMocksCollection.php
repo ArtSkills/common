@@ -40,6 +40,13 @@ class PermanentMocksCollection
     private static bool $_hasWarning = false;
 
     /**
+     * Сообщение ошибки
+     *
+     * @var string
+     */
+    private static string $_warningMessage = '';
+
+    /**
      * Инициалилзируем подмену методов
      *
      * @return void
@@ -47,6 +54,7 @@ class PermanentMocksCollection
      */
     public static function init(): void
     {
+        self::clearWarnings();
         $permanentMocks = [
             // folder => namespace
             __DIR__ . '/PermanentMocks' => Misc::namespaceSplit(MockFileLog::class)[0],
@@ -91,7 +99,7 @@ class PermanentMocksCollection
         self::$_disabledMocks = [];
 
         if (self::hasWarning()) {
-            throw new Warning('Класс не был замокан');
+            throw new Warning(self::getWarningMessage());
         }
     }
 
@@ -125,5 +133,37 @@ class PermanentMocksCollection
     public static function hasWarning(): bool
     {
         return self::$_hasWarning;
+    }
+
+    /**
+     * Записать причину ошибки
+     *
+     * @param string $warningMessage
+     * @return void
+     */
+    public static function setWarningMessage(string $warningMessage): void
+    {
+        self::$_warningMessage = $warningMessage;
+    }
+
+    /**
+     * Получить сообщение об ошибке
+     *
+     * @return string
+     */
+    public static function getWarningMessage(): string
+    {
+        return self::$_warningMessage;
+    }
+
+    /**
+     * Сбрасываем ошибки
+     *
+     * @return void
+     */
+    public static function clearWarnings(): void
+    {
+        self::$_hasWarning = false;
+        self::$_warningMessage = '';
     }
 }
