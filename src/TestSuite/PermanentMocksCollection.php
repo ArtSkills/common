@@ -33,7 +33,7 @@ class PermanentMocksCollection
     private static array $_disabledMocks = [];
 
     /**
-     * Индикатор ошибки если не был замокан класс
+     * Индикатор ошибка, если не был замокан класс
      *
      * @var bool
      */
