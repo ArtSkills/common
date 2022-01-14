@@ -33,7 +33,7 @@ class PermanentMocksCollection
     private static array $_disabledMocks = [];
 
     /**
-     * Индикатор ошибки из-за незамоканного класса
+     * Индикатор ошибки если не был замокан класс
      *
      * @var bool
      */
@@ -47,7 +47,7 @@ class PermanentMocksCollection
     private static string $_warningMessage = '';
 
     /**
-     * Инициалилзируем подмену методов
+     * Инициализируем подмену методов
      *
      * @return void
      * @throws InternalException
