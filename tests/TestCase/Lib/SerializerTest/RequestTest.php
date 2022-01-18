@@ -17,6 +17,9 @@ class RequestTest extends AbstractRequest
     /** @var RequestTest|null Объект */
     public ?RequestTest $fieldObject = null;
 
+    /** @var RequestTest[] Объекты */
+    public array $objects = [];
+
     /** @inheritDoc */
     public function addValidation(Validator $validator): Validator
     {

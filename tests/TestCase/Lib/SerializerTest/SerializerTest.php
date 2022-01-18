@@ -50,7 +50,9 @@ class SerializerTest extends AppTestCase
                 'fieldInt' => '9',
                 'fieldString' => 'exampleString',
                 'fieldObject' => null,
+                'objects' => [],
             ],
+            'objects' => [],
         ];
         $result = RequestTest::createFromJson(Arrays::encode($data));
         $data['fieldObject']['fieldInt'] = 9;
@@ -95,10 +97,36 @@ class SerializerTest extends AppTestCase
                 'fieldInt' => '9',
                 'fieldString' => 'exampleString',
                 'fieldObject' => null,
+                'objects' => [],
+            ],
+            'objects' => [
+                [
+                    'fieldInt' => 19,
+                    'fieldString' => 'exampleString',
+                    'testF' => 123,
+                    'fieldObject' => null,
+                    'objects' => [
+                        [
+                            'fieldInt' => 19,
+                            'fieldString' => 'exampleString',
+                            'fieldObject' => null,
+                            'objects' => [
+                                [
+                                    'fieldInt' => 19,
+                                    'fieldString' => 'exampleString',
+                                    'fieldObject' => null,
+                                    'objects' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
         $result = RequestTest::createFromJson(Arrays::encode($data));
         $data['fieldObject']['fieldInt'] = 9;
+        unset($data['objects'][0]['testF']);
+
         self::assertEquals($data, $result->toArray());
     }
 
@@ -112,7 +140,7 @@ class SerializerTest extends AppTestCase
      */
     public function testToArray(): void
     {
-        $data = ['fieldInt' => 123, 'fieldString' => null, 'fieldObject' => null];
+        $data = ['fieldInt' => 123, 'fieldString' => null, 'fieldObject' => null, 'objects' => []];
         $result = RequestTest::createFromArray($data);
 
         self::assertEquals($data, $result->toArray());
@@ -123,7 +151,7 @@ class SerializerTest extends AppTestCase
             $result->toArray(false, [AbstractObjectNormalizer::SKIP_NULL_VALUES => true])
         );
         self::assertEquals(
-            ['field_int' => 123],
+            ['field_int' => 123, 'objects' => []],
             $result->toArray(true, [AbstractObjectNormalizer::SKIP_NULL_VALUES => true])
         );
     }
