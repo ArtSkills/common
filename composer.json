@@ -10,6 +10,10 @@
     {
       "type": "vcs",
       "url": "git://github.com/vovantune/PHP_XLSXWriter"
+    },
+    {
+      "type": "vcs",
+      "url": "git://github.com/EggheadsSolutions/runkit-test-mocks"
     }
   ],
   "require": {
@@ -19,6 +23,7 @@
     "ext-curl": "*",
     "ext-pdo": "*",
     "ext-mbstring": "*",
+    "eggheads/mocks": "dev-alex_WB791",
     "cakephp/cakephp": "3.*",
     "robmorgan/phinx": "^0.8.1",
     "sentry/sentry": "^1.1",
