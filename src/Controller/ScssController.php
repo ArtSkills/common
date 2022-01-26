@@ -52,13 +52,14 @@ class ScssController extends Controller
         $resultText = Cache::remember($absFilePath . '#' . filemtime($absFilePath), function () use ($scssFilePath) {
             $styleFilePath = Strings::replacePostfix($scssFilePath, self::EXTENSION_SCSS, self::EXTENSION_CSS);
             $cmd = 'sass --style=compressed --embed-source-map "' . WWW_ROOT . $scssFilePath . '" "' . WWW_ROOT . $styleFilePath . '"';
+            $absResultPath = WWW_ROOT . $styleFilePath;
 
             $result = Shell::exec($cmd);
             if (!$result[0]) {
+                unlink($absResultPath);
                 $this->_throwInternalError(implode("\n", $result[1]));
             }
 
-            $absResultPath = WWW_ROOT . $styleFilePath;
             if (!file_exists($absResultPath)) {
                 $this->_throwInternalError("Result CSS file is not created");
             }
