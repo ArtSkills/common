@@ -5,7 +5,7 @@ namespace ArtSkills\Test\TestCase\TestSuite\Fixture;
 
 use ArtSkills\ORM\Table;
 use ArtSkills\TestSuite\Fixture\TestFixture;
-use ArtSkills\TestSuite\Mock\PropertyAccess;
+use Eggheads\Mocks\PropertyAccess;
 use ArtSkills\Test\Fixture\TestTableOneFixture;
 use ArtSkills\TestSuite\AppTestCase;
 use Cake\I18n\Time;

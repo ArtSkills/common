@@ -6,13 +6,12 @@ namespace ArtSkills\Test\TestCase\Lib;
 use ArtSkills\Lib\Shell;
 use ArtSkills\Lib\Git;
 use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\Mock\MethodMockerEntity;
-use ArtSkills\TestSuite\Mock\PropertyAccess;
+use Eggheads\Mocks\MethodMocker;
+use Eggheads\Mocks\MethodMockerEntity;
+use Eggheads\Mocks\PropertyAccess;
 
 class GitTest extends AppTestCase
 {
-
     /**
      * Объект git
      *

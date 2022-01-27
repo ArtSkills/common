@@ -443,16 +443,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/EggheadsSolutions/runkit-test-mocks.git",
-                "reference": "8c7daacf5ce2939f19665c80882a7cec03b1af34"
+                "reference": "04e35dec7623e24d824b941cbe2add58808ae471"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EggheadsSolutions/runkit-test-mocks/zipball/8c7daacf5ce2939f19665c80882a7cec03b1af34",
-                "reference": "8c7daacf5ce2939f19665c80882a7cec03b1af34",
+                "url": "https://api.github.com/repos/EggheadsSolutions/runkit-test-mocks/zipball/04e35dec7623e24d824b941cbe2add58808ae471",
+                "reference": "04e35dec7623e24d824b941cbe2add58808ae471",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4"
+                "php": ">=8.0 || >=7.4"
             },
             "require-dev": {
                 "eggheads/eggheads-code-style": "^1.2",
@@ -471,27 +471,33 @@
                 }
             },
             "scripts": {
+                "check": [
+                    "@test",
+                    "@cs-check",
+                    "@phpmd-check",
+                    "@phpstan-check"
+                ],
                 "cs-check": [
                     "phpcs --colors -p src/ tests/"
                 ],
                 "cs-fix": [
                     "phpcbf --colors -p src/ tests/"
                 ],
-                "test": [
-                    "phpunit --colors=always"
-                ],
                 "phpmd-check": [
                     "vendor/bin/phpmd src/,tests/ text phpmd-ruleset.xml"
                 ],
                 "phpstan-check": [
                     "vendor/bin/phpstan --configuration=phpstan.neon"
+                ],
+                "test": [
+                    "vendor/phpunit/phpunit/phpunit"
                 ]
             },
             "description": "Eggheads mocks utils",
             "support": {
                 "source": "https://github.com/EggheadsSolutions/runkit-test-mocks/tree/alex_WB791"
             },
-            "time": "2022-01-26T11:24:29+00:00"
+            "time": "2022-01-27T12:48:15+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -3912,9 +3918,6 @@
             "require": {
                 "php": "^7.1 || ^8.0"
             },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
-            },
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
@@ -6173,5 +6176,5 @@
         "ext-runkit7": "*",
         "ext-iconv": "*"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }

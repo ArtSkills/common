@@ -5,7 +5,7 @@ namespace ArtSkills\Test\TestCase\View\Helper;
 
 use ArtSkills\Error\InternalException;
 use ArtSkills\Filesystem\Folder;
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use ArtSkills\View\Helper\AssetHelper;
 use ArtSkills\TestSuite\AppTestCase;
 use Cake\Http\ServerRequest;

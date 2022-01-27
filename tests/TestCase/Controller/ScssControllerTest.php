@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ArtSkills\Test\TestCase\Controller;
 
 use ArtSkills\TestSuite\AppControllerTestCase;
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use ArtSkills\TestSuite\PermanentMocks\MockConsoleOutput;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
 

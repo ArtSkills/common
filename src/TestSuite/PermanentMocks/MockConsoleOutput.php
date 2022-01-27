@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace ArtSkills\TestSuite\PermanentMocks;
 
 use ArtSkills\TestSuite\ClassMockEntity;
-use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\Mock\MethodMockerEntity;
+use Eggheads\Mocks\MethodMocker;
+use Eggheads\Mocks\MethodMockerEntity;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOutput;
 use Cake\Error\Debugger;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ArtSkills\Test\TestCase\ValueObject;
 
 use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\Mock\ConstantMocker;
+use Eggheads\Mocks\ConstantMocker;
 use ArtSkills\ValueObject\ValueObject;
 use Cake\I18n\Date;
 use Cake\I18n\Time;
