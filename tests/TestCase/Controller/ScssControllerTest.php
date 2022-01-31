@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace ArtSkills\Test\TestCase\Controller;
 
+use ArtSkills\Lib\Strings;
 use ArtSkills\TestSuite\AppControllerTestCase;
-use Eggheads\Mocks\MethodMocker;
-use ArtSkills\TestSuite\PermanentMocks\MockConsoleOutput;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
+use Eggheads\Mocks\MethodMocker;
 
 class ScssControllerTest extends AppControllerTestCase
 {
@@ -39,5 +39,18 @@ class ScssControllerTest extends AppControllerTestCase
         $stringBody = (string)$this->_response->getBody();
         self::assertContains(".style1{font-weight:bold}", $stringBody);
         self::assertContains('sourceMappingURL', $stringBody);
+    }
+
+    /** Проверка на ошибки в scss */
+    public function testException(): void
+    {
+        file_put_contents(WWW_ROOT . self::TEST_FILE_NAME, '.style1 {font-weight: bold');
+
+        MethodMocker::mock(MockLog::class, 'write')
+            ->singleCall()
+            ->willReturnValue(true);
+
+        $this->get('/' . self::TEST_FILE_NAME);
+        self::assertFileNotExists(WWW_ROOT . Strings::replaceIfEndsWith(self::TEST_FILE_NAME, 'scss', 'css'));
     }
 }
