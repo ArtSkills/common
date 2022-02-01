@@ -23,7 +23,7 @@
     "ext-curl": "*",
     "ext-pdo": "*",
     "ext-mbstring": "*",
-    "eggheads/mocks": "dev-alex_WB791",
+    "eggheads/mocks": "^1.0.0",
     "cakephp/cakephp": "3.*",
     "robmorgan/phinx": "^0.8.1",
     "sentry/sentry": "^1.1",

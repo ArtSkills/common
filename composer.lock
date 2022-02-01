@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "46271cf56cd0098c96c996a1ddd2dd03",
+    "content-hash": "5466f05f913cd74c4c7c5106025ce55e",
     "packages": [
         {
             "name": "aura/intl",
@@ -420,16 +420,16 @@
         },
         {
             "name": "eggheads/mocks",
-            "version": "dev-alex_WB791",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EggheadsSolutions/runkit-test-mocks.git",
-                "reference": "04e35dec7623e24d824b941cbe2add58808ae471"
+                "reference": "cd638ec94763b308ca51120cc734bcbe280de6af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EggheadsSolutions/runkit-test-mocks/zipball/04e35dec7623e24d824b941cbe2add58808ae471",
-                "reference": "04e35dec7623e24d824b941cbe2add58808ae471",
+                "url": "https://api.github.com/repos/EggheadsSolutions/runkit-test-mocks/zipball/cd638ec94763b308ca51120cc734bcbe280de6af",
+                "reference": "cd638ec94763b308ca51120cc734bcbe280de6af",
                 "shasum": ""
             },
             "require": {
@@ -476,9 +476,9 @@
             },
             "description": "Eggheads mocks utils",
             "support": {
-                "source": "https://github.com/EggheadsSolutions/runkit-test-mocks/tree/alex_WB791"
+                "source": "https://github.com/EggheadsSolutions/runkit-test-mocks/tree/1.0.0"
             },
-            "time": "2022-01-27T12:48:15+00:00"
+            "time": "2022-02-01T13:18:03+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -5906,7 +5906,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "eggheads/mocks": 20,
         "mk-j/php_xlsxwriter": 20
     },
     "prefer-stable": false,
