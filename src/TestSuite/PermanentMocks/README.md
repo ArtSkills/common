@@ -1,5 +1,5 @@
 # Перманентный мок
-Все подобные классы описываются в папке `tests/Suite/Mock`. Инициализация описывается в статическом методе `init()` и вызывается во время вызова `setUp()` тестового кейса. 
+Все подобные классы описываются в папке `tests/Suite/Mock`. Инициализация описывается в статическом методе `init()` и вызывается во время вызова `setUp()` тестового кейса.
 Очистка каких-то внутренних переменных описывается в статическом метода `destroy()` и вызывается в `tearDown()` тестового кейса.
 
 По-умолчанию всегда мокается запись лога в файл, заменяется на вывод консоль ([MockFileLog](MockFileLog.php)).
@@ -9,7 +9,7 @@
 namespace App\Test\Suite\Mock;
 
 use App\Lib\CrmApi;
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use ArtSkills\TestSuite\ClassMockEntity;
 use Cake\Error\Debugger;
 
@@ -38,9 +38,9 @@ class MockSendSms extends ClassMockEntity
 }
 ```
 ## Отключение перманентного мока в кейсе
-Для отчключения какого-то перманентного мока в ``setUp``` кейса или родителя делаем следующий вызов: 
-```php 
+Для отчключения какого-то перманентного мока в ``setUp``` кейса или родителя делаем следующий вызов:
+```php
 $this->_disablePermanentMock(string $mockClass);
 ...
 parent::setUp(); // отключаем именно до вызова родителя
-``` 
+```

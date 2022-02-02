@@ -5,7 +5,7 @@ namespace ArtSkills\Test\TestCase\Shell\ValueObjectDocumentationShellTest;
 
 use ArtSkills\Shell\ValueObjectDocumentationShell;
 use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use Cake\Console\Shell;
 use Cake\Log\Log;
 

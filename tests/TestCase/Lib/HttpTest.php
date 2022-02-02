@@ -6,7 +6,7 @@ namespace ArtSkills\Test\TestCase\Lib;
 use ArtSkills\Lib\Http;
 use ArtSkills\TestSuite\AppTestCase;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientMocker;
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use Cake\Http\Client\Request;
 
 class HttpTest extends AppTestCase

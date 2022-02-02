@@ -5,10 +5,10 @@ namespace ArtSkills\Test\TestCase\Log\Engine;
 
 use ArtSkills\Log\Engine\SentryLog;
 use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\Mock\MethodMocker;
-use ArtSkills\TestSuite\Mock\MethodMockerEntity;
-use ArtSkills\TestSuite\Mock\PropertyAccess;
-use ArtSkills\TestSuite\PermanentMocks\MockConsoleOutput;
+use Eggheads\Mocks\MethodMocker;
+use Eggheads\Mocks\MethodMockerEntity;
+use Eggheads\Mocks\PropertyAccess;
+// use ArtSkills\TestSuite\PermanentMocks\MockConsoleOutput;
 use ArtSkills\TestSuite\PermanentMocks\MockFileLog;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
 use Cake\Console\ConsoleErrorHandler;

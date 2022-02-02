@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ArtSkills\TestSuite;
 
-use ArtSkills\TestSuite\Mock\PropertyAccess;
+use Eggheads\Mocks\PropertyAccess;
 use ArtSkills\Traits\Library;
 
 class SingletonCollection

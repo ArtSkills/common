@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f101c59b4e1f33a0c8dd458fbe62e72e",
+    "content-hash": "5466f05f913cd74c4c7c5106025ce55e",
     "packages": [
         {
             "name": "aura/intl",
@@ -417,6 +417,68 @@
                 }
             ],
             "time": "2020-05-25T17:44:05+00:00"
+        },
+        {
+            "name": "eggheads/mocks",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EggheadsSolutions/runkit-test-mocks.git",
+                "reference": "cd638ec94763b308ca51120cc734bcbe280de6af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EggheadsSolutions/runkit-test-mocks/zipball/cd638ec94763b308ca51120cc734bcbe280de6af",
+                "reference": "cd638ec94763b308ca51120cc734bcbe280de6af",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0 || >=7.4"
+            },
+            "require-dev": {
+                "eggheads/eggheads-code-style": "^1.2",
+                "ext-runkit7": "*",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eggheads\\Mocks\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Eggheads\\Mocks\\Test\\": "tests/"
+                }
+            },
+            "scripts": {
+                "check": [
+                    "@test",
+                    "@cs-check",
+                    "@phpmd-check",
+                    "@phpstan-check"
+                ],
+                "cs-check": [
+                    "phpcs --colors -p src/ tests/"
+                ],
+                "cs-fix": [
+                    "phpcbf --colors -p src/ tests/"
+                ],
+                "phpmd-check": [
+                    "vendor/bin/phpmd src/,tests/ text phpmd-ruleset.xml"
+                ],
+                "phpstan-check": [
+                    "vendor/bin/phpstan --configuration=phpstan.neon"
+                ],
+                "test": [
+                    "vendor/phpunit/phpunit/phpunit"
+                ]
+            },
+            "description": "Eggheads mocks utils",
+            "support": {
+                "source": "https://github.com/EggheadsSolutions/runkit-test-mocks/tree/1.0.0"
+            },
+            "time": "2022-02-01T13:18:03+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

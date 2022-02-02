@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ArtSkills\Test\TestCase\ORM;
 
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use ArtSkills\TestSuite\AppTestCase;
 use Cake\Database\Driver;
 use Cake\I18n\Time;

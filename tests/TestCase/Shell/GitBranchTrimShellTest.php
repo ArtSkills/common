@@ -7,7 +7,7 @@ use ArtSkills\Lib\Shell;
 use ArtSkills\Lib\Git;
 use ArtSkills\Shell\GitBranchTrimShell;
 use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use Cake\Core\Configure;
 use Cake\I18n\Time;
 

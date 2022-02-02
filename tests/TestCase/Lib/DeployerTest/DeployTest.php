@@ -9,7 +9,7 @@ use ArtSkills\Lib\Git;
 use ArtSkills\Lib\Strings;
 use ArtSkills\Log\Engine\SentryLog;
 use ArtSkills\TestSuite\AppTestCase;
-use ArtSkills\TestSuite\Mock\MethodMocker;
+use Eggheads\Mocks\MethodMocker;
 use Cake\Log\Log;
 
 /**

@@ -5,8 +5,8 @@ namespace ArtSkills\Test\TestCase\Controller;
 
 use ArtSkills\Lib\Strings;
 use ArtSkills\TestSuite\AppControllerTestCase;
-use ArtSkills\TestSuite\Mock\MethodMocker;
 use ArtSkills\TestSuite\PermanentMocks\MockLog;
+use Eggheads\Mocks\MethodMocker;
 
 class ScssControllerTest extends AppControllerTestCase
 {
