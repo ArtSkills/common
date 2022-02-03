@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5466f05f913cd74c4c7c5106025ce55e",
+    "content-hash": "69ddbb7180a429c86383be879403dcb2",
     "packages": [
         {
             "name": "aura/intl",
@@ -3819,21 +3819,21 @@
         },
         {
             "name": "eggheads/eggheads-code-style",
-            "version": "1.2.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vovantune/eggheads-code-style.git",
-                "reference": "7c65b175db9720df66de8cf93173b983243bfd23"
+                "url": "https://github.com/EggheadsSolutions/eggheads-code-style.git",
+                "reference": "d1de1ee2421a0cbe2dcc91d3e3cdaba2ae6397dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vovantune/eggheads-code-style/zipball/7c65b175db9720df66de8cf93173b983243bfd23",
-                "reference": "7c65b175db9720df66de8cf93173b983243bfd23",
+                "url": "https://api.github.com/repos/EggheadsSolutions/eggheads-code-style/zipball/d1de1ee2421a0cbe2dcc91d3e3cdaba2ae6397dc",
+                "reference": "d1de1ee2421a0cbe2dcc91d3e3cdaba2ae6397dc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.3",
-                "phpmd/phpmd": "@stable",
+                "phpmd/phpmd": "^2.10",
                 "phpstan/phpdoc-parser": "^0.5.4",
                 "phpstan/phpstan": "^0.12.90",
                 "setasign/phpcs-teamcity-report": "^1.0",
@@ -3879,10 +3879,9 @@
             "description": "Eggheads code style ruleset",
             "homepage": "https://eggheads.solutions",
             "support": {
-                "source": "https://github.com/vovantune/eggheads-code-style/tree/2.0.0",
-                "issues": "https://github.com/vovantune/eggheads-code-style/issues"
+                "source": "https://github.com/EggheadsSolutions/eggheads-code-style/tree/2.1.1"
             },
-            "time": "2021-06-28T09:01:50+00:00"
+            "time": "2022-01-31T14:19:32+00:00"
         },
         {
             "name": "jdorn/sql-formatter",

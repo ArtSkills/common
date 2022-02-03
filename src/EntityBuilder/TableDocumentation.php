@@ -163,7 +163,7 @@ class TableDocumentation
                 continue;
             }
 
-            require_once $folder->pwd() . DS . $tblFile; // дабы файл может создаться раньше, а autoload не вкурсе
+            include_once $folder->pwd() . DS . $tblFile; // дабы файл может создаться раньше, а autoload не вкурсе
             $result[] = str_replace('.php', '', $tblFile);
         }
         return $result;
