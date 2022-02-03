@@ -148,7 +148,7 @@ class EntityBuilderTest extends AppTestCase
         self::assertFileEquals(__DIR__ . '/ExpectedResults/CreateTable/TestTableFourTable.php', $actualFilePath, 'Ошибка создания нового класса таблицы');
 
         // очень плохое решение, но я не придумал ничего лучше
-        require_once $actualFilePath;
+        include_once $actualFilePath;
         /**
          * table_three - был только пустой класс таблицы, всё создалось
          */

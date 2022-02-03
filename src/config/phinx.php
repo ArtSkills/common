@@ -28,8 +28,8 @@ function getPhinxConfig(
             'default_database' => 'default',
         ],
     ];
-    require_once($pathsFile);
-    $cakeConfig = require_once($dbConfFile);
+    require_once($pathsFile); // phpcs:ignore
+    $cakeConfig = require_once($dbConfFile); // phpcs:ignore
     $connectionInfo = $cakeConfig['Datasources']['default'];
     $phinxConfig['environments']['default'] = [
         'adapter' => 'mysql',

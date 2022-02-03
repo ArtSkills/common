@@ -29,7 +29,7 @@ class EntityBuilderShell extends Shell
     }
 
     /**
-     * инициализация конфига
+     * Инициализация конфига
      *
      * @return void
      */
@@ -52,7 +52,7 @@ class EntityBuilderShell extends Shell
     {
         $this->_setConfig();
         $newTableFile = EntityBuilder::createTableClass($this->args[0]);
-        require_once $newTableFile;
+        include_once $newTableFile;
         EntityBuilder::build();
         $this->out('Yahaa, update Model folder');
     }
