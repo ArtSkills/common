@@ -1,0 +1,9 @@
+name: Code Analyse
+
+on: [ pull_request ]
+
+jobs:
+  php-standart-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: EggheadsSolutions/php-standart-check@v1
