@@ -1,0 +1,9 @@
+name: Code Analyse
+
+on: [ push ]
+
+jobs:
+  php-standart-check:
+    runs-on: self-runner
+    steps:
+      - run: echo test
