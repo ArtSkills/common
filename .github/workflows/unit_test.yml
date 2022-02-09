@@ -15,4 +15,4 @@ jobs:
           clickhouse: 'no'
           use-repository-config: 'no'
           app-local-php: 'no'
-          additional-parameters: '-exclude-group Git'
+          additional-parameters: '--exclude-group Git'
