@@ -34,7 +34,7 @@ RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/loca
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g sass \
-    npm install uglify-es -g
+    npm install uglify-js -g
 
 # Настройка PHP
 RUN echo "post_max_size = 200M" > /usr/local/etc/php/conf.d/40-custom.ini \
