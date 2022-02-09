@@ -10,9 +10,8 @@ jobs:
     steps:
       - uses: EggheadsSolutions/php-unit-test@v1
         with:
-          mysql: 'no'
-          redis: 'no'
+          mysql: 'yes'
+          redis: 'yes'
           clickhouse: 'no'
-          use-repository-config: 'no'
-          app-local-php: 'no'
+          config-dir: 'test-app-conf'
           additional-parameters: '--exclude-group Git'
