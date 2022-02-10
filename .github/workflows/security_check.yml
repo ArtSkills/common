@@ -16,3 +16,4 @@ jobs:
           ignore-unfixed: true
           format: 'table'
           severity: 'CRITICAL'
+          list-all-pkgs: true
