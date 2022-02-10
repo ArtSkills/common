@@ -1,7 +1,7 @@
 name: Unit Test
 
 # Controls when the action will run.
-on: [ push ]
+on: [ pull_request ]
 
 jobs:
   test:
