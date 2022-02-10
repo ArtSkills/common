@@ -15,4 +15,4 @@ jobs:
           clickhouse: 'no'
           config-dir: 'test-app-conf'
           additional-parameters: '--exclude-group Git'
-          npm-package: sass
+          npm-packages: sass
