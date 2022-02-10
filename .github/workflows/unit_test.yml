@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: EggheadsSolutions/php-unit-test@v1
         with:
-          mysql: 'no'
+          mysql: 'yes'
           redis: 'no'
           clickhouse: 'no'
           config-dir: 'test-app-conf'
