@@ -16,3 +16,4 @@ jobs:
           config-dir: 'test-app-conf'
           additional-parameters: '--exclude-group Git'
           npm-packages: sass
+
