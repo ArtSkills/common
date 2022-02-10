@@ -11,7 +11,7 @@ jobs:
       - uses: EggheadsSolutions/php-unit-test@v1
         with:
           mysql: 'yes'
-          redis: 'yes'
+          redis: 'no'
           clickhouse: 'no'
           config-dir: 'test-app-conf'
           additional-parameters: '--exclude-group Git'
