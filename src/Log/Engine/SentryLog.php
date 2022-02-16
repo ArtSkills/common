@@ -113,7 +113,7 @@ class SentryLog extends BaseLog
      */
     public static function addInfo(array $info)
     {
-        self::$_addInfo += $info;
+        self::$_addInfo = $info + self::$_addInfo;
     }
 
     /**

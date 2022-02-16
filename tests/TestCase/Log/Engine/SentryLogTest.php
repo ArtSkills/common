@@ -493,7 +493,7 @@ class SentryLogTest extends AppTestCase
             'message' => $message,
             'level' => Raven_Client::ERROR,
         ], $crumb);
-        self::assertEquals(Debugger::exportVar($extra + $extraNew), $crumb['data']['error_extra']);
+        self::assertEquals(Debugger::exportVar($extraNew + $extra), $crumb['data']['error_extra']);
         $this->assertArraySubsetEquals([
             'class' => __CLASS__,
             'function' => __FUNCTION__,
