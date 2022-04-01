@@ -111,38 +111,35 @@ class ApiDocumentationController extends Controller
     /**
      * Формируем выдачу в формате HTML
      *
-     * @see https://github.com/swagger-api/swagger-codegen/tree/3.0.0#online-generators
+     * @see https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/installation.md#unpkg
      *
      * @return string
      */
     private function _getHtml(): string
     {
-        return Cache::remember('ApiDocumentationHtml#' . CORE_VERSION, function () {
-            $client = new Client();
-            $result = $client->post('https://generator3.swagger.io/api/generate', Arrays::encode([
-                'spec' => $this->_getJson(),
-                'lang' => 'html2',
-                'type' => 'CLIENT',
-                'codegenVersion' => 'V3',
-            ]), [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-            ]);
-            $this->_throwUserError('Ошибка запроса к внешнему сервису', empty($result));
-
-            $file = new File(File::generateTempFilePath('api-documentation'));
-            $file->write($result->getStringBody());
-            $file->close();
-
-            $archive = new ZipArchive();
-            $archive->open($file->path);
-            $htmlString = $archive->getFromName('index.html');
-            if (empty($htmlString)) {
-                $this->_throwInternalError("Пустой файл с API документацией!");
-            }
-            $file->delete();
-            return $htmlString;
-        }, static::DOCUMENTATION_CACHE_PROFILE);
+        return <<<DOC
+            <!DOCTYPE html>
+            <html lang="ru">
+            <head>
+              <meta charset="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <meta name="description" content="SwaggerIU" />
+              <title>API документация</title>
+              <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui.css" />
+            </head>
+            <body>
+            <div id="swagger-ui"></div>
+            <script src="https://unpkg.com/swagger-ui-dist@4.5.0/swagger-ui-bundle.js" crossorigin></script>
+            <script>
+              window.onload = () => {
+                window.ui = SwaggerUIBundle({
+                  url: '/ApiDocumentation.json',
+                  dom_id: '#swagger-ui',
+                });
+              };
+            </script>
+            </body>
+            </html>
+        DOC;
     }
 }
