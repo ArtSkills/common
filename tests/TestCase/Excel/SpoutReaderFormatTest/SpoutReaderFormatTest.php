@@ -17,7 +17,6 @@ class SpoutReaderFormatTest extends AppTestCase
 
         // Выводим пустые строки
         $reader = new SpoutReaderFormat($testFile);
-        self::assertCount(34, $reader->getRows(1, 1, false));
         $result = $reader->getRows(1, 34, false);
         self::assertEquals([
             0 => [
