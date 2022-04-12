@@ -94,9 +94,10 @@ class SpoutReaderFormat extends AbstractReaderFormat
             $value = '';
             $rowCells = [];
             foreach ($cells as $cell) {
+                $rowCells[] = $cell->getValue();
+
                 try {
                     $value .= $cell->getValue();
-                    $rowCells[] = $cell->getValue();
                 } catch (\Throwable $exception) {
                     $value.= 'something'; // всё равно, что лежит в этой ячейке, шлавное что заполнена
                 }
