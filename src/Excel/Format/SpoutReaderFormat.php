@@ -99,7 +99,7 @@ class SpoutReaderFormat extends AbstractReaderFormat
                 try {
                     $value .= $cell->getValue();
                 } catch (\Throwable $exception) {
-                    $value.= 'something'; // всё равно, что лежит в этой ячейке, шлавное что заполнена
+                    $value.= 'something'; // всё равно, что лежит в этой ячейке, главное - что заполнена
                 }
             }
 
