@@ -51,7 +51,8 @@ class ScssController extends Controller
 
         $resultText = Cache::remember($absFilePath . '#' . filemtime($absFilePath), function () use ($scssFilePath) {
             $styleFilePath = Strings::replacePostfix($scssFilePath, self::EXTENSION_SCSS, self::EXTENSION_CSS);
-            $cmd = 'sass --style=compressed --embed-source-map "' . WWW_ROOT . $scssFilePath . '" "' . WWW_ROOT . $styleFilePath . '"';
+            $cmd = 'sass --style=compressed --embed-source-map "' . WWW_ROOT . $scssFilePath . '" "' . WWW_ROOT . $styleFilePath .
+                   '"; postcss "' . WWW_ROOT . $styleFilePath . '" --use autoprefixer -o "' . WWW_ROOT . $styleFilePath . '"';
             $absResultPath = WWW_ROOT . $styleFilePath;
 
             $result = Shell::exec($cmd);
