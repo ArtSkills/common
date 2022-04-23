@@ -8,12 +8,12 @@ jobs:
     name: Simple unit-test
     runs-on: ubuntu-latest
     steps:
-      - uses: EggheadsSolutions/php-unit-test@v1
+      - uses: EggheadsSolutions/ci-php-unit-test@v1
         with:
           mysql: 'yes'
           redis: 'no'
           clickhouse: 'no'
           config-dir: 'test-app-conf'
           additional-parameters: '--exclude-group Git'
-          npm-packages: sass
+          npm-packages: sass postcss postcss-cli autoprefixer
 
