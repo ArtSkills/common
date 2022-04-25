@@ -44,7 +44,7 @@ class ScssControllerTest extends AppControllerTestCase
     /** Проверка на ошибки в scss */
     public function testException(): void
     {
-        file_put_contents(WWW_ROOT . self::TEST_FILE_NAME, '.style1 {font-weight: bold}');
+        file_put_contents(WWW_ROOT . self::TEST_FILE_NAME, '.style1 {font-weight: bold');
 
         MethodMocker::mock(MockLog::class, 'write')
             ->singleCall()
