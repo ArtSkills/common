@@ -162,7 +162,7 @@ class SentryLog extends BaseLog
      * @SuppressWarnings(PHPMD.MethodArgs)
      * @phpstan-ignore-next-line
      */
-    private static function _log(string $level, ?string $message, $exception, array $context = [])
+    private static function _log(string $level, $message, $exception, array $context = [])
     {
         $sentryLevel = array_key_exists($level, self::LEVEL_MAP) ? self::LEVEL_MAP[$level] : Raven_Client::ERROR;
         if (empty($context[self::KEY_IS_HANDLED])
