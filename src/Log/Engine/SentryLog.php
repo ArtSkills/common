@@ -164,6 +164,7 @@ class SentryLog extends BaseLog
      */
     private static function _log(string $level, $message, $exception, array $context = [])
     {
+        $message = (string)$message;
         $sentryLevel = array_key_exists($level, self::LEVEL_MAP) ? self::LEVEL_MAP[$level] : Raven_Client::ERROR;
         if (empty($context[self::KEY_IS_HANDLED])
             && (
