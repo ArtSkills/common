@@ -83,7 +83,7 @@ class Client extends \Cake\Http\Client
      * @inheritDoc
      * @phpstan-ignore-next-line
      */
-    public function post($url, $data = [], array $options = []): Response
+    public function post($url, $data = [], array $options = [])
     {
         // Добавляем заголовков по-умолчанию для post запросов
         $options['headers'] = ($options['headers'] ?? []) + self::DEFAULT_POST_HEADERS;
