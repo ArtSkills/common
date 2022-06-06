@@ -165,7 +165,7 @@ abstract class AbstractQueueCommand extends Command
             case 'mb':
                 $value *= (1024 ** 2);
                 break;
-            case  'g':
+            case 'g':
             case 'gb':
                 $value *= (1024 ** 3);
                 break;
