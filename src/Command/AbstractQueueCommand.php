@@ -105,9 +105,11 @@ abstract class AbstractQueueCommand extends Command
             $taskCode = $this->_runTask($io);
             if (Env::isUnitTest()) {
                 $io->info('Unit test mode, exit');
+                $this->_tearDown($io);
                 return $taskCode;
             }
             if ($taskCode > 0) {
+                $this->_tearDown($io);
                 return $taskCode;
             }
 
