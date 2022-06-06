@@ -39,6 +39,7 @@ use Throwable;
  * @method static setThreadsLimit(int $limit)
  * @method static array|null getApiInfo()
  * @method static setDebug(bool $enableDebug)
+ * @method static int getMaxQueueRunSeconds()
  */
 class Env
 {
