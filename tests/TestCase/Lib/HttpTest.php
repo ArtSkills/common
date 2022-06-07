@@ -6,13 +6,12 @@ namespace ArtSkills\Test\TestCase\Lib;
 use ArtSkills\Lib\Http;
 use ArtSkills\TestSuite\AppTestCase;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientMocker;
+use Cake\Http\Client;
 use Eggheads\Mocks\MethodMocker;
 use Cake\Http\Client\Request;
 
 class HttpTest extends AppTestCase
 {
-
-
     /**
      * Проверка работы Json
      *
@@ -69,7 +68,7 @@ class HttpTest extends AppTestCase
         self::assertEquals($testJson, Http::postJson('http://testapi.com', $testData), 'Результаты запроса не совпадают');
 
         // запрос обломался
-        MethodMocker::mock(\Cake\Http\Client::class, 'post')
+        MethodMocker::mock(Client::class, 'post')
             ->willReturnValue(null);
 
         self::assertNull(Http::postJson('http://testapi.com', $testData));
@@ -92,7 +91,7 @@ class HttpTest extends AppTestCase
         self::assertEquals($testJson, Http::putJson('http://testapi.com', $testData), 'Результаты запроса не совпадают');
 
         // запрос обломался
-        MethodMocker::mock(\Cake\Http\Client::class, 'put')
+        MethodMocker::mock(Client::class, 'put')
             ->willReturnValue(null);
 
         self::assertNull(Http::putJson('http://testapi.com', $testData));
