@@ -65,4 +65,14 @@ class ProxyList
             ->fetchAll('assoc');
         $this->_proxyList = array_map([ProxyItem::class, 'create'], $rows);
     }
+
+    /**
+     * Вернуть весь список прокси
+     *
+     * @return ProxyItem[]|null
+     */
+    public function getFullProxyList()
+    {
+        return $this->_proxyList;
+    }
 }
