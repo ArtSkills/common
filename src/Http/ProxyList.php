@@ -71,7 +71,7 @@ class ProxyList
      *
      * @return ProxyItem[]|null
      */
-    public function getFullProxyList()
+    public function getProxyList()
     {
         return $this->_proxyList;
     }
