@@ -40,6 +40,8 @@ use Throwable;
  * @method static array|null getApiInfo()
  * @method static setDebug(bool $enableDebug)
  * @method static int getMaxQueueRunSeconds()
+ * @method static string getApiDocumentationExclude()
+ * @method static void setApiDocumentationExclude(string[] $absExcludePaths)
  */
 class Env
 {

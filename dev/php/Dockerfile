@@ -33,7 +33,7 @@ RUN  curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/loca
 # Для тестирования sass
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
     && apt-get install -y nodejs \
-    && npm install -g sass \
+    && npm install -g sass postcss postcss-cli \
     npm install uglify-js -g
 
 # Настройка PHP
