@@ -10,7 +10,7 @@ use \PHPUnit\Framework\ExpectationFailedException;
 
 class HttpClientMockerEntityTest extends AppTestCase
 {
-    const DEFAULT_TEST_URL = 'http://www.artskills.ru';
+    const DEFAULT_TEST_URL = 'https://www.artskills.ru';
     const DEFAULT_POST_DATA = ['foo' => 'barr', 'bar' => 'babar'];
 
     /**

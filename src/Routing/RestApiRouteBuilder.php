@@ -238,8 +238,7 @@ class RestApiRouteBuilder
 
         $hasSuccessResponse = false;
         foreach ($annotation->responses as $response) {
-            if ($response->response != '200') // тут нельзя строго, ибо бага либы
-            {
+            if ($response->response != '200') { // тут нельзя строго, ибо бага либы
                 continue;
             }
             $hasSuccessResponse = true;
