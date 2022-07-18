@@ -51,6 +51,7 @@ composer check
 * Полезные фичи [ORM](src/ORM) (классы Table, Entity, Query).
 * [Helper для работы со скриптами и стилями](src/View/Helper)).
 * [Деплойщик](src/Lib/Deployer.md) проектов
+* [Роутер для Rest Api запросов на основе OpenApi аннотаций](src/Routing)
 
 ## Мелочь
 * [Формирование](src/config/phinx.php) конфига для phinx на основе кейковского конфига подключения

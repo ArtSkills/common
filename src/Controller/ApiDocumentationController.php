@@ -93,7 +93,7 @@ class ApiDocumentationController extends Controller
                 ],
             ];
 
-            $swagger = scan([APP, __DIR__]);
+            $swagger = scan([APP, __DIR__], ['exclude' => Env::getApiDocumentationExclude() ?? []]);
             $swagger->info = new Info([
                 'title' => $apiInfo['title'],
                 'description' => $apiInfo['description'],
