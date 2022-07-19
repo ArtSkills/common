@@ -42,6 +42,7 @@ use Throwable;
  * @method static int getMaxQueueRunSeconds()
  * @method static string getApiDocumentationExclude()
  * @method static void setApiDocumentationExclude(string[] $absExcludePaths)
+ * @method static void setServerName(string $newServerName)
  */
 class Env
 {

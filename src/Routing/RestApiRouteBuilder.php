@@ -5,6 +5,7 @@ namespace ArtSkills\Routing;
 
 use ArtSkills\Filesystem\Folder;
 use ArtSkills\Lib\Strings;
+use ArtSkills\Lib\Url;
 use ArtSkills\Routing\Route\RestApiRoute;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\RouteBuilder;
@@ -55,6 +56,13 @@ class RestApiRouteBuilder
     private StaticAnalyser $_analyser;
 
     /**
+     * Префикс URL вызова всего проекта
+     *
+     * @var string
+     */
+    private string $_projectPathPrefix;
+
+    /**
      * Конструктор
      *
      * @param RouteBuilder $routes
@@ -64,6 +72,13 @@ class RestApiRouteBuilder
         $this->_routes = $routes;
         $this->_controllersDir = APP . 'Controller' . DS;
         $this->_analyser = new StaticAnalyser();
+
+        $urlArgs = parse_url(Url::withDomainAndProtocol());
+        if (!empty($urlArgs['path'])) {
+            $this->_projectPathPrefix = $urlArgs['path'] !== '/' ? $urlArgs['path'] : '';
+        } else {
+            $this->_projectPathPrefix = '';
+        }
     }
 
     /**
@@ -132,7 +147,7 @@ class RestApiRouteBuilder
         }
 
 
-        $route = '/' . str_replace(['{', '}'], [':', ''], $annotationRoute);
+        $route = $this->_projectPathPrefix . '/' . str_replace(['{', '}'], [':', ''], $annotationRoute);
         if (Strings::endsWith($route, '.' . self::JSON_EXTENSION)) {
             throw new MissingRouteException('В маршруте ' . $annotationRoute . ' .' . self::JSON_EXTENSION . ' постфикс запрещён' .
                 ' (' . $annotation->_context->filename . ', метод ' . $annotation->_context->method . ')');
