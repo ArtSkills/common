@@ -43,6 +43,7 @@
  * @prop {number[]} arrNumberProp
  * @prop {Object1[]} arrObjectProp
  * @prop {Object1} objectPropOrNull
+ * @prop {Object1} objectPropEmptyTypeOrNull
  * @prop {boolean} boolProp
  * @prop {number} intProp Возможные значения: 1, 2
  * @prop {Object1} object1
