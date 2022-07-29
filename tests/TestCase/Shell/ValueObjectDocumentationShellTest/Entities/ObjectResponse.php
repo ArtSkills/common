@@ -25,4 +25,10 @@ class ObjectResponse extends ObjectParentResponse
      * @var Object1|null
      */
     public ?Object1 $objectPropOrNull = null;
+
+    /**
+     * @OA\Property()
+     * @var Object1|null
+     */
+    public $objectPropEmptyTypeOrNull = null;
 }
