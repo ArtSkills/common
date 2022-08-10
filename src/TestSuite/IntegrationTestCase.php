@@ -135,7 +135,7 @@ abstract class IntegrationTestCase extends TestCase
     }
 
     /**
-     * Отправляем DELETE запрос и получаем JSON результат
+     * Отправляем PUT запрос и получаем JSON результат
      *
      * @param string $url
      * @return array
