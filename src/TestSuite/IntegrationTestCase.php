@@ -124,6 +124,7 @@ abstract class IntegrationTestCase extends TestCase
      * Отправляем DELETE запрос и получаем JSON результат
      *
      * @param string $url
+     * @param string|array $data
      * @return array
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
@@ -138,6 +139,7 @@ abstract class IntegrationTestCase extends TestCase
      * Отправляем PUT запрос и получаем JSON результат
      *
      * @param string $url
+     * @param string|array $data
      * @return array
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
