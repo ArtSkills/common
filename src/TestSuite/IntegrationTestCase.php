@@ -124,13 +124,29 @@ abstract class IntegrationTestCase extends TestCase
      * Отправляем DELETE запрос и получаем JSON результат
      *
      * @param string $url
+     * @param string|array $data
      * @return array
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    public function deleteJsonResponse(string $url): array
+    public function deleteJsonResponse(string $url, $data = []): array
     {
-        $this->delete($url);
+        $this->_sendRequest($url, 'DELETE', $data);
+        return $this->getJsonResponse();
+    }
+
+    /**
+     * Отправляем PUT запрос и получаем JSON результат
+     *
+     * @param string $url
+     * @param string|array $data
+     * @return array
+     * @phpstan-ignore-next-line
+     * @SuppressWarnings(PHPMD.MethodArgs)
+     */
+    public function putJsonResponse(string $url, $data = []): array
+    {
+        $this->put($url, $data);
         return $this->getJsonResponse();
     }
 
