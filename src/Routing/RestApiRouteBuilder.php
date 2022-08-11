@@ -60,7 +60,7 @@ class RestApiRouteBuilder
      *
      * @var string
      */
-    private string $_projectPathPrefix;
+    private string $_projectPathPrefix = '';
 
     /**
      * Конструктор
@@ -72,13 +72,6 @@ class RestApiRouteBuilder
         $this->_routes = $routes;
         $this->_controllersDir = APP . 'Controller' . DS;
         $this->_analyser = new StaticAnalyser();
-
-        $urlArgs = parse_url(Url::withDomainAndProtocol());
-        if (!empty($urlArgs['path'])) {
-            $this->_projectPathPrefix = $urlArgs['path'] !== '/' ? $urlArgs['path'] : '';
-        } else {
-            $this->_projectPathPrefix = '';
-        }
     }
 
     /**

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace ArtSkills\Test\TestCase\Routing;
 
-use ArtSkills\Lib\Env;
 use ArtSkills\Routing\RestApiRouteBuilder;
 use ArtSkills\TestSuite\AppTestCase;
 use Cake\Routing\Exception\MissingRouteException;
@@ -142,29 +141,6 @@ class RestApiRouteBuilderTest extends AppTestCase
             'prefix' => 'RestApi/Success',
             '_matchedRoute' => '/successDelete/:wbConfigId',
         ], $collection->parse('/successDelete/666', 'DELETE'));
-    }
-
-    /**
-     * Если у проекта есть префикс в пути (подпроект основного проекта)
-     *
-     * @return void
-     */
-    public function testPathPrefix(): void
-    {
-        Env::setServerName('eggheads.solutions/oz');
-        $collection = $this->_buildCollection('RestApi/Success');
-
-        self::assertEquals([
-            'pass' => [],
-            'controller' => 'Success',
-            'action' => 'index',
-            'plugin' => null,
-            '_method' => [
-                0 => 'GET',
-            ],
-            'prefix' => 'RestApi/Success',
-            '_matchedRoute' => '/oz/success',
-        ], $collection->parse('/oz/success', 'GET'));
     }
 
     /**
