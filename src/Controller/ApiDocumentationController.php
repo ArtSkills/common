@@ -3,16 +3,13 @@ declare(strict_types=1);
 
 namespace ArtSkills\Controller;
 
-use ArtSkills\Filesystem\File;
-use ArtSkills\Http\Client;
-use ArtSkills\Lib\Arrays;
 use ArtSkills\Lib\Env;
 use ArtSkills\Lib\Url;
 use Cake\Cache\Cache;
 use Cake\Http\Response;
 use OpenApi\Annotations\Contact;
 use OpenApi\Annotations\Info;
-use ZipArchive;
+use OpenApi\Annotations\Server;
 use function OpenApi\scan;
 
 /**
@@ -79,20 +76,7 @@ class ApiDocumentationController extends Controller
     private function _getJson(): array
     {
         return Cache::remember('ApiDocumentationJson#' . CORE_VERSION, function () {
-            $apiInfo = Env::getApiInfo();
-            if (empty($apiInfo)) {
-                $apiInfo = [];
-            }
-            $apiInfo += [
-                'title' => 'Eggheads.Solutions Api',
-                'description' => 'Eggheads.Solutions Api. Документ сформирован автоматически, онлайн <a href="https://github.com/swagger-api/swagger-codegen/tree/3.0.0#online-generators">генератор кода API</a>',
-                'version' => '1',
-                'contact' => [
-                    'email' => 'tune@eggheads.solutions',
-                    'url' => '/apiDocumentation.json',
-                ],
-            ];
-
+            $apiInfo = $this->_getApiInfo();
             $swagger = scan([APP, __DIR__], ['exclude' => Env::getApiDocumentationExclude() ?? []]);
             $swagger->info = new Info([
                 'title' => $apiInfo['title'],
@@ -103,6 +87,12 @@ class ApiDocumentationController extends Controller
                     'url' => Url::withDomainAndProtocol($apiInfo['contact']['url']),
                 ]),
             ]);
+
+            $swagger->servers = [
+                new Server([
+                    'url' => Url::withDomainAndProtocol(),
+                ]),
+            ];
 
             return json_decode(json_encode($swagger), true);
         }, static::DOCUMENTATION_CACHE_PROFILE);
@@ -117,6 +107,8 @@ class ApiDocumentationController extends Controller
      */
     private function _getHtml(): string
     {
+        $apiInfo = $this->_getApiInfo();
+        $apiUrl = Url::withDomainAndProtocol($apiInfo['contact']['url']);
         return <<<DOC
             <!DOCTYPE html>
             <html lang="ru">
@@ -133,7 +125,7 @@ class ApiDocumentationController extends Controller
             <script>
               window.onload = () => {
                 window.ui = SwaggerUIBundle({
-                  url: '/ApiDocumentation.json',
+                  url: "{$apiUrl}",
                   dom_id: '#swagger-ui',
                 });
               };
@@ -141,5 +133,29 @@ class ApiDocumentationController extends Controller
             </body>
             </html>
         DOC;
+    }
+
+    /**
+     * Получаю основную информацию по настройке API
+     *
+     * @return array<string, mixed>
+     */
+    private function _getApiInfo(): array
+    {
+        $apiInfo = Env::getApiInfo();
+        if (empty($apiInfo)) {
+            $apiInfo = [];
+        }
+        $apiInfo += [
+            'title' => 'Eggheads.Solutions Api',
+            'description' => 'Eggheads.Solutions Api. Документ сформирован автоматически, онлайн <a href="https://github.com/swagger-api/swagger-codegen/tree/3.0.0#online-generators">генератор кода API</a>',
+            'version' => '1',
+            'contact' => [
+                'email' => 'tune@eggheads.solutions',
+                'url' => '/apiDocumentation.json',
+            ],
+        ];
+
+        return $apiInfo;
     }
 }
