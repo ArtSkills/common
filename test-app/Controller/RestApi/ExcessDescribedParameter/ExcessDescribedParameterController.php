@@ -7,7 +7,7 @@ class ExcessDescribedParameterController
 {
     /**
      * @OA\Get(
-     *  path = "excessDescribedParameter/{wbConfigId}",
+     *  path = "/excessDescribedParameter/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      name = "wbConfigId",

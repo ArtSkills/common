@@ -7,7 +7,7 @@ class BadPrefixController
 {
     /**
      * @OA\Get(
-     *  path = "/badPrefix",
+     *  path = "badPrefix",
      *  @OA\Response(
      *    response = 200,
      *    description = "Результат запроса",

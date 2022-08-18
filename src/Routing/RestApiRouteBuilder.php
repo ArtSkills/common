@@ -134,13 +134,13 @@ class RestApiRouteBuilder
         $controllerPathPrefix = Strings::replacePostfix($fileUri, '/' . $controller);
         $annotationRoute = $annotation->path;
 
-        if (Strings::startsWith($annotationRoute, '/')) {
-            throw new MissingRouteException('В маршруте ' . $annotationRoute . ' путь должен быть относительным, без "/"' .
+        if (!Strings::startsWith($annotationRoute, '/')) {
+            throw new MissingRouteException('В маршруте ' . $annotationRoute . ' путь должен быть абсолютным, т.е. начинаться с "/"' .
                 ' (' . $annotation->_context->filename . ', метод ' . $annotation->_context->method . ')');
         }
 
 
-        $route = $this->_projectPathPrefix . '/' . str_replace(['{', '}'], [':', ''], $annotationRoute);
+        $route = $this->_projectPathPrefix . str_replace(['{', '}'], [':', ''], $annotationRoute);
         if (Strings::endsWith($route, '.' . self::JSON_EXTENSION)) {
             throw new MissingRouteException('В маршруте ' . $annotationRoute . ' .' . self::JSON_EXTENSION . ' постфикс запрещён' .
                 ' (' . $annotation->_context->filename . ', метод ' . $annotation->_context->method . ')');

@@ -7,7 +7,7 @@ class NoResponseController
 {
     /**
      * @OA\Get(
-     *  path = "noResponse"
+     *  path = "/noResponse"
      * )
      */
     public function index()

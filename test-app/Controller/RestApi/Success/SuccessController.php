@@ -7,7 +7,7 @@ class SuccessController
 {
     /**
      * @OA\Get(
-     *  path = "success",
+     *  path = "/success",
      *  @OA\Response(
      *    response = 200,
      *    description = "Результат запроса",
@@ -22,7 +22,7 @@ class SuccessController
 
     /**
      * @OA\Get(
-     *  path = "success/{wbConfigId}",
+     *  path = "/success/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      name = "wbConfigId",
@@ -44,7 +44,7 @@ class SuccessController
 
     /**
      * @OA\Post(
-     *  path = "success",
+     *  path = "/success",
      *  @OA\Response(
      *    response = 200,
      *    description = "Результат запроса",
@@ -59,7 +59,7 @@ class SuccessController
 
     /**
      * @OA\Put(
-     *  path = "success/{wbConfigId}",
+     *  path = "/success/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      name = "wbConfigId",
@@ -83,7 +83,7 @@ class SuccessController
 
     /**
      * @OA\Delete(
-     *  path = "success/{wbConfigId}",
+     *  path = "/success/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      name = "wbConfigId",
@@ -107,7 +107,7 @@ class SuccessController
 
     /**
      * @OA\Delete(
-     *  path = "successDelete/{wbConfigId}",
+     *  path = "/successDelete/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      name = "wbConfigId",

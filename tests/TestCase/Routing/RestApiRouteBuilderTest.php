@@ -244,7 +244,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testBadPrefix(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('В маршруте /badPrefix путь должен быть относительным, без "/"');
+        $this->expectExceptionMessage('В маршруте badPrefix путь должен быть абсолютным, т.е. начинаться с "/"');
 
         $collection = $this->_buildCollection('RestApi/BadPrefix');
         unset($collection);

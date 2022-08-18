@@ -7,7 +7,7 @@ class IncorrectTypeController
 {
     /**
      * @OA\Get(
-     *  path = "incorrectType/{wbConfigId}",
+     *  path = "/incorrectType/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      name = "wbConfigId",

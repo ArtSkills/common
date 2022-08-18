@@ -7,7 +7,7 @@ class NoSuccessResponseController
 {
     /**
      * @OA\Get(
-     *  path = "noSuccessResponse",
+     *  path = "/noSuccessResponse",
      *  @OA\Response(
      *    response = 403,
      *    description = "Результат запроса",
