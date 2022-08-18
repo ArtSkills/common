@@ -184,7 +184,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testIncorrectParameterType(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('Для маршрута incorrectType/{wbConfigId} и параметра wbConfigId задан некорректный тип "float", поддерживается только "string" и "integer"');
+        $this->expectExceptionMessage('Для маршрута /incorrectType/{wbConfigId} и параметра wbConfigId задан некорректный тип "float", поддерживается только "string" и "integer"');
 
         $collection = $this->_buildCollection('RestApi/IncorrectType');
         unset($collection);
@@ -199,7 +199,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testIncorrectParameterName(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('Для маршрута incorrectName/{wbConfigId} не задано имя параметра');
+        $this->expectExceptionMessage('Для маршрута /incorrectName/{wbConfigId} не задано имя параметра');
 
         $collection = $this->_buildCollection('RestApi/IncorrectName');
         unset($collection);
@@ -214,7 +214,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testIncorrectParameterSchema(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('Для маршрута incorrectSchema/{wbConfigId} не задан тип параметра');
+        $this->expectExceptionMessage('Для маршрута /incorrectSchema/{wbConfigId} не задан тип параметра');
 
         $collection = $this->_buildCollection('RestApi/IncorrectSchema');
         unset($collection);
@@ -229,7 +229,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testDeprecatedExtension(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('В маршруте deprecatedExtension.json .json постфикс запрещён');
+        $this->expectExceptionMessage('В маршруте /deprecatedExtension.json .json постфикс запрещён');
 
         $collection = $this->_buildCollection('RestApi/DeprecatedExtension');
         unset($collection);
@@ -259,7 +259,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testNoResponse(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('Для маршрута noResponse не описан ответ');
+        $this->expectExceptionMessage('Для маршрута /noResponse не описан ответ');
 
         $collection = $this->_buildCollection('RestApi/NoResponse');
         unset($collection);
@@ -274,7 +274,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testNoSuccessResponse(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('Для маршрута noSuccessResponse не описан успешный (200) ответ');
+        $this->expectExceptionMessage('Для маршрута /noSuccessResponse не описан успешный (200) ответ');
 
         $collection = $this->_buildCollection('RestApi/NoSuccessResponse');
         unset($collection);
@@ -289,7 +289,7 @@ class RestApiRouteBuilderTest extends AppTestCase
     public function testNotJsonResponse(): void
     {
         $this->expectException(MissingRouteException::class);
-        $this->expectExceptionMessage('Маршрут notJsonResponse должен возвращать только JSON ответ');
+        $this->expectExceptionMessage('Маршрут /notJsonResponse должен возвращать только JSON ответ');
 
         $collection = $this->_buildCollection('RestApi/NotJsonResponse');
         unset($collection);
