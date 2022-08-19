@@ -7,7 +7,7 @@ class IncorrectNameController
 {
     /**
      * @OA\Get(
-     *  path = "incorrectName/{wbConfigId}",
+     *  path = "/incorrectName/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      description = "Идентификатор кабинета",

@@ -7,7 +7,7 @@ class IncorrectSchemaController
 {
     /**
      * @OA\Get(
-     *  path = "incorrectSchema/{wbConfigId}",
+     *  path = "/incorrectSchema/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
      *      name = "wbConfigId",

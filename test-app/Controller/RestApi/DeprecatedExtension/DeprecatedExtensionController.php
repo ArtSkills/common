@@ -7,7 +7,7 @@ class DeprecatedExtensionController
 {
     /**
      * @OA\Get(
-     *  path = "deprecatedExtension.json",
+     *  path = "/deprecatedExtension.json",
      *  @OA\Response(
      *    response = 200,
      *    description = "Результат запроса",

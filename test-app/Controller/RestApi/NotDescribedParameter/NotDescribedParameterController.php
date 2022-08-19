@@ -7,7 +7,7 @@ class NotDescribedParameterController
 {
     /**
      * @OA\Get(
-     *  path = "notDescribedParameter/{wbConfigId}",
+     *  path = "/notDescribedParameter/{wbConfigId}",
      *  @OA\Response(
      *    response = 200,
      *    description = "Результат запроса",

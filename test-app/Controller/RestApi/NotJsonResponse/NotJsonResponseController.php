@@ -7,7 +7,7 @@ class NotJsonResponseController
 {
     /**
      * @OA\Get(
-     *  path = "notJsonResponse",
+     *  path = "/notJsonResponse",
      *  @OA\Response(
      *    response = 200,
      *    description = "Результат запроса",
