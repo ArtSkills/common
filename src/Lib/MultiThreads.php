@@ -116,7 +116,7 @@ class MultiThreads
             $this->_launchJob($runFunction, $softRunSleep);
         } else {
             $runFunction();
-        };
+        }
     }
 
     /**
