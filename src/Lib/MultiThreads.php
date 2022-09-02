@@ -107,12 +107,16 @@ class MultiThreads
      */
     public function run(callable $runFunction, int $softRunSleep = 0)
     {
-        while ($this->getTotalThreads() >= $this->getProcessLimit()) {
-            sleep(1);
-        }
+        if (!Env::isUnitTest()) {
+            while ($this->getTotalThreads() >= $this->getProcessLimit()) {
+                sleep(1);
+            }
 
-        $this->_childCounter++;
-        $this->_launchJob($runFunction, $softRunSleep);
+            $this->_childCounter++;
+            $this->_launchJob($runFunction, $softRunSleep);
+        } else {
+            $runFunction();
+        }
     }
 
     /**
@@ -122,7 +126,7 @@ class MultiThreads
      */
     public function waitThreads()
     {
-        if ($this->_isChild) {
+        if ($this->_isChild || Env::isUnitTest()) {
             return;
         }
 
