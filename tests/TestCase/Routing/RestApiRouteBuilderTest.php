@@ -55,6 +55,21 @@ class RestApiRouteBuilderTest extends AppTestCase
         ], $collection->parse('/success/123', 'GET'));
 
         self::assertEquals([
+            'wbConfigId' => '3d очки',
+            'pass' => [
+                0 => '3d очки',
+            ],
+            'controller' => 'Success',
+            'action' => 'view',
+            'plugin' => null,
+            '_method' => [
+                0 => 'GET',
+            ],
+            'prefix' => 'RestApi/Success',
+            '_matchedRoute' => '/success/:wbConfigId',
+        ], $collection->parse('/success/3d очки', 'GET'));
+        
+        self::assertEquals([
             'wbConfigId' => '',
             'pass' => [
                 0 => '',
