@@ -67,7 +67,7 @@ class HttpClientAdapter extends Curl
     {
         $result = parent::createResponse($handle, $responseData);
 
-        $response = $result instanceof Response ? $result : $result[array_key_last($result)];
+        $response = $result[array_key_last($result)]; // @phpstan-ignore-line
 
         HttpClientMocker::addSniff([
             'request' => $this->_savedRequest,
