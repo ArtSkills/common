@@ -12,11 +12,11 @@ use Cake\Http\Client\Response;
 class HttpClientAdapter extends Curl
 {
     /**
-     * Полная инфа по текущему взаимодействию (запрос и ответ)
+     * Текущий запрос
      *
-     * @var array{request: Request, response?: Response}|null
+     * @var ?Request
      */
-    private ?array $_currentRequestData = null;
+    private ?Request $_savedRequest = null;
 
     /**
      * Выводить ли информацию о незамоканных запросах
@@ -36,9 +36,7 @@ class HttpClientAdapter extends Curl
      */
     public function send(Request $request, array $options): array
     {
-        $this->_currentRequestData = [
-            'request' => $request,
-        ];
+        $this->_savedRequest = $request;
 
         $mockData = HttpClientMocker::getMockedData($request);
         if ($mockData !== null) {
@@ -69,11 +67,14 @@ class HttpClientAdapter extends Curl
     {
         $result = parent::createResponse($handle, $responseData);
 
-        $this->_currentRequestData['response'] = end($result);
+        $response = $result instanceof Response ? $result : $result[array_key_last($result)];
 
-        HttpClientMocker::addSniff($this->_currentRequestData);
-        $this->_currentRequestData = null;
+        HttpClientMocker::addSniff([
+            'request' => $this->_savedRequest,
+            'response' => $response,
+        ]);
 
+        $this->_savedRequest = null;
         return $result;
     }
 
