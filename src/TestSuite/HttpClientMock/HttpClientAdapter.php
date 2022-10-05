@@ -14,7 +14,7 @@ class HttpClientAdapter extends Curl
     /**
      * Полная инфа по текущему взаимодействию (запрос и ответ)
      *
-     * @var array{request: Request, response: Response}|null
+     * @var array{request: Request, response?: Response}|null
      */
     private ?array $_currentRequestData = null;
 
@@ -32,12 +32,12 @@ class HttpClientAdapter extends Curl
      * @param array $options
      * @return Response[]
      * @phpstan-ignore-next-line
+     * @SuppressWarnings(PHPMD.MethodArgs)
      */
     public function send(Request $request, array $options): array
     {
         $this->_currentRequestData = [
             'request' => $request,
-            'response' => '',
         ];
 
         $mockData = HttpClientMocker::getMockedData($request);
