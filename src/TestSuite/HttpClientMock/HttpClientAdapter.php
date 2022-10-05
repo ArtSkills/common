@@ -14,9 +14,9 @@ class HttpClientAdapter extends Curl
     /**
      * Полная инфа по текущему взаимодействию (запрос и ответ)
      *
-     * @var array|null
+     * @var array{request: Request, response: Response}|null
      */
-    private ?array $_currentRequestData = null; // @phpstan-ignore-line
+    private ?array $_currentRequestData = null;
 
     /**
      * Выводить ли информацию о незамоканных запросах
