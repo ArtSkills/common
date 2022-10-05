@@ -31,11 +31,10 @@ class HttpClientAdapter extends Curl
      *
      * @param Request $request
      * @param array $options
-     * @return array
+     * @return Response[]
      * @phpstan-ignore-next-line
-     * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    public function send(Request $request, array $options)
+    public function send(Request $request, array $options): array
     {
         $this->_currentRequestData = [
             'request' => $request,
@@ -66,7 +65,6 @@ class HttpClientAdapter extends Curl
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
     public function createResponse($handle, $responseData)
     {
