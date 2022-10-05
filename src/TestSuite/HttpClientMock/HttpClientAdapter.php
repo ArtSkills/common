@@ -4,18 +4,11 @@ declare(strict_types=1);
 namespace ArtSkills\TestSuite\HttpClientMock;
 
 use ArtSkills\TestSuite\PermanentMocksCollection;
-use Cake\Http\Client\Adapter\Stream;
+use Cake\Http\Client\Adapter\Curl;
 use Cake\Http\Client\Request;
 use Cake\Http\Client\Response;
 
-/**
- * Прослайка на отправку HTTP запросов
- *
- * @package App\Test\Suite
- * @SuppressWarnings(PHPMD.MethodMix)
- * @SuppressWarnings(PHPMD.MethodProps)
- */
-class HttpClientAdapter extends Stream
+class HttpClientAdapter extends Curl
 {
     /**
      * Полная инфа по текущему взаимодействию (запрос и ответ)
@@ -35,11 +28,12 @@ class HttpClientAdapter extends Stream
      * Все запросы проверяются на подмену, а также логируются
      *
      * @param Request $request
+     * @param array $options
      * @return array
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    protected function _send(Request $request)
+    public function send(Request $request, array $options)
     {
         $this->_currentRequestData = [
             'request' => $request,
@@ -48,14 +42,13 @@ class HttpClientAdapter extends Stream
 
         $mockData = HttpClientMocker::getMockedData($request);
         if ($mockData !== null) {
-            return $this->createResponses([
+            return [new Response([
                 'HTTP/1.1 ' . $mockData['status'],
                 'Server: nginx/1.2.1',
-            ], $mockData['response']);
+            ], $mockData['response'])];
         } else {
             /** @var Response[] $result */
-            $result = parent::_send($request);
-
+            $result = parent::send($request, $options);
             if (self::$_debugRequests) {
                 PermanentMocksCollection::setHasWarning(true);
                 PermanentMocksCollection::setWarningMessage('Вывод в консоль при запросе HTTP');
@@ -73,9 +66,9 @@ class HttpClientAdapter extends Stream
      * @inheritdoc
      * @phpstan-ignore-next-line
      */
-    public function createResponses($headers, $content)
+    public function createResponse($handle, $responseData)
     {
-        $result = parent::createResponses($headers, $content);
+        $result = parent::createResponse($handle, $responseData);
 
         $this->_currentRequestData['response'] = end($result);
 
