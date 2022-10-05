@@ -8,14 +8,16 @@ use Cake\Http\Client\Adapter\Curl;
 use Cake\Http\Client\Request;
 use Cake\Http\Client\Response;
 
+/** @SuppressWarnings(PHPMD.MethodMix) */
 class HttpClientAdapter extends Curl
 {
     /**
      * Полная инфа по текущему взаимодействию (запрос и ответ)
      *
      * @var array|null
+     * @phpstan-ignore-next-line
      */
-    private ?array $_currentRequestData = null; // @phpstan-ignore-line
+    private ?array $_currentRequestData = null;
 
     /**
      * Выводить ли информацию о незамоканных запросах
