@@ -204,9 +204,9 @@ class RestApiRouteBuilder
             switch ($parameter->schema->type) {
                 case 'string':
                     if ($parameter->required === true) {
-                        $passPatterns[$parameter->name] = '[a-zA-Z0-9\.\-\_]+';
+                        $passPatterns[$parameter->name] = '[a-zA-Z0-9а-яА-Я \.\-\_]+';
                     } else {
-                        $passPatterns[$parameter->name] = '[a-zA-Z0-9.\-\_]*'; // \w* не работает
+                        $passPatterns[$parameter->name] = '[a-zA-Z0-9а-яА-Я .\-\_]*'; // \w* не работает
                     }
                     break;
 
