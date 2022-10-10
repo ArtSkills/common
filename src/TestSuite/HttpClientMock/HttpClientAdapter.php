@@ -4,25 +4,19 @@ declare(strict_types=1);
 namespace ArtSkills\TestSuite\HttpClientMock;
 
 use ArtSkills\TestSuite\PermanentMocksCollection;
-use Cake\Http\Client\Adapter\Stream;
+use Cake\Http\Client\Adapter\Curl;
 use Cake\Http\Client\Request;
 use Cake\Http\Client\Response;
 
-/**
- * Прослайка на отправку HTTP запросов
- *
- * @package App\Test\Suite
- * @SuppressWarnings(PHPMD.MethodMix)
- * @SuppressWarnings(PHPMD.MethodProps)
- */
-class HttpClientAdapter extends Stream
+/** @SuppressWarnings(PHPMD.MethodMix) */
+class HttpClientAdapter extends Curl
 {
     /**
-     * Полная инфа по текущему взаимодействию (запрос и ответ)
+     * Текущий запрос
      *
-     * @var array|null
+     * @var ?Request
      */
-    private ?array $_currentRequestData = null; // @phpstan-ignore-line
+    private ?Request $_savedRequest = null;
 
     /**
      * Выводить ли информацию о незамоканных запросах
@@ -35,27 +29,24 @@ class HttpClientAdapter extends Stream
      * Все запросы проверяются на подмену, а также логируются
      *
      * @param Request $request
-     * @return array
+     * @param array $options
+     * @return Response[]
      * @phpstan-ignore-next-line
      * @SuppressWarnings(PHPMD.MethodArgs)
      */
-    protected function _send(Request $request)
+    public function send(Request $request, array $options): array
     {
-        $this->_currentRequestData = [
-            'request' => $request,
-            'response' => '',
-        ];
+        $this->_savedRequest = $request;
 
         $mockData = HttpClientMocker::getMockedData($request);
         if ($mockData !== null) {
-            return $this->createResponses([
+            return [new Response([
                 'HTTP/1.1 ' . $mockData['status'],
                 'Server: nginx/1.2.1',
-            ], $mockData['response']);
+            ], $mockData['response'])];
         } else {
             /** @var Response[] $result */
-            $result = parent::_send($request);
-
+            $result = parent::send($request, $options);
             if (self::$_debugRequests) {
                 PermanentMocksCollection::setHasWarning(true);
                 PermanentMocksCollection::setWarningMessage('Вывод в консоль при запросе HTTP');
@@ -71,17 +62,19 @@ class HttpClientAdapter extends Stream
 
     /**
      * @inheritdoc
-     * @phpstan-ignore-next-line
      */
-    public function createResponses($headers, $content)
+    public function createResponse($handle, $responseData)
     {
-        $result = parent::createResponses($headers, $content);
+        $result = parent::createResponse($handle, $responseData);
 
-        $this->_currentRequestData['response'] = end($result);
+        $response = $result[array_key_last($result)]; // @phpstan-ignore-line
 
-        HttpClientMocker::addSniff($this->_currentRequestData);
-        $this->_currentRequestData = null;
+        HttpClientMocker::addSniff([
+            'request' => $this->_savedRequest,
+            'response' => $response,
+        ]);
 
+        $this->_savedRequest = null;
         return $result;
     }
 
