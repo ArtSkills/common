@@ -10,6 +10,7 @@ use ArtSkills\Mailer\Transport\TestEmailTransport;
 use ArtSkills\ORM\Entity;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientAdapter;
 use ArtSkills\TestSuite\HttpClientMock\HttpClientMocker;
+use ArtSkills\ValueObject\ValueObject;
 use Eggheads\Mocks\ConstantMocker;
 use Eggheads\Mocks\MethodMocker;
 use Eggheads\Mocks\PropertyAccess;
@@ -263,5 +264,22 @@ trait TestCaseTrait
             $canonicalize,
             $ignoreCase
         );
+    }
+
+    /**
+     * Метод для сравнения двух ValueObject с указанием допустимой погрешности в процентах
+     *
+     * @param ValueObject $expected
+     * @param ValueObject $actual
+     * @param float $errorRatePercent допустимая погрешность в процентах
+     * @return void
+     */
+    public static function assertEqualsValueObjects(ValueObject $expected, ValueObject $actual, float $errorRatePercent = 0): void
+    {
+        self::assertEquals(get_class($expected), get_class($actual));
+        foreach ($actual->toArray() as $property => $value) {
+            $delta = is_numeric($value) ? ($value * $errorRatePercent * 0.01) : 0.0;
+            self::assertEquals($expected->{$property}, $value, '', $delta);
+        }
     }
 }
