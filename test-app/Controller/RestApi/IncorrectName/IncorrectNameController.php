@@ -10,7 +10,6 @@ class IncorrectNameController
      *  path = "/incorrectName/{wbConfigId}",
      *  @OA\Parameter(
      *      in = "path",
-     *      name = "wbConfigId",
      *      description = "Идентификатор кабинета",
      *      required = false,
      *      @OA\Schema(type="integer")

@@ -5,10 +5,10 @@ namespace ArtSkills\Routing;
 
 use ArtSkills\Filesystem\Folder;
 use ArtSkills\Lib\Strings;
-use ArtSkills\Lib\Url;
 use ArtSkills\Routing\Route\RestApiRoute;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\RouteBuilder;
+use OpenApi\Analysers\TokenAnalyser;
 use OpenApi\Annotations\AbstractAnnotation;
 use OpenApi\Annotations\Delete;
 use OpenApi\Annotations\Get;
@@ -16,8 +16,8 @@ use OpenApi\Annotations\JsonContent;
 use OpenApi\Annotations\Operation;
 use OpenApi\Annotations\Post;
 use OpenApi\Annotations\Put;
+use OpenApi\Context;
 use OpenApi\Generator;
-use OpenApi\StaticAnalyser;
 
 /**
  * Конструктор маршрутов для routes.php на основе OpenApi документации в phpDoc
@@ -51,9 +51,9 @@ class RestApiRouteBuilder
     /**
      * OpenApi анализатор класса
      *
-     * @var StaticAnalyser
+     * @var TokenAnalyser
      */
-    private StaticAnalyser $_analyser;
+    private TokenAnalyser $_analyser;
 
     /**
      * Префикс URL вызова всего проекта
@@ -71,7 +71,7 @@ class RestApiRouteBuilder
     {
         $this->_routes = $routes;
         $this->_controllersDir = APP . 'Controller' . DS;
-        $this->_analyser = new StaticAnalyser();
+        $this->_analyser = new TokenAnalyser();
     }
 
     /**
@@ -82,7 +82,6 @@ class RestApiRouteBuilder
      */
     public function build(string $subFolder): void
     {
-
         $folder = new Folder($this->_controllersDir . $subFolder);
         $controllers = $folder->findRecursive('.*' . str_replace('.', '\.', self::CONTROLLER_POSTFIX));
 
@@ -102,7 +101,14 @@ class RestApiRouteBuilder
      */
     private function _addControllerRoutes(string $controllerFile): void
     {
-        $result = $this->_analyser->fromFile($controllerFile);
+        $generator = new Generator();
+
+        $rootContext = new Context([
+            'version' => $generator->getVersion(),
+            'logger' => $generator->getLogger(),
+        ]);
+
+        $result = $this->_analyser->fromFile($controllerFile, $rootContext);
 
         foreach ($result->annotations as $annotation) {
             $this->_addMethodRoute($annotation);
