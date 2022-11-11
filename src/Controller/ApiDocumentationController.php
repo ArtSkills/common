@@ -11,6 +11,7 @@ use OpenApi\Annotations\Contact;
 use OpenApi\Annotations\Info;
 use OpenApi\Annotations\Server;
 use OpenApi\Generator;
+use OpenApi\Util;
 
 /**
  * Формируем документацию по API
@@ -77,7 +78,7 @@ class ApiDocumentationController extends Controller
     {
         return Cache::remember('ApiDocumentationJson#' . CORE_VERSION, function () {
             $apiInfo = $this->_getApiInfo();
-            $swagger = Generator::scan([APP, __DIR__], ['exclude' => Env::getApiDocumentationExclude() ?? []]);
+            $swagger = Generator::scan(Util::finder([APP, __DIR__], Env::getApiDocumentationExclude() ?? []));
             $swagger->info = new Info([
                 'title' => $apiInfo['title'],
                 'description' => $apiInfo['description'],
