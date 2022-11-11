@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities;
+namespace ArtSkills\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities;
 
 use ArtSkills\ValueObject\ValueObject;
 
@@ -23,4 +23,17 @@ class Object1 extends ValueObject
      * @var string
      */
     public $prop2;
+
+
+    /**
+     * @OA\Property()
+     * @var string[]
+     */
+    public $stringArray;
+
+    /**
+     * @OA\Property()
+     * @var string[]|null
+     */
+    public ?array $stringArrayOrNull = null;
 }

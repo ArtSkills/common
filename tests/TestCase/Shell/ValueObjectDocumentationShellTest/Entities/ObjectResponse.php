@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities;
+namespace ArtSkills\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities;
 
 /**
  * @OA\Schema()
@@ -19,6 +19,12 @@ class ObjectResponse extends ObjectParentResponse
      * @var Object1[]
      */
     public array $arrObjectProp;
+
+    /**
+     * @OA\Property
+     * @var Object1[]|null
+     */
+    public ?array $arrObjectPropOrNull = null;
 
     /**
      * @OA\Property(type="object", ref="#/components/schemas/Object1", nullable=true)
