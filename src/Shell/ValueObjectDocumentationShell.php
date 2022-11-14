@@ -30,6 +30,10 @@ class ValueObjectDocumentationShell extends Shell
 
         $schemas = $swagger->components->schemas;
 
+        if ($schemas === Generator::UNDEFINED) {
+            $this->out('Schemas not found');
+        }
+
         foreach ($schemas as $index => $schema) {
             try {
                 $def = $this->_getDefinition($schema);
@@ -210,8 +214,10 @@ class ValueObjectDocumentationShell extends Shell
         if ($property->type === 'array') {
             if ($property->items->ref !== Generator::UNDEFINED) {
                 $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->items->ref) . '[]';
-            } else {
+            } elseif ($property->items->type !== Generator::UNDEFINED) {
                 $result['type'] = $property->items->type . '[]';
+            } else {
+                Log::error("Incorrect property type for " . $property->_context->namespace . '\\' . $property->_context->class . '::' . $property->property);
             }
         } elseif ($property->ref !== Generator::UNDEFINED) {
             $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->ref);

@@ -33,7 +33,7 @@
     "ext-intl": "*",
     "ext-zend-opcache": "*",
     "ext-pcntl": "*",
-    "zircote/swagger-php": "4.2.13",
+    "zircote/swagger-php": "^4.5",
     "ext-zip": "*",
     "symfony/property-access": "^4.4",
     "symfony/property-info": "^4.4",

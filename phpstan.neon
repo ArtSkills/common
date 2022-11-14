@@ -3,6 +3,8 @@ parameters:
     paths:
         - src
         - tests
+    excludePaths:
+        - src/Shell/ValueObjectDocumentationShell.php
     bootstrapFiles:
         - test-app-conf/paths.php
         - vendor/cakephp/cakephp/src/basics.php
