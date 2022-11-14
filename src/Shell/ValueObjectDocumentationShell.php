@@ -118,6 +118,7 @@ class ValueObjectDocumentationShell extends Shell
                         if (!empty($objectDefinitions[$mergeClassName]['mergeProperties'])) {
                             $mergeClassName = $objectDefinitions[$mergeClassName]['mergeProperties'][0];
                         } else {
+                            unset($objectDefinitions[$objectName]['mergeProperties']);
                             $mergeClassName = null;
                         }
                     } else {
@@ -206,8 +207,10 @@ class ValueObjectDocumentationShell extends Shell
         if ($property->type === 'array') {
             if ($property->items->ref !== Generator::UNDEFINED) {
                 $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->items->ref) . '[]';
-            } else {
+            } elseif ($property->items->type !== Generator::UNDEFINED) {
                 $result['type'] = $property->items->type . '[]';
+            } else {
+                Log::error("Incorrect property type for " . $property->_context->namespace . '\\' . $property->_context->class . '::' . $property->property);
             }
         } elseif ($property->ref !== Generator::UNDEFINED) {
             $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->ref);
