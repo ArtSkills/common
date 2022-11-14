@@ -30,10 +30,6 @@ class ValueObjectDocumentationShell extends Shell
 
         $schemas = $swagger->components->schemas;
 
-        if ($schemas === Generator::UNDEFINED) {
-            $this->out('Schemas not found');
-        }
-
         foreach ($schemas as $index => $schema) {
             try {
                 $def = $this->_getDefinition($schema);
