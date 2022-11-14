@@ -27,7 +27,14 @@ class ValueObjectDocumentationShell extends Shell
     {
         $swagger = Generator::scan([__DIR__ . '/../Controller', $workDir]);
         $objectDefinitions = [];
-        foreach ($swagger->components->schemas as $index => $schema) {
+
+        $schemas = $swagger->components->schemas;
+
+        if ($schemas === Generator::UNDEFINED) {
+            $this->out('Schemas not found');
+        }
+
+        foreach ($schemas as $index => $schema) {
             try {
                 $def = $this->_getDefinition($schema);
                 if (array_key_exists($def['name'], $objectDefinitions)) {
