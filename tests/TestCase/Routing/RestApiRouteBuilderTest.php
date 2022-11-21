@@ -8,6 +8,9 @@ use ArtSkills\TestSuite\AppTestCase;
 use Cake\Routing\Exception\MissingRouteException;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\RouteCollection;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Eggheads\Mocks\PropertyAccess;
+use OpenApi\Generator;
 use TestApp\Controller\RestApi\DeprecatedExtension\DeprecatedExtensionController;
 use TestApp\Controller\RestApi\IncorrectSchema\IncorrectSchemaController;
 use TestApp\Controller\RestApi\NoResponse\NoResponseController;
@@ -16,6 +19,13 @@ use TestApp\Controller\RestApi\Success\SuccessController;
 
 class RestApiRouteBuilderTest extends AppTestCase
 {
+    /** @inheritdoc */
+    public function setUp()
+    {
+        PropertyAccess::setStatic(AnnotationRegistry::class, 'loaders', []);
+        parent::setUp();
+    }
+
     /**
      * Тест успешных запросов
      *
@@ -68,7 +78,7 @@ class RestApiRouteBuilderTest extends AppTestCase
             'prefix' => 'RestApi/Success',
             '_matchedRoute' => '/success/:wbConfigId',
         ], $collection->parse('/success/3d очки', 'GET'));
-        
+
         self::assertEquals([
             'wbConfigId' => '',
             'pass' => [

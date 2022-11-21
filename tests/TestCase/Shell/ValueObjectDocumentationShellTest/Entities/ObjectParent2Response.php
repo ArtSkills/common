@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities;
+namespace ArtSkills\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities;
 
 use ArtSkills\ValueObject\ValueObject;
 

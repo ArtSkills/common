@@ -26,7 +26,7 @@ class ValueObjectDocumentationShellTest extends AppTestCase
 
         MethodMocker::mock(Log::class, 'error')
             ->singleCall()
-            ->expectArgs('Incorrect property type for App\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities\Object1::prop1');
+            ->expectArgs('Incorrect property type for ArtSkills\Test\TestCase\Shell\ValueObjectDocumentationShellTest\Entities\Object1::prop1');
 
         $shell->main(__DIR__ . DS . 'Entities', $resultFile);
         self::assertFileEquals(__DIR__ . DS . 'expected.txt', $resultFile);

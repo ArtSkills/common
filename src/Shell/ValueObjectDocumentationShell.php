@@ -10,8 +10,7 @@ use Cake\Filesystem\File;
 use Cake\Log\Log;
 use OpenApi\Annotations\Property;
 use OpenApi\Annotations\Schema;
-use function OpenApi\scan;
-use const OpenApi\UNDEFINED;
+use OpenApi\Generator;
 
 class ValueObjectDocumentationShell extends Shell
 {
@@ -26,10 +25,16 @@ class ValueObjectDocumentationShell extends Shell
      */
     public function main(string $workDir = APP, ?string $resultFilePath = null)
     {
-        $swagger = scan([$workDir, __DIR__ . '/../Controller']);
-
+        $swagger = Generator::scan([__DIR__ . '/../Controller', $workDir]);
         $objectDefinitions = [];
-        foreach ($swagger->components->schemas as $index => $schema) {
+
+        $schemas = $swagger->components->schemas;
+
+        if ($schemas === Generator::UNDEFINED) {
+            $this->out('Schemas not found');
+        }
+
+        foreach ($schemas as $index => $schema) {
             try {
                 $def = $this->_getDefinition($schema);
                 if (array_key_exists($def['name'], $objectDefinitions)) {
@@ -110,16 +115,26 @@ class ValueObjectDocumentationShell extends Shell
     private function _mergeInheritanceProperties(array $objectDefinitions): array
     {
         foreach ($objectDefinitions as $objectName => $objectDefinition) {
-            foreach ($objectDefinition['mergeProperties'] as $classIndex => $mergeClassName) {
-                if (array_key_exists($mergeClassName, $objectDefinitions)) {
-                    $objectDefinitions[$objectName]['properties'] += $objectDefinitions[$mergeClassName]['properties'];
-                    unset($objectDefinitions[$objectName]['mergeProperties'][$classIndex]);
-                } else {
-                    unset($objectDefinitions[$objectName]['mergeProperties'][$classIndex]);
-                    Log::error("Merge class $mergeClassName is not defined!");
+            if (!empty($objectDefinition['mergeProperties'])) {
+                $mergeClassName = $objectDefinition['mergeProperties'][0];
+
+                while (!empty($mergeClassName)) {
+                    if (array_key_exists($mergeClassName, $objectDefinitions)) {
+                        $objectDefinitions[$objectName]['properties'] += $objectDefinitions[$mergeClassName]['properties'];
+                        // Проверяем наследуется ли родитель, если да продолжаем цикл
+                        if (!empty($objectDefinitions[$mergeClassName]['mergeProperties'])) {
+                            $mergeClassName = $objectDefinitions[$mergeClassName]['mergeProperties'][0];
+                        } else {
+                            unset($objectDefinitions[$objectName]['mergeProperties']);
+                            $mergeClassName = null;
+                        }
+                    } else {
+                        Log::error("Merge class $mergeClassName is not defined!");
+                    }
                 }
             }
         }
+
         return $objectDefinitions;
     }
 
@@ -140,11 +155,31 @@ class ValueObjectDocumentationShell extends Shell
             'mergeProperties' => [],
         ];
 
-        if (!empty($schema->_context)) {
-            if ($schema->type !== UNDEFINED) {
+        if (!empty($schema->allOf) && $schema->allOf !== Generator::UNDEFINED) { // наследование классов
+            foreach ($schema->allOf as $subSchema) {
+                if ($subSchema->ref === Generator::UNDEFINED) { // по логике либы это является конечным элементом наследования
+                    if ($subSchema->properties !== Generator::UNDEFINED) {
+                        foreach ($subSchema->properties as $property) {
+                            $insProperty = $this->_getProperty($property);
+                            $result['properties'][$insProperty['name']] = $insProperty;
+                        }
+                    }
+
+                    if ($subSchema->type !== Generator::UNDEFINED) {
+                        $result['type'] = $subSchema->type;
+                    }
+                    if ($subSchema->description !== Generator::UNDEFINED) {
+                        $result['description'] = $subSchema->description;
+                    }
+                } else {
+                    $result['mergeProperties'][] = $this->_getSchemaClassName($subSchema);
+                }
+            }
+        } elseif (!empty($schema->_context)) {
+            if ($schema->type !== Generator::UNDEFINED) {
                 $result['type'] = $schema->type;
             }
-            if ($schema->properties !== UNDEFINED) {
+            if ($schema->properties !== Generator::UNDEFINED) {
                 $schema->type = 'object';
                 foreach ($schema->properties as $property) {
                     $insProperty = $this->_getProperty($property);
@@ -154,33 +189,12 @@ class ValueObjectDocumentationShell extends Shell
                 $result['type'] = $schema->items->ref . '[]';
             }
 
-            if ($schema->description !== UNDEFINED) {
+            if ($schema->description !== Generator::UNDEFINED) {
                 $result['description'] = $schema->description;
-            }
-        } elseif (!empty($schema->allOf)) { // наследование классов
-            foreach ($schema->allOf as $subSchema) {
-                if ($subSchema->ref === UNDEFINED) { // по логике либы это является конечным элементом наследования
-                    if ($subSchema->properties !== UNDEFINED) {
-                        foreach ($subSchema->properties as $property) {
-                            $insProperty = $this->_getProperty($property);
-                            $result['properties'][$insProperty['name']] = $insProperty;
-                        }
-                    }
-
-                    if ($subSchema->type !== UNDEFINED) {
-                        $result['type'] = $subSchema->type;
-                    }
-                    if ($subSchema->description !== UNDEFINED) {
-                        $result['description'] = $subSchema->description;
-                    }
-                } else {
-                    $result['mergeProperties'][] = $this->_getSchemaClassName($subSchema);
-                }
             }
         } else {
             throw new UserException("Unknown format schema(3) " . $schema->schema);
         }
-
         return $result;
     }
 
@@ -194,26 +208,33 @@ class ValueObjectDocumentationShell extends Shell
     {
         $result = [
             'name' => $property->property,
-            'description' => $property->description !== UNDEFINED ? $property->description : null,
+            'description' => $property->description !== Generator::UNDEFINED ? $property->description : null,
             'type' => $property->type,
         ];
         if ($property->type === 'array') {
-            if ($property->items->ref !== UNDEFINED) {
+            if ($property->items->ref !== Generator::UNDEFINED) {
                 $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->items->ref) . '[]';
-            } else {
+            } elseif ($property->items->type !== Generator::UNDEFINED) {
                 $result['type'] = $property->items->type . '[]';
+            } else {
+                Log::error("Incorrect property type for " . $property->_context->namespace . '\\' . $property->_context->class . '::' . $property->property);
             }
-        } elseif ($property->ref !== UNDEFINED) {
+        } elseif ($property->ref !== Generator::UNDEFINED) {
             $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->ref);
-        } elseif ($property->oneOf !== UNDEFINED && !empty($property->oneOf[0]) && $property->oneOf[0]->ref !== UNDEFINED) {
+        } elseif ($property->oneOf !== Generator::UNDEFINED && !empty($property->oneOf[0]) && $property->oneOf[0]->ref !== Generator::UNDEFINED) {
             $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->oneOf[0]->ref);
-        } elseif ($property->type === UNDEFINED) {
+        } elseif ($property->type === Generator::UNDEFINED) {
             Log::error("Incorrect property type for " . $property->_context->namespace . '\\' . $property->_context->class . '::' . $property->property);
         }
 
-        if ($property->enum !== UNDEFINED) {
+        if ($property->enum !== Generator::UNDEFINED) {
             $result['description'] = (!empty($result['description']) ? Strings::replaceIfEndsWith($result['description'], '.', '') . '. ' : '') . 'Возможные значения: ' . implode(', ', $property->enum);
         }
+
+        if ($property->nullable === true) {
+            $result['type'] .= '|null';
+        }
+
         return $result;
     }
 
@@ -226,10 +247,10 @@ class ValueObjectDocumentationShell extends Shell
      */
     private function _getSchemaClassName(Schema $schema): string
     {
-        if ($schema->schema !== UNDEFINED) {
+        if ($schema->schema !== Generator::UNDEFINED) {
             return $schema->schema;
         }
-        if ($schema->ref !== UNDEFINED) {
+        if ($schema->ref !== Generator::UNDEFINED) {
             return str_replace(self::SCHEMA_PATH_PREFIX, '', $schema->ref);
         }
 
@@ -237,7 +258,7 @@ class ValueObjectDocumentationShell extends Shell
             return $schema->_context->class;
         } elseif (!empty($schema->allOf)) {
             foreach ($schema->allOf as $subSchema) {
-                if ($subSchema->ref === UNDEFINED) { // конечный класс наследования
+                if ($subSchema->ref === Generator::UNDEFINED) { // конечный класс наследования
                     return $subSchema->_context->class;
                 }
             }
