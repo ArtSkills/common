@@ -42,7 +42,7 @@ class ProxyClient extends Client
     {
         $proxyConfig = Configure::read(self::CONFIG_FIELD_NAME);
         if (empty($proxyConfig)) {
-            throw new InternalException(self::CONFIG_FIELD_NAME .' отсутствует в конфигурации');
+            throw new InternalException(self::CONFIG_FIELD_NAME . ' отсутствует в конфигурации');
         }
 
         if (!is_array($proxyConfig) ||
@@ -50,7 +50,7 @@ class ProxyClient extends Client
             empty($proxyConfig['username']) || !is_string($proxyConfig['username']) ||
             empty($proxyConfig['password']) || !is_string($proxyConfig['password'])
         ) {
-            throw new InternalException('Невалидная конфигурация '. self::CONFIG_FIELD_NAME);
+            throw new InternalException('Невалидная конфигурация ' . self::CONFIG_FIELD_NAME);
         }
 
         return $proxyConfig;

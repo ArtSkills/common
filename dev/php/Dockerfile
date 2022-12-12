@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) curl intl json soap xml opcache bcmath pdo_sqlite pcntl \
     && docker-php-ext-configure pcntl --enable-pcntl \
     && docker-php-ext-install -j$(nproc) pcntl \
-    && pecl install xdebug-2.9.8 && docker-php-ext-enable xdebug \
+    && pecl install xdebug-3.1.6 && docker-php-ext-enable xdebug \
     && pecl install runkit7-alpha && docker-php-ext-enable runkit7 \
     && rm -rf /tmp/pear \
     && rm -frv /var/cache/apk/*
