@@ -35,7 +35,7 @@ class ProxyClient extends Client
     /**
      * Получение и проверка конфигурации
      *
-     * @return array<string, string> ['proxy' => 'string','username' => 'string','password' => 'string']
+     * @return array{proxy: string, username: string, password: string}
      * @throws InternalException
      */
     private function _getConfig(): array
