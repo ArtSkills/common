@@ -33,4 +33,10 @@ return [
             'init' => ['SET FOREIGN_KEY_CHECKS=0'],
         ],
     ],
+
+    'proxyConfig' => [
+        'proxy' => 'my_proxy',
+        'username' => 'username',
+        'password' => 'password',
+    ]
 ];
