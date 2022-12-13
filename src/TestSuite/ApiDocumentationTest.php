@@ -92,8 +92,22 @@ class ApiDocumentationTest
             }
             Assert::assertFalse($isEmptyChildDefinition, 'Не описаны свойства в ' . $definitionPath);
         } elseif ($definition['type'] === 'object') {
-            Assert::assertNotEmpty($definition['properties'], 'Не описаны свойства в ' . $definitionPath);
-            foreach ($definition['properties'] as $propertyName => $property) {
+            Assert::assertFalse(empty($definition['properties']) && empty($definition['allOf']), "Не описаны свойства в {$definitionPath}");
+
+            $properties = $definition['properties'] ?? [];
+
+            if (!empty($definition['allOf'])) {
+                foreach ($definition['allOf'] as $propertyObject) {
+                    foreach ($propertyObject as $type => $property) {
+                        if ($type === '$ref') {
+                            $this->_checkReference($property, $definitionPath, $jsonSchema);
+                        } elseif ($type === 'properties') {
+                            $properties = array_merge($properties, $property);
+                        }
+                    }
+                }
+            }
+            foreach ($properties as $propertyName => $property) {
                 $this->_testDefinitionElement($definitionPath . '::' . $propertyName, $property, $jsonSchema);
             }
         } elseif ($definition['type'] === 'array') {

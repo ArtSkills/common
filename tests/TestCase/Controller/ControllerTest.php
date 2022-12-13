@@ -56,6 +56,17 @@ class ControllerTest extends AppControllerTestCase
         ]);
     }
 
+    /** ValueObject на основе трейтов в качестве результата */
+    public function testGetTraitedValueObjectJson(): void
+    {
+        $this->get('/test/getTraitedValueObjectJson');
+        $this->assertJsonOKEquals([
+            'propertyFromTrait' => 'testTrait',
+            'propertyFromObject' => 'testData',
+            'message' => null,
+        ]);
+    }
+
     /** ApiResponse в качестве результата */
     public function testGetApiResponse(): void
     {
