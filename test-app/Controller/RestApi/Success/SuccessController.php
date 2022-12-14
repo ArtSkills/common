@@ -128,4 +128,19 @@ class SuccessController
     {
         // noop
     }
+
+    /**
+     * @OA\Get(
+     *  path = "/success",
+     *  @OA\Response(
+     *    response = 200,
+     *    description = "Результат запроса",
+     *    @OA\JsonContent(ref = "#/components/schemas/TestValueObjectWithTrait")
+     *  )
+     * )
+     */
+    public function successTraitedObject()
+    {
+        //noop
+    }
 }
