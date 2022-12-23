@@ -95,7 +95,6 @@ class ValueObjectDocumentationShell extends Shell
         switch ($inType) {
             case 'object':
                 return 'Object';
-
             case 'integer':
                 return 'number';
             case 'integer[]':
@@ -104,6 +103,9 @@ class ValueObjectDocumentationShell extends Shell
             case 'integer[]|null':
             case 'float[]|null':
                 return 'number[]|null';
+            case 'integer|null':
+            case 'float|null':
+                return 'number|null';
             default:
                 return $inType;
         }

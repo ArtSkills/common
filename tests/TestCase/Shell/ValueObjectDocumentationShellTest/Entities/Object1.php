@@ -39,6 +39,18 @@ class Object1 extends ValueObject
 
     /**
      * @OA\Property()
+     * @var int|null
+     */
+    public ?int $nullableInteger = null;
+
+    /**
+     * @OA\Property()
+     * @var float|null
+     */
+    public ?float $nullableFloat = null;
+
+    /**
+     * @OA\Property()
      * @var int[]
      */
     public array $integerArrayProperty;
