@@ -98,7 +98,12 @@ class ValueObjectDocumentationShell extends Shell
 
             case 'integer':
                 return 'number';
-
+            case 'integer[]':
+            case 'float[]':
+                return 'number[]';
+            case 'integer[]|null':
+            case 'float[]|null':
+                return 'number[]|null';
             default:
                 return $inType;
         }
@@ -212,9 +217,9 @@ class ValueObjectDocumentationShell extends Shell
             'type' => $property->type,
         ];
         if ($property->type === 'array') {
-            if ($property->items->ref !== Generator::UNDEFINED) {
+            if (is_object($property->items) && $property->items->ref !== Generator::UNDEFINED && $property->items->ref !== null) {
                 $result['type'] = str_replace(self::SCHEMA_PATH_PREFIX, '', $property->items->ref) . '[]';
-            } elseif ($property->items->type !== Generator::UNDEFINED) {
+            } elseif (is_object($property->items) && $property->items->type !== Generator::UNDEFINED) {
                 $result['type'] = $property->items->type . '[]';
             } else {
                 Log::error("Incorrect property type for " . $property->_context->namespace . '\\' . $property->_context->class . '::' . $property->property);
