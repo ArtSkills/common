@@ -5,6 +5,7 @@ namespace ArtSkills\Excel\Format;
 
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class DefaultReaderFormat extends AbstractReaderFormat
@@ -48,14 +49,20 @@ class DefaultReaderFormat extends AbstractReaderFormat
         $sheet->garbageCollect();
         $sheetSizeArr = $sheet->getCellCollection()->getHighestRowAndColumn(); // такой костыль нужен для защиты от каких-то необъятных размеров
         $maxRow = $sheetSizeArr['row'];
-        $data = $sheet->rangeToArray('A' . $dataRowIndex . ':' . $sheetSizeArr['column'] . $maxRow, null, false, false, false);
+        $data = $sheet->rangeToArray('A' . $dataRowIndex . ':' . $sheetSizeArr['column'] . $maxRow, null, false, false, true);
 
         $result = [];
-        foreach ($data as $workElement) {
+        foreach ($data as $rowCoordinate => $workElement) {
             $hasElementData = false;
-            foreach ($workElement as $index => $xlsFieldValue) {
+            foreach ($workElement as $columnCoordinate => $xlsFieldValue) {
                 if ($xlsFieldValue === "#NULL!") {
-                    $workElement[$index] = $xlsFieldValue = null;
+                    $workElement[$columnCoordinate] = $xlsFieldValue = null;
+                } else {
+                    $cell = $sheet->getCell($columnCoordinate . $rowCoordinate);
+
+                    if (Date::isDateTime($cell)) {
+                        $workElement[$columnCoordinate] = $xlsFieldValue = $cell->getFormattedValue();
+                    }
                 }
 
                 if (!$hasElementData && $xlsFieldValue !== null) {
@@ -67,7 +74,7 @@ class DefaultReaderFormat extends AbstractReaderFormat
                 }
             }
             if ($hasElementData) {
-                $result[] = $workElement;
+                $result[] = array_values($workElement);
             }
         }
         return $result;

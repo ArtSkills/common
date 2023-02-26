@@ -5,6 +5,7 @@ namespace ArtSkills\Test\TestCase\Excel\SpoutReaderFormatTest;
 
 use ArtSkills\Excel\Format\SpoutReaderFormat;
 use ArtSkills\TestSuite\AppTestCase;
+use Throwable;
 
 class SpoutReaderFormatTest extends AppTestCase
 {
@@ -49,5 +50,22 @@ class SpoutReaderFormatTest extends AppTestCase
         self::assertCount(5, $reader->getRows(1, 1));
         $result = $reader->getRows(1, 34);
         self::assertEquals([], $result);
+    }
+
+    /**
+     * Тестирование получения дат в отформатированном виде при чтении значений.
+     *
+     * @return void
+     * @throws Throwable
+     * @covers SpoutReaderFormat::getRows
+     */
+    public function testGetRowsReturnsDateAsString(): void
+    {
+        $rows = (new SpoutReaderFormat(__DIR__ . DS . 'test_data.xlsx'))->getRows();
+
+        self::assertSame([
+            ['03-11', 'Строка'],
+            ['7/11/99', 123.45],
+        ], $rows);
     }
 }

@@ -6,6 +6,7 @@ namespace ArtSkills\Test\TestCase\Excel\DefaultReaderFormatTest;
 use ArtSkills\Excel\Format\DefaultReaderFormat;
 use ArtSkills\TestSuite\AppTestCase;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use Throwable;
 
 class DefaultReaderFormatTest extends AppTestCase
 {
@@ -50,5 +51,22 @@ class DefaultReaderFormatTest extends AppTestCase
         $defaultReaderFormat = new DefaultReaderFormat($testFile);
         $result = $defaultReaderFormat->getRows(1, 34);
         self::assertEquals([], $result);
+    }
+
+    /**
+     * Тестирование получения дат в отформатированном виде при чтении значений.
+     *
+     * @return void
+     * @throws Throwable
+     * @covers DefaultReaderFormat::getRows
+     */
+    public function testGetRowsReturnsDateAsString(): void
+    {
+        $rows = (new DefaultReaderFormat(__DIR__ . DS . 'test_data.xls'))->getRows();
+
+        self::assertSame([
+            ['03-11', 'Строка'],
+            ['7/11/99', 123.45],
+        ], $rows);
     }
 }
