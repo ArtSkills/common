@@ -10,16 +10,19 @@ Router::scope('/', function (RouteBuilder $routes) {
     ...
     $openApi = new \ArtSkills\Routing\RestApiRouteBuilder($routes);
     $openApi->build('Predict'); // Прописываем маршруты для всех контроллеров в папке Controller/Predict, а также его подпапок
-}
+})
 ```
 
 Как использовать в рамках плагина:
 ```php
-Router::scope('/', function (RouteBuilder $routes) {
-    ...
-    $openApi = new \ArtSkills\Routing\PluginRestApiRouteBuilder($routes, 'PublicPages');
-    $openApi->build(''); // Прописываем маршруты для всех контроллеров в папке Controller
-}
+Router::plugin(
+    'PublicPages',
+    ['path' => '/'],
+    function (RouteBuilder $routes) {
+        $openApi = new \ArtSkills\Routing\PluginRestApiRouteBuilder($routes, 'PublicPages');
+        $openApi->build(''); // Прописываем маршруты для всех контроллеров в папке Controller
+    }
+)
 ```
 
 Пример описания в контроллере:
