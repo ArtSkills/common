@@ -39,7 +39,7 @@ class Application extends BaseApplication
             $this->addPlugin(\DebugKit\Plugin::class);
         }
 
-        $this->addPlugin(TestPluginClass::PLUGIN_NAME);
+        $this->addPlugin(TestPluginClass::PLUGIN_NAME, ['routes' => true]);
         // Load more plugins here
     }
 
