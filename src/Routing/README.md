@@ -13,6 +13,15 @@ Router::scope('/', function (RouteBuilder $routes) {
 }
 ```
 
+Как использовать в рамках плагина:
+```php
+Router::scope('/', function (RouteBuilder $routes) {
+    ...
+    $openApi = new \ArtSkills\Routing\PluginRestApiRouteBuilder($routes, 'PublicPages');
+    $openApi->build(''); // Прописываем маршруты для всех контроллеров в папке Controller
+}
+```
+
 Пример описания в контроллере:
 
 ```php
