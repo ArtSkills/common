@@ -46,7 +46,7 @@ class RestApiRouteBuilder
      *
      * @var string
      */
-    private string $_controllersDir;
+    protected string $_controllersDir;
 
     /**
      * OpenApi анализатор класса

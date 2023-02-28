@@ -9,6 +9,7 @@ use ArtSkills\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use TestPlugin\Plugin as TestPluginClass;
 
 /**
  * Application setup class.
@@ -38,6 +39,7 @@ class Application extends BaseApplication
             $this->addPlugin(\DebugKit\Plugin::class);
         }
 
+        $this->addPlugin(TestPluginClass::PLUGIN_NAME, ['routes' => true]);
         // Load more plugins here
     }
 

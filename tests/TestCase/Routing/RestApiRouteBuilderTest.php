@@ -10,7 +10,6 @@ use Cake\Routing\RouteBuilder;
 use Cake\Routing\RouteCollection;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Eggheads\Mocks\PropertyAccess;
-use OpenApi\Generator;
 use TestApp\Controller\RestApi\DeprecatedExtension\DeprecatedExtensionController;
 use TestApp\Controller\RestApi\IncorrectSchema\IncorrectSchemaController;
 use TestApp\Controller\RestApi\NoResponse\NoResponseController;

@@ -29,6 +29,11 @@ define('APP_DIR', 'test-app');
 define('APP', ROOT . DS . APP_DIR . DS);
 
 /**
+ * Path to the plugin's directory.
+ */
+define('PLUGINS', APP . 'plugins' . DS);
+
+/**
  * Path to the config directory.
  */
 define('CONFIG', __DIR__ . DS);
