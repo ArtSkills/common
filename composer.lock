@@ -890,12 +890,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:EggheadsSolutions/PHP_XMLWriter.git",
-                "reference": "d1fd34eb8069e48ceefe674463a25f48bdc3fc41"
+                "reference": "5c84eeaab0ceb97142ea22070e277a873d61731d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EggheadsSolutions/PHP_XMLWriter/zipball/d1fd34eb8069e48ceefe674463a25f48bdc3fc41",
-                "reference": "d1fd34eb8069e48ceefe674463a25f48bdc3fc41",
+                "url": "https://api.github.com/repos/EggheadsSolutions/PHP_XMLWriter/zipball/5c84eeaab0ceb97142ea22070e277a873d61731d",
+                "reference": "5c84eeaab0ceb97142ea22070e277a873d61731d",
                 "shasum": ""
             },
             "require": {
@@ -928,7 +928,7 @@
                 "source": "https://github.com/EggheadsSolutions/PHP_XMLWriter/tree/master",
                 "issues": "https://github.com/EggheadsSolutions/PHP_XMLWriter/issues"
             },
-            "time": "2023-03-01T04:09:25+00:00"
+            "time": "2023-03-01T04:40:49+00:00"
         },
         {
             "name": "myclabs/php-enum",
