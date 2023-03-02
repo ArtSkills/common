@@ -21,11 +21,12 @@ class ValueObjectDocumentationShell extends Shell
      *
      * @param string $workDir Папка, которую нужно парсить
      * @param string|null $resultFilePath В какой файл писать результат
+     * @param string $pluginDir
      * @return void
      */
-    public function main(string $workDir = APP, ?string $resultFilePath = null)
+    public function main(string $workDir = APP, ?string $resultFilePath = null, string $pluginDir = PLUGINS)
     {
-        $swagger = Generator::scan([__DIR__ . '/../Controller', $workDir]);
+        $swagger = Generator::scan([__DIR__ . '/../Controller', $workDir, $pluginDir]);
         $objectDefinitions = [];
 
         $schemas = $swagger->components->schemas;

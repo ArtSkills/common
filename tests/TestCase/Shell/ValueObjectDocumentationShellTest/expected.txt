@@ -62,3 +62,8 @@
  * @prop {number} intProp Возможные значения: 1, 2
  */
 
+/**
+ * @typedef {Object} PluginValueObject
+ * @prop {string} pluginProperty Тестовое свойство
+ */
+
