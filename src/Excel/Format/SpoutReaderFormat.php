@@ -32,6 +32,7 @@ class SpoutReaderFormat extends AbstractReaderFormat
     {
         $this->_spreadsheet = ReaderEntityFactory::createReaderFromFile($fileName);
         $this->_spreadsheet->setShouldPreserveEmptyRows(true); // @phpstan-ignore-line
+        $this->_spreadsheet->setShouldFormatDates(true); // @phpstan-ignore-line
         $this->_spreadsheet->open($fileName);
     }
 
