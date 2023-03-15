@@ -78,7 +78,7 @@ class ApiDocumentationController extends Controller
     {
         return Cache::remember('ApiDocumentationJson#' . CORE_VERSION, function () {
             $apiInfo = $this->_getApiInfo();
-            $swagger = Generator::scan(Util::finder([APP, __DIR__, PLUGINS], Env::getApiDocumentationExclude() ?? []));
+            $swagger = Generator::scan(Util::finder([APP, __DIR__, PLUGINS . '*/' . APP_DIR . '/'], Env::getApiDocumentationExclude() ?? []));
             $swagger->info = new Info([
                 'title' => $apiInfo['title'],
                 'description' => $apiInfo['description'],
