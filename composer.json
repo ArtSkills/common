@@ -5,15 +5,15 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git://github.com/EggheadsSolutions/eggheads-code-style"
+      "url": "git://gitlab.eggheads.solutions:eggheadssolutions/backend/library/eggheads-code-style.git"
     },
     {
       "type": "vcs",
-      "url": "git://github.com/vovantune/PHP_XLSXWriter"
+      "url": "git://gitlab.eggheads.solutions:eggheadssolutions/backend/vendor/PHP_XMLWriter.git"
     },
     {
       "type": "vcs",
-      "url": "git://github.com/EggheadsSolutions/runkit-test-mocks"
+      "url": "git://gitlab.eggheads.solutions:eggheadssolutions/backend/library/runkit-test-mocks.git"
     }
   ],
   "require": {
