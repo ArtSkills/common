@@ -25,6 +25,14 @@
  * @prop {string} prop2
  * @prop {string[]} stringArray
  * @prop {string[]|null} stringArrayOrNull
+ * @prop {number|null} nullableInteger
+ * @prop {number|null} nullableFloat
+ * @prop {number[]} integerArrayProperty
+ * @prop {number[]|null} nullableIntegerArrayProperty
+ * @prop {number[]|null} revertedNullableIntegerArrayProperty
+ * @prop {array} intFloatArrayProperty
+ * @prop {array} intFloatArrayRevertedProperty
+ * @prop {array|null} nullableIntFloatArrayProperty
  */
 
 /**

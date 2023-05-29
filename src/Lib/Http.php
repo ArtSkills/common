@@ -160,17 +160,16 @@ class Http
         curl_setopt($curlHandle, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($curlHandle, CURLOPT_FILE, $fileHandle);
         curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec($curlHandle);
+        $execResult = curl_exec($curlHandle);
         $err = curl_error($curlHandle);
         curl_close($curlHandle);
 
         fclose($fileHandle);
 
-        if (!empty($err)) {
+        if (!empty($err) || !$execResult) {
             unlink($targetFile);
             return '';
         }
-
 
         return $targetFile;
     }

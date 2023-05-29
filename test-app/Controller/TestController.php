@@ -54,6 +54,14 @@ class TestController extends Controller
     }
 
     /**
+     * JSON ответ из ValueObject с трейтами
+     */
+    public function getTraitedValueObjectJson()
+    {
+        return $this->_sendJsonOk((new TestValueObjectWithTrait()));
+    }
+
+    /**
      * JSON ответ из ApiResponse
      */
     public function getApiResponseJson()
