@@ -5,15 +5,15 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "git://gitlab.eggheads.solutions:eggheadssolutions/backend/library/eggheads-code-style.git"
+      "url": "https://gitlab.eggheads.solutions/eggheadssolutions/backend/library/eggheads-code-style.git"
     },
     {
       "type": "vcs",
-      "url": "git://gitlab.eggheads.solutions:eggheadssolutions/backend/vendor/PHP_XMLWriter.git"
+      "url": "https://gitlab.eggheads.solutions/eggheadssolutions/backend/vendor/PHP_XMLWriter.git"
     },
     {
       "type": "vcs",
-      "url": "git://gitlab.eggheads.solutions:eggheadssolutions/backend/library/runkit-test-mocks.git"
+      "url": "https://gitlab.eggheads.solutions/eggheadssolutions/backend/library/runkit-test-mocks.git"
     }
   ],
   "require": {
@@ -23,7 +23,7 @@
     "ext-curl": "*",
     "ext-pdo": "*",
     "ext-mbstring": "*",
-    "eggheads/mocks": "^1.0.0",
+    "eggheads/mocks": "^1.0",
     "cakephp/cakephp": "3.*",
     "robmorgan/phinx": "^0.8.1",
     "sentry/sentry": "^1.1",

@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b02853743623b2ca090cda95421562d8",
+  
+    "content-hash": "02df5e188848892f6118a1506c8cd442",
     "packages": [
         {
             "name": "aura/intl",
@@ -423,14 +424,8 @@
             "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/EggheadsSolutions/runkit-test-mocks.git",
+                "url": "https://gitlab.eggheads.solutions/eggheadssolutions/backend/library/runkit-test-mocks.git",
                 "reference": "cd638ec94763b308ca51120cc734bcbe280de6af"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/EggheadsSolutions/runkit-test-mocks/zipball/cd638ec94763b308ca51120cc734bcbe280de6af",
-                "reference": "cd638ec94763b308ca51120cc734bcbe280de6af",
-                "shasum": ""
             },
             "require": {
                 "php": ">=8.0 || >=7.4"
@@ -475,9 +470,6 @@
                 ]
             },
             "description": "Eggheads mocks utils",
-            "support": {
-                "source": "https://github.com/EggheadsSolutions/runkit-test-mocks/tree/1.0.0"
-            },
             "time": "2022-02-01T13:18:03+00:00"
         },
         {
@@ -3835,14 +3827,8 @@
             "version": "2.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/EggheadsSolutions/eggheads-code-style.git",
+                "url": "https://gitlab.eggheads.solutions/eggheadssolutions/backend/library/eggheads-code-style.git",
                 "reference": "d1de1ee2421a0cbe2dcc91d3e3cdaba2ae6397dc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/EggheadsSolutions/eggheads-code-style/zipball/d1de1ee2421a0cbe2dcc91d3e3cdaba2ae6397dc",
-                "reference": "d1de1ee2421a0cbe2dcc91d3e3cdaba2ae6397dc",
-                "shasum": ""
             },
             "require": {
                 "php": ">=7.3",
@@ -3891,9 +3877,6 @@
             ],
             "description": "Eggheads code style ruleset",
             "homepage": "https://eggheads.solutions",
-            "support": {
-                "source": "https://github.com/EggheadsSolutions/eggheads-code-style/tree/2.1.1"
-            },
             "time": "2022-01-31T14:19:32+00:00"
         },
         {
